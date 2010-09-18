@@ -22,6 +22,6 @@ dist:
 	TAR_OPTIONS="--owner=root --group=root --mode=u+w,go-w,a+rX-s" $(PYTHON) setup.py -q sdist
 
 tests:
-	$(PYTHON) setup.py test
+	$(PYTHON) setup.py -q test
 
 .PHONY: all local build clean install dist tests

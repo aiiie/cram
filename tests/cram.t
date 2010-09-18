@@ -3,7 +3,7 @@ most likely send it into an infinte loop as the test tries to run
 itself.
 
   $ cram() {
-  >   "$PYTHON" -m cram $@
+  >   "$PYTHON" -c 'import sys, cram; sys.exit(cram.main(sys.argv[1:]))' $@
   > }
 
 Usage:

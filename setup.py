@@ -37,7 +37,7 @@ setup(
         'Topic :: Software Development :: Testing',
     ],
     cmdclass={'test': test},
-    description='',
+    description='A simple testing framework for command line applications',
     download_url='http://bitheap.org/cram/cram-0.1.tar.gz',
     keywords='automatic functional test framework',
     license='GNU GPL',

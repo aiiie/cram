@@ -1,1 +1,1 @@
-include Makefile *.txt scripts/* tests/*
+include Makefile *.txt examples/* scripts/* tests/*

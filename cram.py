@@ -60,6 +60,7 @@ def test(path):
     f = open(path)
     p = subprocess.Popen(['/bin/sh', '-'], bufsize=-1, stdin=subprocess.PIPE,
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                         universal_newlines=True,
                          close_fds=os.name == 'posix')
     salt = 'CRAM%s' % time.time()
 

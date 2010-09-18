@@ -72,7 +72,7 @@ def test(path):
     expected, after = {}, {}
     refout, postout = [], []
 
-    pos = prepos = -1
+    i = pos = prepos = -1
     for i, line in enumerate(f):
         refout.append(line)
         if line.startswith('  $ '):

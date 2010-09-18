@@ -13,33 +13,11 @@ class test(Command):
         pass
 
     def run(self):
-        import difflib
         import doctest
         import cram
         failures, tests = doctest.testmod(cram)
         print 'doctests: %s/%s passed' % (tests - failures, tests)
-        print 'cram:',
-        a = ['tests/bare.t: passed\n',
-             'tests/empty.t: empty\n',
-             'tests/fail.t: failed\n',
-             '--- tests/fail.t \n',
-             '+++ tests/fail.t.out \n',
-             '@@ -3,6 +3,6 @@\n',
-             '   $ echo 1\n',
-             '   1\n',
-             '   $ echo 1\n',
-             '-  2\n',
-             '+  1\n',
-             '   $ echo 1\n',
-             '   1\n',
-             'tests/test.t: passed\n']
-        b = ''.join(cram.run(['.'], verbose=True)).splitlines(True)
-        diff = ''.join(difflib.unified_diff(a, b))
-        if diff:
-            print
-            print diff
-        else:
-            print 'passed'
+        cram.main(['-v', 'tests'])
 
 setup(
     author='Brodie Rao',

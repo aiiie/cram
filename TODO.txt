@@ -1,5 +1,3 @@
-* Use optparse.
-
 * Implemented -j flag, most likely using spawnv() (requires optparse).
 
 * Figure out why coverage.py breaks cram.

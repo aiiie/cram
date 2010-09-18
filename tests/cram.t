@@ -8,10 +8,13 @@ manually.
 Usage:
 
   $ cram -h
-  usage: cram [-v|--verbose] [-h|--help] TESTS...
-  [1]
+  Usage: cram [OPTIONS] TESTS...
+  
+  Options:
+    -h, --help     show this help message and exit
+    -v, --verbose  Show filenames and test status
   $ cram
-  usage: cram [-v|--verbose] [-h|--help] TESTS...
+  Usage: cram [OPTIONS] TESTS...
   [1]
 
 Run cram exmples:

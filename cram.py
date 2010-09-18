@@ -156,16 +156,21 @@ def main(args):
 
     args should not contain the script name.
     """
-    paths = [s for s in args if not s.startswith('-')]
-    verbose = '-v' in args or '--verbose' in args
-    if not paths or '-h' in args or '--help' in args:
-        sys.stderr.write('usage: cram [-v|--verbose] [-h|--help] TESTS...\n')
+    from optparse import OptionParser
+
+    p = OptionParser(usage='cram [OPTIONS] TESTS...')
+    p.add_option('-v', '--verbose', dest='verbose', action='store_true',
+                 help='Show filenames and test status')
+
+    opts, paths = p.parse_args(args)
+    if not paths:
+        sys.stdout.write(p.get_usage())
         return 1
 
-    for line in run(paths, verbose):
-        sys.stdout.write(line)
+    for s in run(paths, opts.verbose):
+        sys.stdout.write(s)
         sys.stdout.flush()
-    if not verbose:
+    if not opts.verbose:
         sys.stdout.write('\n')
 
 if __name__ == '__main__':

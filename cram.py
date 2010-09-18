@@ -159,7 +159,7 @@ def main(args):
     from optparse import OptionParser
 
     p = OptionParser(usage='cram [OPTIONS] TESTS...')
-    p.add_option('-v', '--verbose', dest='verbose', action='store_true',
+    p.add_option('-v', '--verbose', action='store_true',
                  help='Show filenames and test status')
 
     opts, paths = p.parse_args(args)

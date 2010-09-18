@@ -24,4 +24,4 @@ dist:
 tests:
 	$(PYTHON) setup.py -q test
 
-.PHONY: all local build clean install dist tests
+.PHONY: all build clean install dist tests

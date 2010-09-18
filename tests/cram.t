@@ -1,7 +1,3 @@
-Note: Never return cram without any arguments in this test. You'll
-most likely send it into an infinte loop as the test tries to run
-itself.
-
   $ cram() {
   >   "$PYTHON" -c 'import sys, cram; sys.exit(cram.main(sys.argv[1:]))' $@
   > }
@@ -9,6 +5,9 @@ itself.
 Usage:
 
   $ cram -h
+  usage: cram [-v|--verbose] [-h|--help] TESTS...
+  [1]
+  $ cram
   usage: cram [-v|--verbose] [-h|--help] TESTS...
   [1]
 

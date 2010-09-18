@@ -3,11 +3,6 @@
 import sys
 from distutils.core import setup, Command
 
-try:
-    from distutils.command.build_py import build_py_2to3 as build_py
-except ImportError:
-    from distutils.command.build_py import build_py
-
 class test(Command):
     description = 'run test suite'
     user_options = []
@@ -38,7 +33,7 @@ setup(
         'Programming Language :: Unix Shell',
         'Topic :: Software Development :: Testing',
     ],
-    cmdclass={'build_py': build_py, 'test': test},
+    cmdclass={'test': test},
     description='',
     download_url='http://bitheap.org/cram/cram-0.1.tar.gz',
     keywords='automatic functional test framework',

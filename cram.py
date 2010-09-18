@@ -8,6 +8,11 @@ import subprocess
 import sys
 import time
 
+try:
+    next
+except NameError:
+    next = lambda x: x.next()
+
 _natsub = re.compile(r'\d+').sub
 def _natkey(s):
     """Return a key usable for natural sorting.
@@ -109,7 +114,7 @@ def test(path):
 
     diff = difflib.unified_diff(refout, postout, path, path + '.out')
     try:
-        firstline = diff.next()
+        firstline = next(diff)
         return itertools.chain([firstline], diff)
     except StopIteration:
         return []
@@ -145,7 +150,7 @@ def main(args):
     args should not contain the script name.
     """
     if '-h' in args or '--help' in args:
-        print >> sys.stderr, 'usage: cram [-v|--verbose] [-h|--help] [TESTS]'
+        sys.stderr.write('usage: cram [-v|--verbose] [-h|--help] [TESTS]\n')
         return 1
 
     paths = [s for s in args if not s.startswith('-')] or ['.']
@@ -154,7 +159,7 @@ def main(args):
         sys.stdout.write(line)
         sys.stdout.flush()
     if not verbose:
-        print
+        sys.stdout.write('\n')
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv[1:]))

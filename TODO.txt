@@ -1,0 +1,9 @@
+* Use optparse.
+
+* Implemented -j flag, most likely using spawnv() (requires optparse).
+
+* Figure out why coverage.py breaks cram.
+
+* Be able to run the Mercurial test suite.
+
+* Write cram plugins for other testing frameworks.

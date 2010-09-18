@@ -52,6 +52,13 @@ def findtests(paths):
             yield os.path.normpath(p)
 
 def _match(pattern, s):
+    """Match pattern or return False if invalid.
+
+    >>> bool(_match('foo.*', 'foobar'))
+    True
+    >>> _match('***', 'foobar')
+    False
+    """
     try:
         return re.match(pattern, s)
     except re.error:

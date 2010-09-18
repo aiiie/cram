@@ -1,3 +1,6 @@
+The $PYTHON environment variable must be set to run these tests
+manually.
+
   $ cram() {
   >   "$PYTHON" -c 'import sys, cram; sys.exit(cram.main(sys.argv[1:]))' $@
   > }
@@ -11,7 +14,7 @@ Usage:
   usage: cram [-v|--verbose] [-h|--help] TESTS...
   [1]
 
-Run cram:
+Run cram exmples:
 
   $ cram examples
   ..

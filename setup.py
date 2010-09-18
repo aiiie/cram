@@ -18,7 +18,8 @@ class test(Command):
         import sys
         import cram
         failures, tests = doctest.testmod(cram)
-        sys.stdout.write('doctests: %s/%s passed\n' % (tests - failures, tests))
+        sys.stdout.write('doctests: %s/%s passed\n' %
+                         (tests - failures, tests))
         os.environ['PYTHON'] = sys.executable
         cram.main(['-v', 'tests'])
 

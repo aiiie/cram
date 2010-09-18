@@ -20,8 +20,8 @@ Run cram:
 
   $ py -m cram examples
   ..
-  --- examples/fail.t 
-  +++ examples/fail.t.out 
+  \-\-\- examples/fail\.t\s*
+  \+\+\+ examples/fail\.t\.out\s*
   @@ -3,6 +3,6 @@
      $ echo 1
      1
@@ -38,8 +38,8 @@ Verbose mode:
   examples/bare.t: passed
   examples/empty.t: empty
   examples/fail.t: failed
-  --- examples/fail.t 
-  +++ examples/fail.t.out 
+  \-\-\- examples/fail\.t\s*
+  \+\+\+ examples/fail\.t\.out\s*
   @@ -3,6 +3,6 @@
      $ echo 1
      1

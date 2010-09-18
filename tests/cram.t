@@ -2,23 +2,19 @@ Note: Never return cram without any arguments in this test. You'll
 most likely send it into an infinte loop as the test tries to run
 itself.
 
-  $ py() {
-  >   if [ -n "$PYTHON" ]; then
-  >     "$PYTHON" $@
-  >   else
-  >     python $@
-  >   fi
+  $ cram() {
+  >   "$PYTHON" -m cram $@
   > }
 
 Usage:
 
-  $ py -m cram -h
+  $ cram -h
   usage: cram [-v|--verbose] [-h|--help] [TESTS]
   [1]
 
 Run cram:
 
-  $ py -m cram examples
+  $ cram examples
   ..
   \-\-\- examples/fail\.t\s*
   \+\+\+ examples/fail\.t\.out\s*
@@ -34,7 +30,7 @@ Run cram:
 
 Verbose mode:
 
-  $ py -m cram -v examples
+  $ cram -v examples
   examples/bare.t: passed
   examples/empty.t: empty
   examples/fail.t: failed

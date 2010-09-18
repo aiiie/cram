@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import sys
 from distutils.core import setup, Command
 
 class test(Command):
@@ -15,9 +14,12 @@ class test(Command):
 
     def run(self):
         import doctest
+        import os
+        import sys
         import cram
         failures, tests = doctest.testmod(cram)
         sys.stdout.write('doctests: %s/%s passed\n' % (tests - failures, tests))
+        os.environ['PYTHON'] = sys.executable
         cram.main(['-v', 'tests'])
 
 setup(

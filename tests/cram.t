@@ -9,7 +9,7 @@ itself.
 Usage:
 
   $ cram -h
-  usage: cram [-v|--verbose] [-h|--help] [TESTS]
+  usage: cram [-v|--verbose] [-h|--help] TESTS...
   [1]
 
 Run cram:

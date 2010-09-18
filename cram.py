@@ -149,12 +149,12 @@ def main(args):
 
     args should not contain the script name.
     """
-    if '-h' in args or '--help' in args:
-        sys.stderr.write('usage: cram [-v|--verbose] [-h|--help] [TESTS]\n')
+    paths = [s for s in args if not s.startswith('-')]
+    verbose = '-v' in args or '--verbose' in args
+    if not paths or '-h' in args or '--help' in args:
+        sys.stderr.write('usage: cram [-v|--verbose] [-h|--help] TESTS...\n')
         return 1
 
-    paths = [s for s in args if not s.startswith('-')] or ['.']
-    verbose = '-v' in args or '--verbose' in args
     for line in run(paths, verbose):
         sys.stdout.write(line)
         sys.stdout.flush()

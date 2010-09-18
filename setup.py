@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 
+import sys
 from distutils.core import setup, Command
+
+try:
+    from distutils.command.build_py import build_py_2to3 as build_py
+except ImportError:
+    from distutils.command.build_py import build_py
 
 class test(Command):
     description = 'run test suite'
@@ -16,7 +22,7 @@ class test(Command):
         import doctest
         import cram
         failures, tests = doctest.testmod(cram)
-        print 'doctests: %s/%s passed' % (tests - failures, tests)
+        sys.stdout.write('doctests: %s/%s passed\n' % (tests - failures, tests))
         cram.main(['-v', 'tests'])
 
 setup(
@@ -32,7 +38,7 @@ setup(
         'Programming Language :: Unix Shell',
         'Topic :: Software Development :: Testing',
     ],
-    cmdclass={'test': test},
+    cmdclass={'build_py': build_py, 'test': test},
     description='',
     download_url='http://bitheap.org/cram/cram-0.1.tar.gz',
     keywords='automatic functional test framework',

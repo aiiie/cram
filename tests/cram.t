@@ -18,12 +18,18 @@ Usage:
   [Oo]ptions:
     -h, --help            show this help message and exit
     -v, --verbose         show filenames and test status
+    -i, --interactive     Interactively merge changed test output
+    -y, --yes             Answer yes to all questions
+    -n, --no              Answer no to all questions
     -D DIR, --tmpdir=DIR  run tests in DIR
     --keep-tmpdir         keep temporary directories
     -E                    don't reset common environment variables
   $ cram
   [Uu]sage: cram \[OPTIONS\] TESTS\.\.\.
   [1]
+  $ cram -y -n
+  options -y and -n are mutually exclusive
+  [2]
 
 Run cram examples:
 
@@ -79,6 +85,110 @@ Verbose mode:
   .*\b6ed4b99c2184f1bac5afc144f334a115\b.*
   .*\bb2ad57fc6bcf13972901470979859b78\b.*
   $ rm examples/fail.t.err
+
+Interactive mode (don't merge):
+
+  $ cram -n -D . -i examples/fail.t
+  
+  \-\-\- .*/examples/fail\.t\s*
+  \+\+\+ .*/examples/fail\.t\.err\s*
+  @@ -3,11 +3,11 @@
+     $ echo 1
+     1
+     $ echo 1
+  -  2
+  +  1
+     $ echo 1
+     1
+   
+   Invalid regex:
+   
+     $ echo 1
+  -  +++
+  +  1
+  Accept this change? [yN] n
+  .
+  $ md5 examples/fail.t examples/fail.t.err
+  .*\b6ed4b99c2184f1bac5afc144f334a115\b.*
+  .*\bb2ad57fc6bcf13972901470979859b78\b.*
+
+Interactive mode (merge):
+
+  $ cp examples/fail.t examples/fail.t.orig
+  $ cram -y -D . -i examples/fail.t
+  
+  \-\-\- .*/examples/fail\.t\s*
+  \+\+\+ .*/examples/fail\.t\.err\s*
+  @@ -3,11 +3,11 @@
+     $ echo 1
+     1
+     $ echo 1
+  -  2
+  +  1
+     $ echo 1
+     1
+   
+   Invalid regex:
+   
+     $ echo 1
+  -  +++
+  +  1
+  Accept this change? [yN] y
+  .
+  $ md5 examples/fail.t
+  .*\bb2ad57fc6bcf13972901470979859b78\b.*
+  $ mv examples/fail.t.orig examples/fail.t
+
+Verbose interactive mode (answer manually and don't merge):
+
+  $ echo 'bad\nn' | cram -v -D . -i examples/fail.t
+  examples/fail.t: failed
+  \-\-\- .*/examples/fail\.t\s*
+  \+\+\+ .*/examples/fail\.t\.err\s*
+  @@ -3,11 +3,11 @@
+     $ echo 1
+     1
+     $ echo 1
+  -  2
+  +  1
+     $ echo 1
+     1
+   
+   Invalid regex:
+   
+     $ echo 1
+  -  +++
+  +  1
+  Accept this change? [yN] Accept this change? [yN] Accept this change? [yN] %
+  $ md5 examples/fail.t examples/fail.t.err
+  .*\b6ed4b99c2184f1bac5afc144f334a115\b.*
+  .*\bb2ad57fc6bcf13972901470979859b78\b.*
+
+Verbose interactive mode (answer manually and merge):
+
+  $ cp examples/fail.t examples/fail.t.orig
+  $ echo 'bad\ny' | cram -v -D . -i examples/fail.t
+  examples/fail.t: failed
+  \-\-\- .*/examples/fail\.t\s*
+  \+\+\+ .*/examples/fail\.t\.err\s*
+  @@ -3,11 +3,11 @@
+     $ echo 1
+     1
+     $ echo 1
+  -  2
+  +  1
+     $ echo 1
+     1
+   
+   Invalid regex:
+   
+     $ echo 1
+  -  +++
+  +  1
+  Accept this change? [yN] Accept this change? [yN] examples/fail.t: merged output
+  $ md5 examples/fail.t
+  .*\bb2ad57fc6bcf13972901470979859b78\b.*
+  $ mv examples/fail.t.orig examples/fail.t
 
 Use temp dirs:
 
@@ -155,3 +265,8 @@ Don't sterilize environment:
      .+
      $ echo "$TESTDIR"
   .
+
+Cleanup:
+
+  $ rm examples/env.t.err
+  $ rm examples/fail.t.err

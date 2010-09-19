@@ -124,7 +124,33 @@ def test(path):
         return refout, postout, []
     return refout, postout, itertools.chain([firstline], diff)
 
-def run(paths, verbose=False, cwd=None, basetmp=None, keeptmp=False):
+def _prompt(question, answers, auto=None):
+    """Write a prompt to stdout and ask for answer in stdin.
+
+    answers should be a string, with each character a single
+    answer. An uppercase letter is considered the default answer.
+
+    If an invalid answer is given, this asks again until it gets a
+    valid one.
+
+    If auto is set, the question is answered automatically with the
+    specified value.
+    """
+    default = [c for c in answers if c.isupper()]
+    while True:
+        sys.stdout.write('%s [%s] ' % (question, answers))
+        if auto is not None:
+            sys.stdout.write(auto + '\n')
+            return auto
+
+        answer = sys.stdin.readline().strip().lower()
+        if not answer and default:
+            return default[0]
+        elif answer and answer in answers:
+            return answer
+
+def run(paths, verbose=False, interactive=False, cwd=None, basetmp=None,
+        keeptmp=False, answer=None):
     """Run tests in paths and yield output.
 
     If verbose is True, filenames and status information are yielded.
@@ -136,6 +162,10 @@ def run(paths, verbose=False, cwd=None, basetmp=None, keeptmp=False):
 
     If basetmp is set and keeptmp is True, temporary directories are
     preserved after use.
+
+    If interactive is True, a prompt is written to stdout asking if
+    changed output should be merged back into the original test. The
+    answer is read from stdin.
     """
     if cwd is None:
         cwd = os.getcwd()
@@ -170,11 +200,21 @@ def run(paths, verbose=False, cwd=None, basetmp=None, keeptmp=False):
                     yield 'failed\n'
                 else:
                     yield '\n'
-                errfile = open(abspath + '.err', 'w')
-                for line in postout:
-                    errfile.write(line)
+                errpath = abspath + '.err'
+                errfile = open(errpath, 'w')
+                try:
+                    for line in postout:
+                        errfile.write(line)
+                finally:
+                    errfile.close()
                 for line in diff:
                     yield line
+                if interactive:
+                    if _prompt('Accept this change?', 'yN', answer) == 'y':
+                        shutil.copy(errpath, abspath)
+                        os.remove(errpath)
+                        if verbose:
+                            yield '%s: merged output\n' % path
             elif verbose:
                 yield 'passed\n'
         if not verbose:
@@ -190,6 +230,12 @@ def main(args):
     p = OptionParser(usage='cram [OPTIONS] TESTS...')
     p.add_option('-v', '--verbose', action='store_true',
                  help='show filenames and test status')
+    p.add_option('-i', '--interactive', action='store_true',
+                 help='Interactively merge changed test output')
+    p.add_option('-y', '--yes', action='store_true',
+                 help='Answer yes to all questions')
+    p.add_option('-n', '--no', action='store_true',
+                 help='Answer no to all questions')
     p.add_option('-D', '--tmpdir', action='store',
                  default=None, metavar='DIR',
                  help="run tests in DIR")
@@ -200,6 +246,10 @@ def main(args):
                  help="don't reset common environment variables")
 
     opts, paths = p.parse_args(args)
+    if opts.yes and opts.no:
+        sys.stderr.write('options -y and -n are mutually exclusive\n')
+        return 2
+
     if not paths:
         sys.stdout.write(p.get_usage())
         return 1
@@ -233,8 +283,16 @@ def main(args):
         os.environ['COLUMNS'] = '80'
         os.environ['GREP_OPTIONS'] = ''
 
+    if opts.yes:
+        answer = 'y'
+    elif opts.no:
+        answer = 'n'
+    else:
+        answer = None
+
     try:
-        for s in run(paths, opts.verbose, oldcwd, basetmp, opts.keep_tmpdir):
+        for s in run(paths, opts.verbose, opts.interactive, oldcwd,
+                     basetmp, opts.keep_tmpdir, answer):
             sys.stdout.write(s)
             sys.stdout.flush()
         if not opts.verbose:

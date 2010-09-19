@@ -1,6 +1,4 @@
-* Implemented -j flag, most likely using spawnv() (requires optparse).
-
-* Figure out why coverage.py breaks cram.
+* Implement -j flag, most likely using spawnv().
 
 * Be able to run the Mercurial test suite.
 

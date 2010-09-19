@@ -16,11 +16,6 @@ clean:
 	rm -rf dist build htmlcov
 	rm -f MANIFEST *,cover .coverage
 
-coverage:
-	$(PYTHON) setup.py -q test --coverage && \
-	coverage report && \
-	coverage annotate
-
 install: build
 	$(PYTHON) setup.py install $(PREFIX_ARG)
 
@@ -31,4 +26,12 @@ dist:
 tests:
 	$(PYTHON) setup.py -q test
 
-.PHONY: all build clean install dist tests
+coverage:
+	$(PYTHON) setup.py -q test --coverage && \
+	coverage report && \
+	coverage annotate
+
+markdown:
+	pandoc -f rst -t markdown README.txt > README.md
+
+.PHONY: all build clean install dist tests coverage markdown

@@ -49,7 +49,7 @@ def findtests(paths):
                 for f in sorted(files, key=_natkey):
                     if istest(f):
                         yield os.path.normpath(os.path.join(root, f))
-        elif istest(os.path.basename(root)):
+        elif istest(os.path.basename(p)):
             yield os.path.normpath(p)
 
 def _match(pattern, s):

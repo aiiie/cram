@@ -9,11 +9,6 @@ import subprocess
 import sys
 import time
 
-try:
-    next
-except NameError:
-    next = lambda x: x.next()
-
 _natsub = re.compile(r'\d+').sub
 def _natkey(s):
     """Return a key usable for natural sorting.
@@ -121,11 +116,11 @@ def test(path):
     postout += after.pop(pos, [])
 
     diff = difflib.unified_diff(refout, postout, path, path + '.out')
-    try:
-        firstline = next(diff)
-        return itertools.chain([firstline], diff)
-    except StopIteration:
+    for firstline in diff:
+        break
+    else:
         return []
+    return itertools.chain([firstline], diff)
 
 def run(paths, verbose=False):
     """Run tests in paths and yield output.

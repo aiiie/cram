@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import os
+import sys
 from distutils.core import setup, Command
 
 class test(Command):
@@ -14,8 +16,6 @@ class test(Command):
 
     def run(self):
         import doctest
-        import os
-        import sys
         import cram
         failures, tests = doctest.testmod(cram)
         sys.stdout.write('doctests: %s/%s passed\n' %
@@ -27,6 +27,18 @@ class test(Command):
             # setup.py was run with.
             os.environ['COVERAGE'] = '1'
         cram.main(['-v', 'tests'])
+
+def long_description():
+    try:
+        return open(os.path.join(sys.path[0], 'README.txt')).read()
+    except Exception:
+        return """
+Cram is a testing framework for command line applications based on
+Mercurial_'s `unified test format`_.
+
+.. _Mercurial: http://mercurial.selenic.com/
+.. _unified test format: http://www.selenic.com/blog/?p=663
+"""
 
 setup(
     author='Brodie Rao',
@@ -46,13 +58,7 @@ setup(
     download_url='http://bitheap.org/cram/cram-0.1.tar.gz',
     keywords='automatic functional test framework',
     license='GNU GPL',
-    long_description="""
-Cram is a testing framework for command line applications based on
-Mercurial_'s `unified test format`_.
-
-.. _Mercurial: http://mercurial.selenic.com/
-.. _unified test format: http://www.selenic.com/blog/?p=663
-""",
+    long_description=long_description(),
     name='cram',
     py_modules=['cram'],
     scripts=['scripts/cram'],

@@ -27,7 +27,7 @@ Run cram exmples:
   ..
   \-\-\- examples/fail\.t\s*
   \+\+\+ examples/fail\.t\.out\s*
-  @@ -3,6 +3,6 @@
+  @@ -3,11 +3,11 @@
      $ echo 1
      1
      $ echo 1
@@ -35,6 +35,12 @@ Run cram exmples:
   +  1
      $ echo 1
      1
+   
+   Invalid regex:
+   
+     $ echo 1
+  -  +++
+  +  1
   ..
 
 Verbose mode:
@@ -45,7 +51,7 @@ Verbose mode:
   examples/fail.t: failed
   \-\-\- examples/fail\.t\s*
   \+\+\+ examples/fail\.t\.out\s*
-  @@ -3,6 +3,6 @@
+  @@ -3,11 +3,11 @@
      $ echo 1
      1
      $ echo 1
@@ -53,4 +59,10 @@ Verbose mode:
   +  1
      $ echo 1
      1
+   
+   Invalid regex:
+   
+     $ echo 1
+  -  +++
+  +  1
   examples/test.t: passed

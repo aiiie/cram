@@ -6,3 +6,8 @@ Wrong output:
   2
   $ echo 1
   1
+
+Invalid regex:
+
+  $ echo 1
+  +++

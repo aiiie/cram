@@ -47,6 +47,9 @@ The format in a nutshell:
   actual output. If it doesn't match, it's then compiled and matched
   as a `Perl-compatible regular expression`_.
 
+* Command output in the test that ends with a percent sign will match
+  actual output that doesn't end in a newline.
+
 * Anything else is a comment.
 
 .. _Mercurial: http://mercurial.selenic.com/
@@ -109,13 +112,16 @@ For example, if we run cram on `its own example tests`_::
     ..
 
 Cram will also write the test with its actual output to
-``examples/fail.t.err``. This makes it easy to merge output back into
-the test file using when writing a test for the first time. You can
-run ``diff examples/fail.t{,.err}`` and use ``patch -p0`` to apply the
-patch.
+``examples/fail.t.err``.
+
+When you're first writing a test, you might just write the commands
+and run the test to see what happens. If you run Cram with ``-i`` or
+``--interactive``, you'll be prompted to merge the actual output back
+into the test. This makes it easy to quickly prototype new tests.
 
 .. _unified context diff: http://en.wikipedia.org/wiki/Diff#Unified_format
 .. _its own example tests: http://bitbucket.org/brodie/cram/src/tip/examples/
+
 
 Development
 -----------

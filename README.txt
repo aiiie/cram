@@ -2,8 +2,8 @@
  Cram: It's test time
 ======================
 
-Cram is a testing framework for command line applications based on
-Mercurial_'s `unified test format`_.
+Cram is a functional testing framework for command line applications
+based on Mercurial_'s `unified test format`_.
 
 Here's a snippet from ``cram.t`` in `Cram's own test suite`_::
 

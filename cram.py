@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Command line application testing framework"""
+"""Functional testing framework for command line applications"""
 
 import difflib
 import itertools

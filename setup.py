@@ -33,8 +33,8 @@ def long_description():
         return open(os.path.join(sys.path[0], 'README.txt')).read()
     except Exception:
         return """
-Cram is a testing framework for command line applications based on
-Mercurial_'s `unified test format`_.
+Cram is a functional testing framework for command line applications
+based on Mercurial_'s `unified test format`_.
 
 .. _Mercurial: http://mercurial.selenic.com/
 .. _unified test format: http://www.selenic.com/blog/?p=663

@@ -17,6 +17,7 @@ Here's a snippet from ``cram.t`` in `Cram's own test suite`_::
       > else
       >   alias cram="$PYTHON cram.py"
       > fi
+      $ command -v md5 || alias md5=md5sum
 
     Usage:
 
@@ -24,8 +25,14 @@ Here's a snippet from ``cram.t`` in `Cram's own test suite`_::
       [Uu]sage: cram \[OPTIONS\] TESTS\.\.\.
 
       [Oo]ptions:
-        -h, --help     show this help message and exit
-        -v, --verbose  Show filenames and test status
+        -h, --help            show this help message and exit
+        -v, --verbose         show filenames and test status
+        -i, --interactive     Interactively merge changed test output
+        -y, --yes             Answer yes to all questions
+        -n, --no              Answer no to all questions
+        -D DIR, --tmpdir=DIR  run tests in DIR
+        --keep-tmpdir         keep temporary directories
+        -E                    don't reset common environment variables
       $ cram
       [Uu]sage: cram \[OPTIONS\] TESTS\.\.\.
       [1]

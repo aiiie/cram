@@ -80,7 +80,7 @@ def test(path):
             after.setdefault(pos, []).append(line)
             prepos = pos
             pos = i
-            p.stdin.write('echo %s %s $?\n' % (salt, i))
+            p.stdin.write('echo "\\n%s %s $?"\n' % (salt, i))
             p.stdin.write(line[4:])
         elif line.startswith('  > '):
             after.setdefault(prepos, []).append(line)
@@ -89,12 +89,15 @@ def test(path):
             expected.setdefault(pos, []).append(line[2:])
         else:
             after.setdefault(pos, []).append(line)
-    p.stdin.write('echo %s %s $?\n' % (salt, i + 1))
+    p.stdin.write('echo "\\n%s %s $?"\n' % (salt, i + 1))
 
     pos = -1
     ret = 0
     for i, line in enumerate(p.communicate()[0].splitlines(True)):
         if line.startswith(salt):
+            presalt = postout.pop()
+            if presalt != '  \n':
+                postout.append(presalt[:-1] + '%\n')
             ret = int(line.split()[2])
             if ret != 0:
                 postout.append('  [%s]\n' % ret)

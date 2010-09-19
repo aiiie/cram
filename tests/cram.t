@@ -16,9 +16,11 @@ Usage:
   [Uu]sage: cram \[OPTIONS\] TESTS\.\.\.
   
   [Oo]ptions:
-    -h, --help     show this help message and exit
-    -v, --verbose  Show filenames and test status
-    -D DIR         Run tests in DIR
+    -h, --help            show this help message and exit
+    -v, --verbose         Show filenames and test status
+    -D DIR, --tmpdir=DIR  Run tests in DIR
+    --keep-tmpdir         Keep temporary directories
+    -E                    Don't reset common environment variables
   $ cram
   [Uu]sage: cram \[OPTIONS\] TESTS\.\.\.
   [1]
@@ -26,7 +28,7 @@ Usage:
 Run cram examples:
 
   $ cram -D . examples examples/fail.t examples/.hidden.t
-  ..
+  ...
   \-\-\- .*/examples/fail\.t\s*
   \+\+\+ .*/examples/fail\.t\.err\s*
   @@ -3,11 +3,11 @@
@@ -54,6 +56,7 @@ Verbose mode:
   $ cram -D . -v examples/fail.t examples examples/.hidden.t
   examples/bare.t: passed
   examples/empty.t: empty
+  examples/env.t: passed
   examples/fail.t: failed
   \-\-\- .*/examples/fail\.t\s*
   \+\+\+ .*/examples/fail\.t\.err\s*
@@ -80,7 +83,7 @@ Verbose mode:
 Use temp dirs:
 
   $ cram examples
-  ..
+  ...
   \-\-\- .*/examples/fail\.t\s*
   \+\+\+ .*/examples/fail\.t\.err\s*
   @@ -3,11 +3,11 @@
@@ -110,3 +113,45 @@ Invalid -D directory:
   can't change directory: Permission denied
   [2]
   $ rmdir foobarbaz
+
+Don't sterilize environment:
+
+  $ LANG=foo; export LANG
+  $ LC_ALL=foo; export LC_ALL
+  $ LANGUAGE=foo; export LANGUAGE
+  $ TZ=foo; export TZ
+  $ CDPATH=foo; export CDPATH
+  $ COLUMNS=4815162342; export COLUMNS
+  $ GREP_OPTIONS=foo; export GREP_OPTIONS
+  $ cram -E examples/env.t
+  
+  \-\-\- .*/examples/env\.t\s*
+  \+\+\+ .*/examples/env\.t\.err\s*
+  @@ -1,19 +1,19 @@
+   Check environment variables:
+   
+     $ echo "$LANG"
+  -  C
+  +  foo
+     $ echo "$LC_ALL"
+  -  C
+  +  foo
+     $ echo "$LANGUAGE"
+  -  C
+  +  foo
+     $ echo "$TZ"
+  -  GMT
+  +  foo
+     $ echo "$CDPATH"
+  -  
+  +  foo
+     $ echo "$COLUMNS"
+  -  80
+  +  4815162342
+     $ echo "$GREP_OPTIONS"
+  -  
+  +  foo
+     $ echo "$RUNDIR"
+     .+
+     $ echo "$TESTDIR"
+  .

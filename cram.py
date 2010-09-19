@@ -121,16 +121,21 @@ def test(path):
         return refout, postout, []
     return refout, postout, itertools.chain([firstline], diff)
 
-def run(paths, verbose=False, directory=None):
+def run(paths, verbose=False, cwd=None, basetmp=None, keeptmp=False):
     """Run tests in paths and yield output.
 
     If verbose is True, filenames and status information are yielded.
 
-    If directory is None, each test is run in a random temporary
-    directory. Otherwise, they're run in the directory specified.
+    If cwd is set, os.chdir(cwd) is called after each test is run.
+
+    If basetmp is set, each test is run in a random temporary
+    directory inside basetmp.
+
+    If basetmp is set and keeptmp is True, temporary directories are
+    preserved after use.
     """
-    if directory:
-        os.chdir(directory)
+    if cwd is None:
+        cwd = os.getcwd()
 
     seen = set()
     for path in findtests(paths):
@@ -138,30 +143,31 @@ def run(paths, verbose=False, directory=None):
             continue
         seen.add(path)
 
-        abspath = os.path.abspath(path)
+        abspath = os.path.join(cwd, path)
         if verbose:
             yield '%s: ' % path
-        if not os.stat(path).st_size:
+        if not os.stat(abspath).st_size:
             if verbose:
                 yield 'empty\n'
         else:
-            if not directory:
-                cwd = os.getcwd()
-                tmpdir = tempfile.mkdtemp()
+            if basetmp:
+                tmpdir = tempfile.mkdtemp('', os.path.basename(path) + '-',
+                                          basetmp)
             try:
-                if not directory:
+                if basetmp:
                     os.chdir(tmpdir)
                 refout, postout, diff = test(abspath)
             finally:
-                if not directory:
+                if basetmp:
                     os.chdir(cwd)
-                    shutil.rmtree(tmpdir)
+                    if not keeptmp:
+                        shutil.rmtree(tmpdir)
             if diff:
                 if verbose:
                     yield 'failed\n'
                 else:
                     yield '\n'
-                errfile = open(path + '.err', 'w')
+                errfile = open(abspath + '.err', 'w')
                 for line in postout:
                     errfile.write(line)
                 for line in diff:
@@ -181,35 +187,58 @@ def main(args):
     p = OptionParser(usage='cram [OPTIONS] TESTS...')
     p.add_option('-v', '--verbose', action='store_true',
                  help='Show filenames and test status')
-    p.add_option('-D', action='store', dest='directory',
+    p.add_option('-D', '--tmpdir', action='store',
                  default=None, metavar='DIR',
                  help="Run tests in DIR")
+    p.add_option('--keep-tmpdir', action='store_true',
+                 help='Keep temporary directories')
+    p.add_option('-E', action='store_false',
+                 dest='sterilize', default=True,
+                 help="Don't reset common environment variables")
 
     opts, paths = p.parse_args(args)
     if not paths:
         sys.stdout.write(p.get_usage())
         return 1
 
-    if opts.directory:
-        if not os.path.isdir(opts.directory):
-            sys.stderr.write('no such directory: %s\n' % opts.directory)
+    os.environ['RUNDIR'] = os.environ['TESTDIR'] = os.getcwd()
+    if opts.tmpdir:
+        oldcwd = os.getcwd()
+        basetmp = None
+        if not os.path.isdir(opts.tmpdir):
+            sys.stderr.write('no such directory: %s\n' % opts.tmpdir)
             return 2
-        cwd = os.getcwd()
         try:
-            try:
-                os.chdir(opts.directory)
-            except OSError:
-                e = sys.exc_info()[1]
-                sys.stderr.write("can't change directory: %s\n" % e.strerror)
-                return 2
-        finally:
-            os.chdir(cwd)
+            os.chdir(opts.tmpdir)
+        except OSError:
+            e = sys.exc_info()[1]
+            sys.stderr.write("can't change directory: %s\n" % e.strerror)
+            return 2
+    else:
+        oldcwd = None
+        basetmp = os.environ['TESTDIR'] = tempfile.mkdtemp('', 'cramtests-')
+        proctmp = os.path.join(basetmp, 'tmp')
+        os.mkdir(proctmp)
+        for s in ('TMPDIR', 'TEMP', 'TMP'):
+            os.environ[s] = proctmp
 
-    for s in run(paths, opts.verbose, opts.directory):
-        sys.stdout.write(s)
-        sys.stdout.flush()
-    if not opts.verbose:
-        sys.stdout.write('\n')
+    if opts.sterilize:
+        for s in ('LANG', 'LC_ALL', 'LANGUAGE'):
+            os.environ[s] = 'C'
+        os.environ['TZ'] = 'GMT'
+        os.environ['CDPATH'] = ''
+        os.environ['COLUMNS'] = '80'
+        os.environ['GREP_OPTIONS'] = ''
+
+    try:
+        for s in run(paths, opts.verbose, oldcwd, basetmp, opts.keep_tmpdir):
+            sys.stdout.write(s)
+            sys.stdout.flush()
+        if not opts.verbose:
+            sys.stdout.write('\n')
+    finally:
+        if not opts.tmpdir and not opts.keep_tmpdir:
+            shutil.rmtree(basetmp)
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv[1:]))

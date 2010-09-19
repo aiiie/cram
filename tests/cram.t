@@ -2,9 +2,11 @@ The $PYTHON environment variable must be set to run these tests
 manually.
 
   $ [ -z "$PYTHON" ] && PYTHON=python || true
-  $ cram() {
-  >   "$PYTHON" -c 'import sys, cram; sys.exit(cram.main(sys.argv[1:]))' $@
-  > }
+  $ if [ -n "$COVERAGE" ]; then
+  >   alias cram='coverage run cram.py'
+  > else
+  >   alias cram="$PYTHON cram.py"
+  > fi
 
 Usage:
 

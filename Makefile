@@ -12,12 +12,11 @@ build:
 clean:
 	-$(PYTHON) setup.py clean --all
 	find . -name '*.py[cdo]' -exec rm -f '{}' ';'
-	rm -rf dist build
-	rm -f MANIFEST
+	rm -rf dist build htmlcov
+	rm -f MANIFEST *,cover
 
-# FIXME: This should run setup.py
 coverage:
-	coverage run cram.py examples examples/.hidden.t && \
+	$(PYTHON) setup.py -q test --coverage && \
 	coverage report && \
 	coverage annotate
 

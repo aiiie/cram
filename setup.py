@@ -4,10 +4,10 @@ from distutils.core import setup, Command
 
 class test(Command):
     description = 'run test suite'
-    user_options = []
+    user_options = [('coverage', None, 'run tests using coverage.py')]
 
     def initialize_options(self):
-        pass
+        self.coverage = 0
 
     def finalize_options(self):
         pass
@@ -21,6 +21,11 @@ class test(Command):
         sys.stdout.write('doctests: %s/%s passed\n' %
                          (tests - failures, tests))
         os.environ['PYTHON'] = sys.executable
+        if self.coverage:
+            # Note that when coverage.py is run, it uses the version
+            # of Python it was installed with, NOT the version
+            # setup.py was run with.
+            os.environ['COVERAGE'] = '1'
         cram.main(['-v', 'tests'])
 
 setup(

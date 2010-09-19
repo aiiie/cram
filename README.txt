@@ -126,8 +126,61 @@ and run the test to see what happens. If you run Cram with ``-i`` or
 ``--interactive``, you'll be prompted to merge the actual output back
 into the test. This makes it easy to quickly prototype new tests.
 
+Note that the following environment variables are reset before tests
+are run:
+
+* ``TMPDIR``, ``TEMP``, and ``TMP`` are set to the test runner's
+  ``tmp`` directory.
+
+* ``LANG``, ``LC_ALL``, and ``LANGUAGE`` are set to ``C``.
+
+* ``TZ`` is set to ``GMT``.
+
+* ``COLUMNS`` is set to ``80``.
+
+* ``CDPATH`` and ``GREP_OPTIONS`` are set to an empty string.
+
+Cram also provides the following environment variables to tests:
+
+* ``RUNDIR``, set to the directory Cram was run from.
+
+* ``TESTDIR``, set to the test runner's temporary directory.
+
 .. _unified context diff: http://en.wikipedia.org/wiki/Diff#Unified_format
 .. _its own example tests: http://bitbucket.org/brodie/cram/src/tip/examples/
+
+
+News
+----
+
+Version 0.3
+```````````
+* Implemented resetting of common environment variables. This behavior
+  can be disabled using the ``-E`` flag.
+
+* Changed the test runner to first make its own overall random
+  temporary directory, make ``tmp`` inside of it and set ``TMPDIR``,
+  etc. to its path, and run each test with a random temporary working
+  directory inside of that.
+
+* Added ``--keep-tmpdir``. Temporary directories are named by test
+  filename (along with a random string).
+
+* Added ``-i``/``--interactive`` to merge actual output back to into
+  tests interactively.
+
+* Added ability to match command output not ending in a newline by
+  suffixing output in the test with ``%``.
+
+Version 0.2
+```````````
+* Changed the test runner to run tests with a random temporary working
+  directory.
+
+
+Version 0.1
+```````````
+* Initial release.
 
 
 Development

@@ -15,6 +15,12 @@ clean:
 	rm -rf dist build
 	rm -f MANIFEST
 
+# FIXME: This should run setup.py
+coverage:
+	coverage run cram.py examples examples/.hidden.t && \
+	coverage report && \
+	coverage annotate
+
 install: build
 	$(PYTHON) setup.py install $(PREFIX_ARG)
 

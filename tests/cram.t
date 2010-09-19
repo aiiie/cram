@@ -3,7 +3,8 @@ manually.
 
   $ [ -z "$PYTHON" ] && PYTHON=python || true
   $ if [ -n "$COVERAGE" ]; then
-  >   alias cram='coverage run cram.py'
+  >   coverage erase
+  >   alias cram='coverage run -a cram.py'
   > else
   >   alias cram="$PYTHON cram.py"
   > fi

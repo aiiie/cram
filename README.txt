@@ -116,3 +116,25 @@ patch.
 
 .. _unified context diff: http://en.wikipedia.org/wiki/Diff#Unified_format
 .. _its own example tests: http://bitbucket.org/brodie/cram/src/tip/examples/
+
+Development
+-----------
+
+Download the official development repository using Mercurial_::
+
+    hg clone http://bitbucket.org/brodie/cram
+
+Test Cram using Cram::
+
+    make tests
+
+Get a test coverage report using coverage.py_::
+
+    make coverage
+
+Visit Bitbucket_ if you'd like to fork the project, watch for new
+changes, or report issues.
+
+.. _Mercurial: http://mercurial.selenic.com/
+.. _coverage.py: http://nedbatchelder.com/code/coverage/
+.. _Bitbucket: http://bitbucket.org/brodie/cram

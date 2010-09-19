@@ -61,9 +61,13 @@ def _match(pattern, s):
         return False
 
 def test(path):
-    """Run test at path and return [] on success and diff on failure.
+    """Run test at path and run input, output, and diff.
 
-    Diffs returned are generators.
+    This returns a 3-tuple containing the following:
+
+        (list of lines in test, same list with actual output, diff)
+
+    diff is a generator that yields the diff between the two lists.
     """
     f = open(path)
     p = subprocess.Popen(['/bin/sh', '-'], bufsize=-1, stdin=subprocess.PIPE,
@@ -120,8 +124,8 @@ def test(path):
     for firstline in diff:
         break
     else:
-        return []
-    return itertools.chain([firstline], diff)
+        return refout, postout, []
+    return refout, postout, itertools.chain([firstline], diff)
 
 def run(paths, verbose=False):
     """Run tests in paths and yield output.
@@ -140,12 +144,15 @@ def run(paths, verbose=False):
             if verbose:
                 yield 'empty\n'
         else:
-            diff = test(path)
+            refout, postout, diff = test(path)
             if diff:
                 if verbose:
                     yield 'failed\n'
                 else:
                     yield '\n'
+                errfile = open(path + '.err', 'w')
+                for line in postout:
+                    errfile.write(line)
                 for line in diff:
                     yield line
             elif verbose:

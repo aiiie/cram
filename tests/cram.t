@@ -8,6 +8,7 @@ from Python.
   > else
   >   alias cram="$PYTHON cram.py"
   > fi
+  $ command -v md5 || alias md5=md5sum
 
 Usage:
 
@@ -42,6 +43,10 @@ Run cram examples:
   -  +++
   +  1
   ..
+  $ md5 examples/fail.t examples/fail.t.err
+  .*\b6ed4b99c2184f1bac5afc144f334a115\b.*
+  .*\bb2ad57fc6bcf13972901470979859b78\b.*
+  $ rm examples/fail.t.err
 
 Verbose mode:
 
@@ -66,3 +71,7 @@ Verbose mode:
   -  +++
   +  1
   examples/test.t: passed
+  $ md5 examples/fail.t examples/fail.t.err
+  .*\b6ed4b99c2184f1bac5afc144f334a115\b.*
+  .*\bb2ad57fc6bcf13972901470979859b78\b.*
+  $ rm examples/fail.t.err

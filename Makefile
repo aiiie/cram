@@ -11,7 +11,7 @@ build:
 
 clean:
 	-$(PYTHON) setup.py clean --all
-	find . -name '*.py[cdo]' -exec rm -f '{}' ';'
+	find . -name '*.py[cdo]' -or -name '*.err' -exec rm -f '{}' ';'
 	rm -rf dist build htmlcov
 	rm -f MANIFEST *,cover .coverage
 

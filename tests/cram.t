@@ -25,8 +25,8 @@ Run cram examples:
 
   $ cram examples examples/fail.t examples/.hidden.t
   ..
-  \-\-\- examples/fail\.t\s*
-  \+\+\+ examples/fail\.t\.out\s*
+  \-\-\- .*/examples/fail\.t\s*
+  \+\+\+ .*/examples/fail\.t\.err\s*
   @@ -3,11 +3,11 @@
      $ echo 1
      1
@@ -49,8 +49,8 @@ Verbose mode:
   examples/bare.t: passed
   examples/empty.t: empty
   examples/fail.t: failed
-  \-\-\- examples/fail\.t\s*
-  \+\+\+ examples/fail\.t\.out\s*
+  \-\-\- .*/examples/fail\.t\s*
+  \+\+\+ .*/examples/fail\.t\.err\s*
   @@ -3,11 +3,11 @@
      $ echo 1
      1

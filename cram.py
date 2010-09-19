@@ -115,7 +115,8 @@ def test(path):
                 postout.append('  ' + line)
     postout += after.pop(pos, [])
 
-    diff = difflib.unified_diff(refout, postout, path, path + '.out')
+    dpath = os.path.abspath(path)
+    diff = difflib.unified_diff(refout, postout, dpath, dpath + '.err')
     for firstline in diff:
         break
     else:

@@ -21,7 +21,7 @@ Usage:
   [Uu]sage: cram \[OPTIONS\] TESTS\.\.\.
   [1]
 
-Run cram exmples:
+Run cram examples:
 
   $ cram examples examples/fail.t examples/.hidden.t
   ..

@@ -132,7 +132,12 @@ def run(paths, verbose=False):
 
     If verbose is True, filenames and status information are yielded.
     """
+    seen = set()
     for path in findtests(paths):
+        if path in seen:
+            continue
+        seen.add(path)
+
         if verbose:
             yield '%s: ' % path
         if not os.stat(path).st_size:

@@ -20,7 +20,7 @@ Usage:
 
 Run cram exmples:
 
-  $ cram examples examples/.hidden.t
+  $ cram examples examples/.hidden.t examples/fail.t
   ..
   \-\-\- examples/fail\.t\s*
   \+\+\+ examples/fail\.t\.out\s*
@@ -36,7 +36,7 @@ Run cram exmples:
 
 Verbose mode:
 
-  $ cram -v examples examples/.hidden.t
+  $ cram -v examples examples/.hidden.t examples/fail.t
   examples/bare.t: passed
   examples/empty.t: empty
   examples/fail.t: failed

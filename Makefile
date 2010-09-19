@@ -14,7 +14,7 @@ clean:
 	find . -name '*.py[cdo]' -exec rm -f '{}' ';'
 	find . -name '*.err' -exec rm -f '{}' ';'
 	rm -rf dist build htmlcov
-	rm -f MANIFEST *,cover .coverage
+	rm -f README.md MANIFEST *,cover .coverage
 
 install: build
 	$(PYTHON) setup.py install $(PREFIX_ARG)

@@ -13,24 +13,16 @@ _natsub = re.compile(r'\d+').sub
 def _natkey(s):
     """Return a key usable for natural sorting.
 
-    >>> _natkey('foo')
-    'foo'
-    >>> _natkey('foo1')
-    'foo11'
-    >>> _natkey('foo10')
-    'foo210'
+    >>> [_natkey(s) for s in ('foo', 'foo1', 'foo10')]
+    ['foo', 'foo11', 'foo210']
     """
     return _natsub(lambda i: str(len(i.group())) + i.group(), s)
 
 def istest(path):
     """Return whether or not a file is a test.
 
-    >>> istest('foo')
-    False
-    >>> istest('.foo.t')
-    False
-    >>> istest('foo.t')
-    True
+    >>> [istest(s) for s in ('foo', '.foo.t', 'foo.t')]
+    [False, False, True]
     """
     return not path.startswith('.') and path.endswith('.t')
 

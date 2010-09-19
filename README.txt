@@ -60,7 +60,7 @@ Download
 
 * cram-0.2.tar.gz_ (13 KB, requires Python 2.4-2.7 or Python 3.1)
 
-.. _cram-0.2.tar.gz: http://bitheap.org/cram/cram-0.1.tar.gz
+.. _cram-0.2.tar.gz: http://bitheap.org/cram/cram-0.2.tar.gz
 
 Installation
 ------------

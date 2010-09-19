@@ -18,9 +18,9 @@ Usage:
   [Oo]ptions:
     -h, --help            show this help message and exit
     -v, --verbose         show filenames and test status
-    -i, --interactive     Interactively merge changed test output
-    -y, --yes             Answer yes to all questions
-    -n, --no              Answer no to all questions
+    -i, --interactive     interactively merge changed test output
+    -y, --yes             answer yes to all questions
+    -n, --no              answer no to all questions
     -D DIR, --tmpdir=DIR  run tests in DIR
     --keep-tmpdir         keep temporary directories
     -E                    don't reset common environment variables

@@ -231,11 +231,11 @@ def main(args):
     p.add_option('-v', '--verbose', action='store_true',
                  help='show filenames and test status')
     p.add_option('-i', '--interactive', action='store_true',
-                 help='Interactively merge changed test output')
+                 help='interactively merge changed test output')
     p.add_option('-y', '--yes', action='store_true',
-                 help='Answer yes to all questions')
+                 help='answer yes to all questions')
     p.add_option('-n', '--no', action='store_true',
-                 help='Answer no to all questions')
+                 help='answer no to all questions')
     p.add_option('-D', '--tmpdir', action='store',
                  default=None, metavar='DIR',
                  help="run tests in DIR")

@@ -17,10 +17,10 @@ Usage:
   
   [Oo]ptions:
     -h, --help            show this help message and exit
-    -v, --verbose         Show filenames and test status
-    -D DIR, --tmpdir=DIR  Run tests in DIR
-    --keep-tmpdir         Keep temporary directories
-    -E                    Don't reset common environment variables
+    -v, --verbose         show filenames and test status
+    -D DIR, --tmpdir=DIR  run tests in DIR
+    --keep-tmpdir         keep temporary directories
+    -E                    don't reset common environment variables
   $ cram
   [Uu]sage: cram \[OPTIONS\] TESTS\.\.\.
   [1]

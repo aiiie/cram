@@ -186,15 +186,15 @@ def main(args):
 
     p = OptionParser(usage='cram [OPTIONS] TESTS...')
     p.add_option('-v', '--verbose', action='store_true',
-                 help='Show filenames and test status')
+                 help='show filenames and test status')
     p.add_option('-D', '--tmpdir', action='store',
                  default=None, metavar='DIR',
-                 help="Run tests in DIR")
+                 help="run tests in DIR")
     p.add_option('--keep-tmpdir', action='store_true',
-                 help='Keep temporary directories')
+                 help='keep temporary directories')
     p.add_option('-E', action='store_false',
                  dest='sterilize', default=True,
-                 help="Don't reset common environment variables")
+                 help="don't reset common environment variables")
 
     opts, paths = p.parse_args(args)
     if not paths:

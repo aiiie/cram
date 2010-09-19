@@ -7,8 +7,8 @@ based on Mercurial_'s `unified test format`_.
 
 Here's a snippet from ``cram.t`` in `Cram's own test suite`_::
 
-    The $PYTHON environment variable should be set when running this test
-    from Python.
+    The $PYTHON environment variable should be set when running this
+    test from Python.
 
       $ [ -n "$PYTHON" ] || PYTHON=python
       $ if [ -n "$COVERAGE" ]; then
@@ -53,6 +53,30 @@ The format in a nutshell:
 .. _unified test format: http://www.selenic.com/blog/?p=663
 .. _Cram's own test suite: http://bitbucket.org/brodie/cram/src/tip/tests/cram.t
 .. _Perl-compatible regular expression: http://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions
+
+
+Download
+--------
+
+* cram-0.1.tar.gz_ (13 KB, requires Python 2.4-2.7 or Python 3.1)
+
+.. _cram-0.1.tar.gz: http://bitheap.org/cram/cram-0.1.tar.gz
+
+Installation
+------------
+
+You can use pip_ to install Cram::
+
+    $ sudo pip install cram
+
+Or you can install Cram the old fashioned way::
+
+    $ wget http://bitheap.org/cram/cram-0.1.tar.gz
+    $ tar zxvf cram-0.1.tar.gz
+    $ cd cram-0.1.tar.gz
+    $ sudo python setup.py install
+
+.. _pip: http://pypi.python.org/pypi/pip
 
 
 Usage

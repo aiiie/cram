@@ -7,3 +7,7 @@
 * Windows support.
 
 * Ability to specify test options/metadata inside a test.
+
+* Setup/teardown support.
+
+* -i/--interactive mode to merge diff output back into tests.

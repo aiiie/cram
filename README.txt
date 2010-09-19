@@ -72,8 +72,8 @@ You can use pip_ to install Cram::
 Or you can install Cram the old fashioned way::
 
     $ wget http://bitheap.org/cram/cram-0.2.tar.gz
-    $ tar zxvf cram-0.1.tar.gz
-    $ cd cram-0.1.tar.gz
+    $ tar zxvf cram-0.2.tar.gz
+    $ cd cram-0.2.tar.gz
     $ sudo python setup.py install
 
 .. _pip: http://pypi.python.org/pypi/pip

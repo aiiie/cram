@@ -44,12 +44,12 @@ def findtests(paths):
     for p in sorted(paths, key=_natkey):
         if os.path.isdir(p):
             for root, dirs, files in os.walk(p):
-                if os.path.split(root)[1].startswith('.'):
+                if os.path.basename(root).startswith('.'):
                     continue
                 for f in sorted(files, key=_natkey):
                     if istest(f):
                         yield os.path.normpath(os.path.join(root, f))
-        elif istest(p):
+        elif istest(os.path.basename(root)):
             yield os.path.normpath(p)
 
 def _match(pattern, s):

@@ -1,5 +1,5 @@
-The $PYTHON environment variable must be set to run these tests
-manually.
+The $PYTHON environment variable should be set when running this test
+from Python.
 
   $ [ -z "$PYTHON" ] && PYTHON=python || true
   $ if [ -n "$COVERAGE" ]; then

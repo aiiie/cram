@@ -26,7 +26,7 @@ class test(Command):
             # of Python it was installed with, NOT the version
             # setup.py was run with.
             os.environ['COVERAGE'] = '1'
-        cram.main(['-v', 'tests'])
+        cram.main(['-v', '-D', '.', 'tests'])
 
 def long_description():
     try:

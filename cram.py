@@ -7,7 +7,9 @@ import os
 import re
 import subprocess
 import sys
+import shutil
 import time
+import tempfile
 
 _natsub = re.compile(r'\d+').sub
 def _natkey(s):
@@ -119,24 +121,41 @@ def test(path):
         return refout, postout, []
     return refout, postout, itertools.chain([firstline], diff)
 
-def run(paths, verbose=False):
+def run(paths, verbose=False, directory=None):
     """Run tests in paths and yield output.
 
     If verbose is True, filenames and status information are yielded.
+
+    If directory is None, each test is run in a random temporary
+    directory. Otherwise, they're run in the directory specified.
     """
+    if directory:
+        os.chdir(directory)
+
     seen = set()
     for path in findtests(paths):
         if path in seen:
             continue
         seen.add(path)
 
+        abspath = os.path.abspath(path)
         if verbose:
             yield '%s: ' % path
         if not os.stat(path).st_size:
             if verbose:
                 yield 'empty\n'
         else:
-            refout, postout, diff = test(path)
+            if not directory:
+                cwd = os.getcwd()
+                tmpdir = tempfile.mkdtemp()
+            try:
+                if not directory:
+                    os.chdir(tmpdir)
+                refout, postout, diff = test(abspath)
+            finally:
+                if not directory:
+                    os.chdir(cwd)
+                    shutil.rmtree(tmpdir)
             if diff:
                 if verbose:
                     yield 'failed\n'
@@ -162,13 +181,31 @@ def main(args):
     p = OptionParser(usage='cram [OPTIONS] TESTS...')
     p.add_option('-v', '--verbose', action='store_true',
                  help='Show filenames and test status')
+    p.add_option('-D', action='store', dest='directory',
+                 default=None, metavar='DIR',
+                 help="Run tests in DIR")
 
     opts, paths = p.parse_args(args)
     if not paths:
         sys.stdout.write(p.get_usage())
         return 1
 
-    for s in run(paths, opts.verbose):
+    if opts.directory:
+        if not os.path.isdir(opts.directory):
+            sys.stderr.write('no such directory: %s\n' % opts.directory)
+            return 2
+        cwd = os.getcwd()
+        try:
+            try:
+                os.chdir(opts.directory)
+            except OSError:
+                e = sys.exc_info()[1]
+                sys.stderr.write("can't change directory: %s\n" % e.strerror)
+                return 2
+        finally:
+            os.chdir(cwd)
+
+    for s in run(paths, opts.verbose, opts.directory):
         sys.stdout.write(s)
         sys.stdout.flush()
     if not opts.verbose:

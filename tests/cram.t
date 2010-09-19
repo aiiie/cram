@@ -18,13 +18,14 @@ Usage:
   [Oo]ptions:
     -h, --help     show this help message and exit
     -v, --verbose  Show filenames and test status
+    -D DIR         Run tests in DIR
   $ cram
   [Uu]sage: cram \[OPTIONS\] TESTS\.\.\.
   [1]
 
 Run cram examples:
 
-  $ cram examples examples/fail.t examples/.hidden.t
+  $ cram -D . examples examples/fail.t examples/.hidden.t
   ..
   \-\-\- .*/examples/fail\.t\s*
   \+\+\+ .*/examples/fail\.t\.err\s*
@@ -50,7 +51,7 @@ Run cram examples:
 
 Verbose mode:
 
-  $ cram -v examples/fail.t examples examples/.hidden.t
+  $ cram -D . -v examples/fail.t examples examples/.hidden.t
   examples/bare.t: passed
   examples/empty.t: empty
   examples/fail.t: failed
@@ -75,3 +76,37 @@ Verbose mode:
   .*\b6ed4b99c2184f1bac5afc144f334a115\b.*
   .*\bb2ad57fc6bcf13972901470979859b78\b.*
   $ rm examples/fail.t.err
+
+Use temp dirs:
+
+  $ cram examples
+  ..
+  \-\-\- .*/examples/fail\.t\s*
+  \+\+\+ .*/examples/fail\.t\.err\s*
+  @@ -3,11 +3,11 @@
+     $ echo 1
+     1
+     $ echo 1
+  -  2
+  +  1
+     $ echo 1
+     1
+   
+   Invalid regex:
+   
+     $ echo 1
+  -  +++
+  +  1
+  ..
+
+Invalid -D directory:
+
+  $ cram -D foobarbaz examples
+  no such directory: foobarbaz
+  [2]
+  $ mkdir foobarbaz
+  $ chmod -x foobarbaz
+  $ cram -D foobarbaz xamples
+  can't change directory: Permission denied
+  [2]
+  $ rmdir foobarbaz

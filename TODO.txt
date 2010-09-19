@@ -7,5 +7,3 @@
 * Windows support.
 
 * Ability to specify test options/metadata inside a test.
-
-* Ability to run tests in a random temporary directory.

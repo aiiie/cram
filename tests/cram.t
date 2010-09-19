@@ -11,13 +11,13 @@ manually.
 Usage:
 
   $ cram -h
-  Usage: cram [OPTIONS] TESTS...
+  [Uu]sage: cram \[OPTIONS\] TESTS\.\.\.
   
-  Options:
+  [Oo]ptions:
     -h, --help     show this help message and exit
     -v, --verbose  Show filenames and test status
   $ cram
-  Usage: cram [OPTIONS] TESTS...
+  [Uu]sage: cram \[OPTIONS\] TESTS\.\.\.
   [1]
 
 Run cram exmples:

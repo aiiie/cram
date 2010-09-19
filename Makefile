@@ -13,7 +13,7 @@ clean:
 	-$(PYTHON) setup.py clean --all
 	find . -name '*.py[cdo]' -exec rm -f '{}' ';'
 	rm -rf dist build htmlcov
-	rm -f MANIFEST *,cover
+	rm -f MANIFEST *,cover .coverage
 
 coverage:
 	$(PYTHON) setup.py -q test --coverage && \

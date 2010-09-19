@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """Command line application testing framework"""
 
 import difflib

@@ -1,7 +1,7 @@
 The $PYTHON environment variable should be set when running this test
 from Python.
 
-  $ [ -z "$PYTHON" ] && PYTHON=python || true
+  $ [ -n "$PYTHON" ] || PYTHON=python
   $ if [ -n "$COVERAGE" ]; then
   >   coverage erase
   >   alias cram='coverage run -a cram.py'

@@ -7,7 +7,7 @@ endif
 all: build
 
 build:
-	$(PYTHON) setup.py $(PURE) build
+	$(PYTHON) setup.py build
 
 clean:
 	-$(PYTHON) setup.py clean --all

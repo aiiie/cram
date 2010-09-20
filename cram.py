@@ -55,7 +55,7 @@ def _match(pattern, s):
         return False
 
 def test(path):
-    """Run test at path and run input, output, and diff.
+    """Run test at path and return input, output, and diff.
 
     This returns a 3-tuple containing the following:
 

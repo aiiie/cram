@@ -30,6 +30,9 @@ Usage:
   $ cram -y -n
   options -y and -n are mutually exclusive
   [2]
+  $ cram non-existent also-not-here
+  no such file: non-existent
+  [2]
 
 Run cram examples:
 

@@ -254,6 +254,11 @@ def main(args):
         sys.stdout.write(p.get_usage())
         return 1
 
+    badpaths = [p for p in paths if not os.path.exists(p)]
+    if badpaths:
+        sys.stderr.write('no such file: %s\n' % badpaths[0])
+        return 2
+
     os.environ['RUNDIR'] = os.environ['TESTDIR'] = os.getcwd()
     if opts.tmpdir:
         oldcwd = os.getcwd()

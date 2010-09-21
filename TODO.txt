@@ -2,7 +2,8 @@
 
 * Be able to run the Mercurial test suite.
 
-* Write cram plugins for other testing frameworks.
+* Write cram plugins for other testing frameworks (nose, py.test,
+  etc.).
 
 * Windows support.
 

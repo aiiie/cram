@@ -33,4 +33,8 @@
   end .t (for tests embedded in docs). This might require making the
   indentation more flexible.
 
+* On that note, make it possible to specify tests in Python doc
+  strings (and similar things in other languages like Perl, Ruby,
+  etc.).
+
 * Add ability to escape % symbol.

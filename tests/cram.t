@@ -219,7 +219,7 @@ Invalid -D directory:
   [2]
   $ mkdir foobarbaz
   $ chmod -x foobarbaz
-  $ cram -D foobarbaz xamples
+  $ cram -D foobarbaz examples
   can't change directory: Permission denied
   [2]
   $ rmdir foobarbaz

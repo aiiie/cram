@@ -28,3 +28,7 @@
 * Annotate commands with comments at the end.
 
 * Vim syntax/Emacs mode.
+
+* If a specific file is specified, it should be run even if it doesn't
+  end .t (for tests embedded in docs). This might require making the
+  indentation more flexible.

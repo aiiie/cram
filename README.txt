@@ -153,7 +153,7 @@ Cram also provides the following environment variables to tests:
 News
 ----
 
-Version 0.3
+Version 0.3 (Sep. 20, 2010)
 ```````````
 * Implemented resetting of common environment variables. This behavior
   can be disabled using the ``-E`` flag.
@@ -172,13 +172,13 @@ Version 0.3
 * Added ability to match command output not ending in a newline by
   suffixing output in the test with ``%``.
 
-Version 0.2
+Version 0.2 (Sep. 19, 2010)
 ```````````
 * Changed the test runner to run tests with a random temporary working
   directory.
 
 
-Version 0.1
+Version 0.1 (Sep. 19, 2010)
 ```````````
 * Initial release.
 

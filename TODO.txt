@@ -9,3 +9,13 @@
 * Ability to specify test options/metadata inside a test.
 
 * Setup/teardown support.
+
+* Remove existing .err file on success.
+
+* hghave-like capability (exit 80 -> skipped).
+
+* Quiet mode.
+
+* Coverage integration.
+
+* unittest integration.

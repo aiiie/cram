@@ -19,3 +19,5 @@
 * Coverage integration.
 
 * unittest integration.
+
+* Support #!/usr/bin/env cram

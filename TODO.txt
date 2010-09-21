@@ -21,3 +21,8 @@
 * unittest integration.
 
 * Support #!/usr/bin/env cram
+
+* Two kinds of setup/teardown: for all tests or a group of tests, and
+  for each test.
+
+* Annotate commands with comments at the end.

@@ -26,3 +26,5 @@
   for each test.
 
 * Annotate commands with comments at the end.
+
+* Vim syntax/Emacs mode.

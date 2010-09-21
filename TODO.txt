@@ -38,7 +38,5 @@
   strings (and similar things in other languages like Perl, Ruby,
   etc.).
 
-* Add ability to escape % symbol.
-
 * Find a test case where previous mismatched lines cause a regex test
   to not be matched with the right line. And then fix it somehow.

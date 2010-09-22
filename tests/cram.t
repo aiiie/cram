@@ -8,7 +8,7 @@ from Python.
   > else
   >   alias cram="$PYTHON cram.py"
   > fi
-  $ command -v md5 || alias md5=md5sum
+  $ command -v md5 > /dev/null || alias md5=md5sum
 
 Usage:
 

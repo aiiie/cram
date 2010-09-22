@@ -139,6 +139,7 @@ def _prompt(question, answers, auto=None):
     default = [c for c in answers if c.isupper()]
     while True:
         sys.stdout.write('%s [%s] ' % (question, answers))
+        sys.stdout.flush()
         if auto is not None:
             sys.stdout.write(auto + '\n')
             return auto

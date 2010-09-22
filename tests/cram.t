@@ -229,12 +229,9 @@ Invalid -D directory:
 
 Don't sterilize environment:
 
-Note: We can't set LC_ALL=foo because on systems where /bin/sh is
-bash, bash will print out warning messages about the locale being
-invalid.
+Note: We can't set the locale to foo because some shells will issue
+warnings for invalid locales.
 
-  $ LANG=foo; export LANG
-  $ LANGUAGE=foo; export LANGUAGE
   $ TZ=foo; export TZ
   $ CDPATH=foo; export CDPATH
   $ COLUMNS=4815162342; export COLUMNS
@@ -243,17 +240,9 @@ invalid.
   
   \-\-\- .*/examples/env\.t\s*
   \+\+\+ .*/examples/env\.t\.err\s*
-  @@ -1,19 +1,19 @@
-   Check environment variables:
-   
-     $ echo "$LANG"
-  -  C
-  +  foo
-     $ echo "$LC_ALL"
-     C
+  @@ -7,13 +7,13 @@
      $ echo "$LANGUAGE"
-  -  C
-  +  foo
+     C
      $ echo "$TZ"
   -  GMT
   +  foo

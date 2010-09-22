@@ -229,8 +229,11 @@ Invalid -D directory:
 
 Don't sterilize environment:
 
+Note: We can't set LC_ALL=foo because on systems where /bin/sh is
+bash, bash will print out warning messages about the locale being
+invalid.
+
   $ LANG=foo; export LANG
-  $ LC_ALL=foo; export LC_ALL
   $ LANGUAGE=foo; export LANGUAGE
   $ TZ=foo; export TZ
   $ CDPATH=foo; export CDPATH
@@ -247,8 +250,7 @@ Don't sterilize environment:
   -  C
   +  foo
      $ echo "$LC_ALL"
-  -  C
-  +  foo
+     C
      $ echo "$LANGUAGE"
   -  C
   +  foo

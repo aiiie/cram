@@ -2,7 +2,7 @@ Simple commands:
 
   $ echo foo
   foo
-  $ echo 'bar\nbaz' | cat
+  $ printf 'bar\nbaz' | cat
   bar
   baz
 

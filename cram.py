@@ -147,7 +147,7 @@ def _prompt(question, answers, auto=None):
         answer = sys.stdin.readline().strip().lower()
         if not answer and default:
             return default[0]
-        elif answer and answer in answers:
+        elif answer and answer in answers.lower():
             return answer
 
 def run(paths, verbose=False, interactive=False, cwd=None, basetmp=None,

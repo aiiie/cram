@@ -50,13 +50,13 @@ The format in a nutshell:
 * All other lines beginning with two spaces are considered command
   output.
 
-* Output lines suffixed with a space and the keyword ``(re)`` are
+* Output lines ending with a space and the keyword ``(re)`` are
   matched as `Perl-compatible regular expressions`_.
 
-* Lines suffixed a space and the keyword ``(glob)`` are matched with a
-  glob-like syntax. The only special characters supported are "``*``"
-  and "``?``". Both characters can be escaped using "``\``", and the
-  backslash can be escaped itself.
+* Lines ending with a space and the keyword ``(glob)`` are matched
+  with a glob-like syntax. The only special characters supported are
+  "``*``" and "``?``". Both characters can be escaped using "``\``",
+  and the backslash can be escaped itself.
 
 * Output lines ending with either of the above keywords are always
   first matched literally with actual command output.

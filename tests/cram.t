@@ -144,7 +144,7 @@ Interactive mode (merge):
 
 Verbose interactive mode (answer manually and don't merge):
 
-  $ echo 'bad\nn' | cram -v -D . -i examples/fail.t
+  $ printf 'bad\nn\n' | cram -v -D . -i examples/fail.t
   examples/fail.t: failed
   \-\-\- .*/examples/fail\.t\s*
   \+\+\+ .*/examples/fail\.t\.err\s*
@@ -170,7 +170,7 @@ Verbose interactive mode (answer manually and don't merge):
 Verbose interactive mode (answer manually and merge):
 
   $ cp examples/fail.t examples/fail.t.orig
-  $ echo 'bad\ny' | cram -v -D . -i examples/fail.t
+  $ printf 'bad\ny\n' | cram -v -D . -i examples/fail.t
   examples/fail.t: failed
   \-\-\- .*/examples/fail\.t\s*
   \+\+\+ .*/examples/fail\.t\.err\s*

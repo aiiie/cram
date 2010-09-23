@@ -166,6 +166,28 @@ Verbose interactive mode (answer manually and don't merge):
   $ md5 examples/fail.t examples/fail.t.err
   .*\b6ed4b99c2184f1bac5afc144f334a115\b.*
   .*\bb2ad57fc6bcf13972901470979859b78\b.*
+  $ printf 'bad\n\n' | cram -v -D . -i examples/fail.t
+  examples/fail.t: failed
+  \-\-\- .*/examples/fail\.t\s*
+  \+\+\+ .*/examples/fail\.t\.err\s*
+  @@ -3,11 +3,11 @@
+     $ echo 1
+     1
+     $ echo 1
+  -  2
+  +  1
+     $ echo 1
+     1
+   
+   Invalid regex:
+   
+     $ echo 1
+  -  +++
+  +  1
+  Accept this change? [yN] Accept this change? [yN] %
+  $ md5 examples/fail.t examples/fail.t.err
+  .*\b6ed4b99c2184f1bac5afc144f334a115\b.*
+  .*\bb2ad57fc6bcf13972901470979859b78\b.*
 
 Verbose interactive mode (answer manually and merge):
 

@@ -17,7 +17,19 @@ Multi-line command:
 Regular expression:
 
   $ echo foobarbaz
-  foobar.*
+  foobar.* (re)
+
+Glob:
+
+  $ printf '* \\foobarbaz {10}\n'
+  \* \\fo?bar* {10} (glob)
+
+Literal match ending in (re) and (glob):
+
+  $ echo 'foo\Z\Z\Z bar (re)'
+  foo\Z\Z\Z bar (re)
+  $ echo 'baz??? quux (glob)'
+  baz??? quux (glob)
 
 Exit code:
 

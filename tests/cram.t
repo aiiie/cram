@@ -13,9 +13,9 @@ from Python.
 Usage:
 
   $ cram -h
-  [Uu]sage: cram \[OPTIONS\] TESTS\.\.\.
+  [Uu]sage: cram \[OPTIONS\] TESTS\.\.\. (re)
   
-  [Oo]ptions:
+  [Oo]ptions: (re)
     -h, --help            show this help message and exit
     -v, --verbose         show filenames and test status
     -i, --interactive     interactively merge changed test output
@@ -25,7 +25,7 @@ Usage:
     --keep-tmpdir         keep temporary directories
     -E                    don't reset common environment variables
   $ cram
-  [Uu]sage: cram \[OPTIONS\] TESTS\.\.\.
+  [Uu]sage: cram \[OPTIONS\] TESTS\.\.\. (re)
   [1]
   $ cram -y -n
   options -y and -n are mutually exclusive
@@ -38,8 +38,8 @@ Run cram examples:
 
   $ cram -D . examples examples/fail.t examples/.hidden.t
   ...
-  \-\-\- .*/examples/fail\.t\s*
-  \+\+\+ .*/examples/fail\.t\.err\s*
+  \-\-\- .*/examples/fail\.t\s* (re)
+  \+\+\+ .*/examples/fail\.t\.err\s* (re)
   @@ -3,11 +3,11 @@
      $ echo 1
      1
@@ -52,12 +52,12 @@ Run cram examples:
    Invalid regex:
    
      $ echo 1
-  -  +++
+  -  +++ (re)
   +  1
   ..
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b6ed4b99c2184f1bac5afc144f334a115\b.*
-  .*\bb2ad57fc6bcf13972901470979859b78\b.*
+  .*\b4ebd1545dd6c8179c57860a2080a01cb\b.* (re)
+  .*\bb2ad57fc6bcf13972901470979859b78\b.* (re)
   $ rm examples/fail.t.err
 
 Verbose mode:
@@ -67,8 +67,8 @@ Verbose mode:
   examples/empty.t: empty
   examples/env.t: passed
   examples/fail.t: failed
-  \-\-\- .*/examples/fail\.t\s*
-  \+\+\+ .*/examples/fail\.t\.err\s*
+  \-\-\- .*/examples/fail\.t\s* (re)
+  \+\+\+ .*/examples/fail\.t\.err\s* (re)
   @@ -3,11 +3,11 @@
      $ echo 1
      1
@@ -81,20 +81,20 @@ Verbose mode:
    Invalid regex:
    
      $ echo 1
-  -  +++
+  -  +++ (re)
   +  1
   examples/test.t: passed
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b6ed4b99c2184f1bac5afc144f334a115\b.*
-  .*\bb2ad57fc6bcf13972901470979859b78\b.*
+  .*\b4ebd1545dd6c8179c57860a2080a01cb\b.* (re)
+  .*\bb2ad57fc6bcf13972901470979859b78\b.* (re)
   $ rm examples/fail.t.err
 
 Interactive mode (don't merge):
 
   $ cram -n -D . -i examples/fail.t
   
-  \-\-\- .*/examples/fail\.t\s*
-  \+\+\+ .*/examples/fail\.t\.err\s*
+  \-\-\- .*/examples/fail\.t\s* (re)
+  \+\+\+ .*/examples/fail\.t\.err\s* (re)
   @@ -3,11 +3,11 @@
      $ echo 1
      1
@@ -107,21 +107,21 @@ Interactive mode (don't merge):
    Invalid regex:
    
      $ echo 1
-  -  +++
+  -  +++ (re)
   +  1
   Accept this change? [yN] n
   .
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b6ed4b99c2184f1bac5afc144f334a115\b.*
-  .*\bb2ad57fc6bcf13972901470979859b78\b.*
+  .*\b4ebd1545dd6c8179c57860a2080a01cb\b.* (re)
+  .*\bb2ad57fc6bcf13972901470979859b78\b.* (re)
 
 Interactive mode (merge):
 
   $ cp examples/fail.t examples/fail.t.orig
   $ cram -y -D . -i examples/fail.t
   
-  \-\-\- .*/examples/fail\.t\s*
-  \+\+\+ .*/examples/fail\.t\.err\s*
+  \-\-\- .*/examples/fail\.t\s* (re)
+  \+\+\+ .*/examples/fail\.t\.err\s* (re)
   @@ -3,11 +3,11 @@
      $ echo 1
      1
@@ -134,20 +134,20 @@ Interactive mode (merge):
    Invalid regex:
    
      $ echo 1
-  -  +++
+  -  +++ (re)
   +  1
   Accept this change? [yN] y
   .
   $ md5 examples/fail.t
-  .*\bb2ad57fc6bcf13972901470979859b78\b.*
+  .*\bb2ad57fc6bcf13972901470979859b78\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
 
 Verbose interactive mode (answer manually and don't merge):
 
   $ printf 'bad\nn\n' | cram -v -D . -i examples/fail.t
   examples/fail.t: failed
-  \-\-\- .*/examples/fail\.t\s*
-  \+\+\+ .*/examples/fail\.t\.err\s*
+  \-\-\- .*/examples/fail\.t\s* (re)
+  \+\+\+ .*/examples/fail\.t\.err\s* (re)
   @@ -3,11 +3,11 @@
      $ echo 1
      1
@@ -160,16 +160,16 @@ Verbose interactive mode (answer manually and don't merge):
    Invalid regex:
    
      $ echo 1
-  -  +++
+  -  +++ (re)
   +  1
   Accept this change? [yN] Accept this change? [yN] %
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b6ed4b99c2184f1bac5afc144f334a115\b.*
-  .*\bb2ad57fc6bcf13972901470979859b78\b.*
+  .*\b4ebd1545dd6c8179c57860a2080a01cb\b.* (re)
+  .*\bb2ad57fc6bcf13972901470979859b78\b.* (re)
   $ printf 'bad\n\n' | cram -v -D . -i examples/fail.t
   examples/fail.t: failed
-  \-\-\- .*/examples/fail\.t\s*
-  \+\+\+ .*/examples/fail\.t\.err\s*
+  \-\-\- .*/examples/fail\.t\s* (re)
+  \+\+\+ .*/examples/fail\.t\.err\s* (re)
   @@ -3,11 +3,11 @@
      $ echo 1
      1
@@ -182,20 +182,20 @@ Verbose interactive mode (answer manually and don't merge):
    Invalid regex:
    
      $ echo 1
-  -  +++
+  -  +++ (re)
   +  1
   Accept this change? [yN] Accept this change? [yN] %
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b6ed4b99c2184f1bac5afc144f334a115\b.*
-  .*\bb2ad57fc6bcf13972901470979859b78\b.*
+  .*\b4ebd1545dd6c8179c57860a2080a01cb\b.* (re)
+  .*\bb2ad57fc6bcf13972901470979859b78\b.* (re)
 
 Verbose interactive mode (answer manually and merge):
 
   $ cp examples/fail.t examples/fail.t.orig
   $ printf 'bad\ny\n' | cram -v -D . -i examples/fail.t
   examples/fail.t: failed
-  \-\-\- .*/examples/fail\.t\s*
-  \+\+\+ .*/examples/fail\.t\.err\s*
+  \-\-\- .*/examples/fail\.t\s* (re)
+  \+\+\+ .*/examples/fail\.t\.err\s* (re)
   @@ -3,11 +3,11 @@
      $ echo 1
      1
@@ -208,19 +208,19 @@ Verbose interactive mode (answer manually and merge):
    Invalid regex:
    
      $ echo 1
-  -  +++
+  -  +++ (re)
   +  1
   Accept this change? [yN] Accept this change? [yN] examples/fail.t: merged output
   $ md5 examples/fail.t
-  .*\bb2ad57fc6bcf13972901470979859b78\b.*
+  .*\bb2ad57fc6bcf13972901470979859b78\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
 
 Use temp dirs:
 
   $ cram examples
   ...
-  \-\-\- .*/examples/fail\.t\s*
-  \+\+\+ .*/examples/fail\.t\.err\s*
+  \-\-\- .*/examples/fail\.t\s* (re)
+  \+\+\+ .*/examples/fail\.t\.err\s* (re)
   @@ -3,11 +3,11 @@
      $ echo 1
      1
@@ -233,7 +233,7 @@ Use temp dirs:
    Invalid regex:
    
      $ echo 1
-  -  +++
+  -  +++ (re)
   +  1
   ..
 
@@ -260,8 +260,8 @@ warnings for invalid locales.
   $ GREP_OPTIONS=foo; export GREP_OPTIONS
   $ cram -E examples/env.t
   
-  \-\-\- .*/examples/env\.t\s*
-  \+\+\+ .*/examples/env\.t\.err\s*
+  \-\-\- .*/examples/env\.t\s* (re)
+  \+\+\+ .*/examples/env\.t\.err\s* (re)
   @@ -7,13 +7,13 @@
      $ echo "$LANGUAGE"
      C
@@ -278,7 +278,7 @@ warnings for invalid locales.
   -  
   +  foo
      $ echo "$RUNDIR"
-     .+
+     .+ (re)
      $ echo "$TESTDIR"
   .
 

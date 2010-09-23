@@ -15,9 +15,9 @@ Check environment variables:
   $ echo "$GREP_OPTIONS"
   
   $ echo "$RUNDIR"
-  .+
+  .+ (re)
   $ echo "$TESTDIR"
-  .+
+  .+ (re)
   $ if [ "$RUNDIR" != "$TESTDIR" ]; then
   >   ls -a ..
   > else
@@ -28,5 +28,5 @@ Check environment variables:
   > fi
   .
   ..
-  env\.t-.*
+  env\.t-.* (re)
   tmp

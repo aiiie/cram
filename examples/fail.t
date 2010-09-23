@@ -10,4 +10,4 @@ Wrong output:
 Invalid regex:
 
   $ echo 1
-  +++
+  +++ (re)

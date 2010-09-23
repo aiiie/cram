@@ -17,12 +17,12 @@ Here's a snippet from ``cram.t`` in `Cram's own test suite`_::
       > else
       >   alias cram="$PYTHON cram.py"
       > fi
-      $ command -v md5 || alias md5=md5sum
+      $ command -v md5 > /dev/null || alias md5=md5sum
 
     Usage:
 
       $ cram -h
-      [Uu]sage: cram \[OPTIONS\] TESTS\.\.\.
+      [Uu]sage: cram \[OPTIONS\] TESTS\.\.\. (re)
 
       [Oo]ptions:
         -h, --help            show this help message and exit
@@ -34,7 +34,7 @@ Here's a snippet from ``cram.t`` in `Cram's own test suite`_::
         --keep-tmpdir         keep temporary directories
         -E                    don't reset common environment variables
       $ cram
-      [Uu]sage: cram \[OPTIONS\] TESTS\.\.\.
+      [Uu]sage: cram \[OPTIONS\] TESTS\.\.\. (re)
       [1]
 
 The format in a nutshell:
@@ -50,9 +50,16 @@ The format in a nutshell:
 * All other lines beginning with two spaces are considered command
   output.
 
-* Command output in the test is first matched literally with the
-  actual output. If it doesn't match, it's then compiled and matched
-  as a `Perl-compatible regular expression`_.
+* Output lines suffixed with a space and the keyword ``(re)`` are
+  matched as `Perl-compatible regular expressions`_.
+
+* Lines suffixed a space and the keyword ``(glob)`` are matched with a
+  glob-like syntax. The only special characters supported are "``*``"
+  and "``?``". Both characters can be escaped using "``\``", and the
+  backslash can be escaped itself.
+
+* Output lines ending with either of the above keywords are always
+  first matched literally with actual command output.
 
 * Command output in the test that ends with a percent sign will match
   actual output that doesn't end in a newline.
@@ -62,7 +69,7 @@ The format in a nutshell:
 .. _Mercurial: http://mercurial.selenic.com/
 .. _unified test format: http://www.selenic.com/blog/?p=663
 .. _Cram's own test suite: http://bitbucket.org/brodie/cram/src/tip/tests/cram.t
-.. _Perl-compatible regular expression: http://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions
+.. _Perl-compatible regular expressions: http://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions
 
 
 Download
@@ -114,7 +121,7 @@ For example, if we run cram on `its own example tests`_::
      Invalid regex:
 
        $ echo 1
-    -  +++
+    -  +++ (re)
     +  1
     ..
 
@@ -152,6 +159,18 @@ Cram also provides the following environment variables to tests:
 
 News
 ----
+
+Version 0.4
+```````````
+
+* **The test format has changed:** Output lines containing regular
+  expressions must now end in "`` (re)``" or they'll be matched
+  literally. Lines ending with keywords are matched literally first,
+  however.
+
+* In addition to ``(re)``, ``(glob)`` has been added. It supports
+  ``*``, ``?``, and escaping the two characters and backslashes using
+  ``\``.
 
 Version 0.3 (Sep. 20, 2010)
 ```````````````````````````

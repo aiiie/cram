@@ -54,6 +54,31 @@ def _match(pattern, s):
     except re.error:
         return False
 
+def _glob(el, l):
+    """Match a glob-like pattern.
+
+    The only supported special characters are * and ?. Escaping is
+    supported.
+
+    >>> bool(_glob(r'\* \\ \? fo?b*', '* \\ ? foobar'))
+    True
+    """
+    i, n = 0, len(el)
+    res = ''
+    while i < n:
+        c = el[i]
+        i += 1
+        if c == '\\' and el[i] in '*?\\':
+            res += el[i - 1:i + 1]
+            i += 1
+        elif c == '*':
+            res += '.*'
+        elif c == '?':
+            res += '.'
+        else:
+            res += re.escape(c)
+    return _match(res, l)
+
 def test(path):
     """Run test at path and return input, output, and diff.
 
@@ -104,14 +129,16 @@ def test(path):
             postout += after.pop(pos, [])
             pos = int(line.split()[1])
         else:
-            eline = None
+            el = None
             if expected.get(pos):
-                eline = expected[pos].pop(0)
+                el = expected[pos].pop(0)
 
-            if eline == line:
-                postout.append('  ' + line)
-            elif eline and _match(eline, line):
-                postout.append('  ' + eline)
+            if el == line:
+                postout.append('  ' + el)
+            elif (el and
+                  (el.endswith(" (re)\n") and _match(el[:-6] + '\n', line) or
+                   el.endswith(" (glob)\n") and _glob(el[:-8] + '\n', line))):
+                postout.append('  ' + el)
             else:
                 postout.append('  ' + line)
     postout += after.pop(pos, [])

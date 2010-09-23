@@ -5,7 +5,11 @@
 Cram is a functional testing framework for command line applications
 based on Mercurial_'s `unified test format`_.
 
-Here's a snippet from ``cram.t`` in `Cram's own test suite`_::
+Cram tests look like snippets of interactive shell sessions. Cram runs
+each command and compares the command output in the test with the
+command's actual output.
+
+Here's a snippet from `Cram's own test suite`_::
 
     The $PYTHON environment variable should be set when running this
     test from Python.
@@ -103,7 +107,7 @@ Cram will print a dot for each passing test. If a test fails, a
 `unified context diff`_ is printed showing the test's expected output
 and the actual output.
 
-For example, if we run cram on `its own example tests`_::
+For example, if we run Cram on `its own example tests`_::
 
     $ cram examples
     ..
@@ -169,7 +173,7 @@ Version 0.4
   however.
 
 * In addition to ``(re)``, ``(glob)`` has been added. It supports
-  ``*``, ``?``, and escaping the two characters and backslashes using
+  ``*``, ``?``, and escaping both characters (and backslashes) using
   ``\``.
 
 Version 0.3 (Sep. 20, 2010)

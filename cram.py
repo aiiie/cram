@@ -146,10 +146,8 @@ def test(path):
     dpath = os.path.abspath(path)
     diff = difflib.unified_diff(refout, postout, dpath, dpath + '.err')
     for firstline in diff:
-        break
-    else:
-        return refout, postout, []
-    return refout, postout, itertools.chain([firstline], diff)
+        return refout, postout, itertools.chain([firstline], diff)
+    return refout, postout, []
 
 def _prompt(question, answers, auto=None):
     """Write a prompt to stdout and ask for answer in stdin.

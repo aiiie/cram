@@ -14,7 +14,7 @@ Invalid regex:
 
 Offset regular expression:
 
-  $ echo 'foo\nbar\nbaz\n\n1\nA\n@'
+  $ printf 'foo\nbar\nbaz\n\n1\nA\n@\n'
   foo
   baz
   

@@ -58,7 +58,7 @@ Run cram examples:
    
    Offset regular expression:
    
-     $ echo 'foo\nbar\nbaz\n\n1\nA\n@'
+     $ printf 'foo\nbar\nbaz\n\n1\nA\n@\n'
      foo
   +  bar
      baz
@@ -71,8 +71,8 @@ Run cram examples:
   # Ran 5 tests, 1 skipped, 1 failed.
   
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b571651198f015382b002c3ceaafb14c2\b.* (re)
-  .*\b89bd872bf755ac3f190cc647be3a6cc7\b.* (re)
+  .*\ba36d8e81925296ce794f1a3b35994a68\b.* (re)
+  .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
   $ rm examples/fail.t.err
 
 Verbose mode:
@@ -101,7 +101,7 @@ Verbose mode:
    
    Offset regular expression:
    
-     $ echo 'foo\nbar\nbaz\n\n1\nA\n@'
+     $ printf 'foo\nbar\nbaz\n\n1\nA\n@\n'
      foo
   +  bar
      baz
@@ -113,8 +113,8 @@ Verbose mode:
   examples/test.t: passed
   # Ran 5 tests, 1 skipped, 1 failed.
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b571651198f015382b002c3ceaafb14c2\b.* (re)
-  .*\b89bd872bf755ac3f190cc647be3a6cc7\b.* (re)
+  .*\ba36d8e81925296ce794f1a3b35994a68\b.* (re)
+  .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
   $ rm examples/fail.t.err
 
 Interactive mode (don't merge):
@@ -140,7 +140,7 @@ Interactive mode (don't merge):
    
    Offset regular expression:
    
-     $ echo 'foo\nbar\nbaz\n\n1\nA\n@'
+     $ printf 'foo\nbar\nbaz\n\n1\nA\n@\n'
      foo
   +  bar
      baz
@@ -154,8 +154,8 @@ Interactive mode (don't merge):
   # Ran 1 tests, 0 skipped, 1 failed.
   
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b571651198f015382b002c3ceaafb14c2\b.* (re)
-  .*\b89bd872bf755ac3f190cc647be3a6cc7\b.* (re)
+  .*\ba36d8e81925296ce794f1a3b35994a68\b.* (re)
+  .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
 
 Interactive mode (merge):
 
@@ -181,7 +181,7 @@ Interactive mode (merge):
    
    Offset regular expression:
    
-     $ echo 'foo\nbar\nbaz\n\n1\nA\n@'
+     $ printf 'foo\nbar\nbaz\n\n1\nA\n@\n'
      foo
   +  bar
      baz
@@ -195,7 +195,7 @@ Interactive mode (merge):
   # Ran 1 tests, 0 skipped, 1 failed.
   
   $ md5 examples/fail.t
-  .*\b89bd872bf755ac3f190cc647be3a6cc7\b.* (re)
+  .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
 
 Verbose interactive mode (answer manually and don't merge):
@@ -221,7 +221,7 @@ Verbose interactive mode (answer manually and don't merge):
    
    Offset regular expression:
    
-     $ echo 'foo\nbar\nbaz\n\n1\nA\n@'
+     $ printf 'foo\nbar\nbaz\n\n1\nA\n@\n'
      foo
   +  bar
      baz
@@ -232,8 +232,8 @@ Verbose interactive mode (answer manually and don't merge):
   +  @
   Accept this change? [yN] Accept this change? [yN] # Ran 1 tests, 0 skipped, 1 failed.
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b571651198f015382b002c3ceaafb14c2\b.* (re)
-  .*\b89bd872bf755ac3f190cc647be3a6cc7\b.* (re)
+  .*\ba36d8e81925296ce794f1a3b35994a68\b.* (re)
+  .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
   $ printf 'bad\n\n' | cram -v -i examples/fail.t
   examples/fail.t: failed
   \-\-\- .*/examples/fail\.t\s* (re)
@@ -255,7 +255,7 @@ Verbose interactive mode (answer manually and don't merge):
    
    Offset regular expression:
    
-     $ echo 'foo\nbar\nbaz\n\n1\nA\n@'
+     $ printf 'foo\nbar\nbaz\n\n1\nA\n@\n'
      foo
   +  bar
      baz
@@ -266,8 +266,8 @@ Verbose interactive mode (answer manually and don't merge):
   +  @
   Accept this change? [yN] Accept this change? [yN] # Ran 1 tests, 0 skipped, 1 failed.
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b571651198f015382b002c3ceaafb14c2\b.* (re)
-  .*\b89bd872bf755ac3f190cc647be3a6cc7\b.* (re)
+  .*\ba36d8e81925296ce794f1a3b35994a68\b.* (re)
+  .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
 
 Verbose interactive mode (answer manually and merge):
 
@@ -293,7 +293,7 @@ Verbose interactive mode (answer manually and merge):
    
    Offset regular expression:
    
-     $ echo 'foo\nbar\nbaz\n\n1\nA\n@'
+     $ printf 'foo\nbar\nbaz\n\n1\nA\n@\n'
      foo
   +  bar
      baz
@@ -305,7 +305,7 @@ Verbose interactive mode (answer manually and merge):
   Accept this change? [yN] Accept this change? [yN] examples/fail.t: merged output
   # Ran 1 tests, 0 skipped, 1 failed.
   $ md5 examples/fail.t
-  .*\b89bd872bf755ac3f190cc647be3a6cc7\b.* (re)
+  .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
 
 Use temp dirs:
@@ -331,7 +331,7 @@ Use temp dirs:
    
    Offset regular expression:
    
-     $ echo 'foo\nbar\nbaz\n\n1\nA\n@'
+     $ printf 'foo\nbar\nbaz\n\n1\nA\n@\n'
      foo
   +  bar
      baz

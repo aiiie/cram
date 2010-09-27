@@ -40,7 +40,7 @@ Run cram examples:
   ...
   \-\-\- .*/examples/fail\.t\s* (re)
   \+\+\+ .*/examples/fail\.t\.err\s* (re)
-  @@ -3,11 +3,11 @@
+  @@ -3,21 +3,22 @@
      $ echo 1
      1
      $ echo 1
@@ -54,10 +54,22 @@ Run cram examples:
      $ echo 1
   -  +++ (re)
   +  1
+   
+   Offset regular expression:
+   
+     $ echo 'foo\nbar\nbaz\n\n1\nA\n@'
+     foo
+  +  bar
+     baz
+     
+     \d (re)
+     [A-Z] (re)
+  -  #
+  +  @
   ..
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b4ebd1545dd6c8179c57860a2080a01cb\b.* (re)
-  .*\bb2ad57fc6bcf13972901470979859b78\b.* (re)
+  .*\b571651198f015382b002c3ceaafb14c2\b.* (re)
+  .*\b89bd872bf755ac3f190cc647be3a6cc7\b.* (re)
   $ rm examples/fail.t.err
 
 Verbose mode:
@@ -69,7 +81,7 @@ Verbose mode:
   examples/fail.t: failed
   \-\-\- .*/examples/fail\.t\s* (re)
   \+\+\+ .*/examples/fail\.t\.err\s* (re)
-  @@ -3,11 +3,11 @@
+  @@ -3,21 +3,22 @@
      $ echo 1
      1
      $ echo 1
@@ -83,10 +95,22 @@ Verbose mode:
      $ echo 1
   -  +++ (re)
   +  1
+   
+   Offset regular expression:
+   
+     $ echo 'foo\nbar\nbaz\n\n1\nA\n@'
+     foo
+  +  bar
+     baz
+     
+     \d (re)
+     [A-Z] (re)
+  -  #
+  +  @
   examples/test.t: passed
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b4ebd1545dd6c8179c57860a2080a01cb\b.* (re)
-  .*\bb2ad57fc6bcf13972901470979859b78\b.* (re)
+  .*\b571651198f015382b002c3ceaafb14c2\b.* (re)
+  .*\b89bd872bf755ac3f190cc647be3a6cc7\b.* (re)
   $ rm examples/fail.t.err
 
 Interactive mode (don't merge):
@@ -95,7 +119,7 @@ Interactive mode (don't merge):
   
   \-\-\- .*/examples/fail\.t\s* (re)
   \+\+\+ .*/examples/fail\.t\.err\s* (re)
-  @@ -3,11 +3,11 @@
+  @@ -3,21 +3,22 @@
      $ echo 1
      1
      $ echo 1
@@ -109,11 +133,23 @@ Interactive mode (don't merge):
      $ echo 1
   -  +++ (re)
   +  1
+   
+   Offset regular expression:
+   
+     $ echo 'foo\nbar\nbaz\n\n1\nA\n@'
+     foo
+  +  bar
+     baz
+     
+     \d (re)
+     [A-Z] (re)
+  -  #
+  +  @
   Accept this change? [yN] n
   .
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b4ebd1545dd6c8179c57860a2080a01cb\b.* (re)
-  .*\bb2ad57fc6bcf13972901470979859b78\b.* (re)
+  .*\b571651198f015382b002c3ceaafb14c2\b.* (re)
+  .*\b89bd872bf755ac3f190cc647be3a6cc7\b.* (re)
 
 Interactive mode (merge):
 
@@ -122,7 +158,7 @@ Interactive mode (merge):
   
   \-\-\- .*/examples/fail\.t\s* (re)
   \+\+\+ .*/examples/fail\.t\.err\s* (re)
-  @@ -3,11 +3,11 @@
+  @@ -3,21 +3,22 @@
      $ echo 1
      1
      $ echo 1
@@ -136,10 +172,22 @@ Interactive mode (merge):
      $ echo 1
   -  +++ (re)
   +  1
+   
+   Offset regular expression:
+   
+     $ echo 'foo\nbar\nbaz\n\n1\nA\n@'
+     foo
+  +  bar
+     baz
+     
+     \d (re)
+     [A-Z] (re)
+  -  #
+  +  @
   Accept this change? [yN] y
   .
   $ md5 examples/fail.t
-  .*\bb2ad57fc6bcf13972901470979859b78\b.* (re)
+  .*\b89bd872bf755ac3f190cc647be3a6cc7\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
 
 Verbose interactive mode (answer manually and don't merge):
@@ -148,7 +196,7 @@ Verbose interactive mode (answer manually and don't merge):
   examples/fail.t: failed
   \-\-\- .*/examples/fail\.t\s* (re)
   \+\+\+ .*/examples/fail\.t\.err\s* (re)
-  @@ -3,11 +3,11 @@
+  @@ -3,21 +3,22 @@
      $ echo 1
      1
      $ echo 1
@@ -162,15 +210,27 @@ Verbose interactive mode (answer manually and don't merge):
      $ echo 1
   -  +++ (re)
   +  1
+   
+   Offset regular expression:
+   
+     $ echo 'foo\nbar\nbaz\n\n1\nA\n@'
+     foo
+  +  bar
+     baz
+     
+     \d (re)
+     [A-Z] (re)
+  -  #
+  +  @
   Accept this change? [yN] Accept this change? [yN] %
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b4ebd1545dd6c8179c57860a2080a01cb\b.* (re)
-  .*\bb2ad57fc6bcf13972901470979859b78\b.* (re)
+  .*\b571651198f015382b002c3ceaafb14c2\b.* (re)
+  .*\b89bd872bf755ac3f190cc647be3a6cc7\b.* (re)
   $ printf 'bad\n\n' | cram -v -D . -i examples/fail.t
   examples/fail.t: failed
   \-\-\- .*/examples/fail\.t\s* (re)
   \+\+\+ .*/examples/fail\.t\.err\s* (re)
-  @@ -3,11 +3,11 @@
+  @@ -3,21 +3,22 @@
      $ echo 1
      1
      $ echo 1
@@ -184,10 +244,22 @@ Verbose interactive mode (answer manually and don't merge):
      $ echo 1
   -  +++ (re)
   +  1
+   
+   Offset regular expression:
+   
+     $ echo 'foo\nbar\nbaz\n\n1\nA\n@'
+     foo
+  +  bar
+     baz
+     
+     \d (re)
+     [A-Z] (re)
+  -  #
+  +  @
   Accept this change? [yN] Accept this change? [yN] %
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b4ebd1545dd6c8179c57860a2080a01cb\b.* (re)
-  .*\bb2ad57fc6bcf13972901470979859b78\b.* (re)
+  .*\b571651198f015382b002c3ceaafb14c2\b.* (re)
+  .*\b89bd872bf755ac3f190cc647be3a6cc7\b.* (re)
 
 Verbose interactive mode (answer manually and merge):
 
@@ -196,7 +268,7 @@ Verbose interactive mode (answer manually and merge):
   examples/fail.t: failed
   \-\-\- .*/examples/fail\.t\s* (re)
   \+\+\+ .*/examples/fail\.t\.err\s* (re)
-  @@ -3,11 +3,11 @@
+  @@ -3,21 +3,22 @@
      $ echo 1
      1
      $ echo 1
@@ -210,9 +282,21 @@ Verbose interactive mode (answer manually and merge):
      $ echo 1
   -  +++ (re)
   +  1
+   
+   Offset regular expression:
+   
+     $ echo 'foo\nbar\nbaz\n\n1\nA\n@'
+     foo
+  +  bar
+     baz
+     
+     \d (re)
+     [A-Z] (re)
+  -  #
+  +  @
   Accept this change? [yN] Accept this change? [yN] examples/fail.t: merged output
   $ md5 examples/fail.t
-  .*\bb2ad57fc6bcf13972901470979859b78\b.* (re)
+  .*\b89bd872bf755ac3f190cc647be3a6cc7\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
 
 Use temp dirs:
@@ -221,7 +305,7 @@ Use temp dirs:
   ...
   \-\-\- .*/examples/fail\.t\s* (re)
   \+\+\+ .*/examples/fail\.t\.err\s* (re)
-  @@ -3,11 +3,11 @@
+  @@ -3,21 +3,22 @@
      $ echo 1
      1
      $ echo 1
@@ -235,6 +319,18 @@ Use temp dirs:
      $ echo 1
   -  +++ (re)
   +  1
+   
+   Offset regular expression:
+   
+     $ echo 'foo\nbar\nbaz\n\n1\nA\n@'
+     foo
+  +  bar
+     baz
+     
+     \d (re)
+     [A-Z] (re)
+  -  #
+  +  @
   ..
 
 Invalid -D directory:

@@ -11,3 +11,13 @@ Invalid regex:
 
   $ echo 1
   +++ (re)
+
+Offset regular expression:
+
+  $ echo 'foo\nbar\nbaz\n\n1\nA\n@'
+  foo
+  baz
+  
+  \d (re)
+  [A-Z] (re)
+  #

@@ -166,11 +166,13 @@ News
 
 Version 0.4
 ```````````
-
 * **The test format has changed:** Output lines containing regular
   expressions must now end in "`` (re)``" or they'll be matched
   literally. Lines ending with keywords are matched literally first,
   however.
+
+* Regular expressions are now matched from beginning to end. In other
+  words "``  \d (re)``" is matched as "``^\d$``".
 
 * In addition to ``(re)``, ``(glob)`` has been added. It supports
   ``*``, ``?``, and escaping both characters (and backslashes) using

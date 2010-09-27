@@ -178,6 +178,11 @@ Version 0.4
   ``*``, ``?``, and escaping both characters (and backslashes) using
   ``\``.
 
+* Added ``-q/--quiet`` to suppress diff output.
+
+* The number of tests, the number of skipped tests, and the number of
+  failed tests are now printed after all tests are finished.
+
 Version 0.3 (Sep. 20, 2010)
 ```````````````````````````
 * Implemented resetting of common environment variables. This behavior

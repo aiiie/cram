@@ -216,9 +216,11 @@ def _prompt(question, answers, auto=None):
         elif answer and answer in answers.lower():
             return answer
 
-def run(paths, verbose=False, interactive=False, cwd=None, basetmp=None,
-        keeptmp=False, answer=None):
+def run(paths, quiet=False, verbose=False, interactive=False, cwd=None,
+        basetmp=None, keeptmp=False, answer=None):
     """Run tests in paths and yield output.
+
+    If quiet is True, diffs aren't yielded.
 
     If verbose is True, filenames and status information are yielded.
 
@@ -238,6 +240,8 @@ def run(paths, verbose=False, interactive=False, cwd=None, basetmp=None,
         cwd = os.getcwd()
 
     seen = set()
+    skipped = 0
+    failed = 0
     for path in findtests(paths):
         if path in seen:
             continue
@@ -247,8 +251,11 @@ def run(paths, verbose=False, interactive=False, cwd=None, basetmp=None,
         if verbose:
             yield '%s: ' % path
         if not os.stat(abspath).st_size:
+            skipped += 1
             if verbose:
                 yield 'empty\n'
+            else:
+                yield 's'
         else:
             if basetmp:
                 tmpdir = tempfile.mkdtemp('', os.path.basename(path) + '-',
@@ -263,10 +270,13 @@ def run(paths, verbose=False, interactive=False, cwd=None, basetmp=None,
                     if not keeptmp:
                         shutil.rmtree(tmpdir)
             if diff:
+                failed += 1
                 if verbose:
                     yield 'failed\n'
                 else:
-                    yield '\n'
+                    yield '!'
+                    if not quiet:
+                        yield '\n'
                 errpath = abspath + '.err'
                 errfile = open(errpath, 'w')
                 try:
@@ -274,18 +284,23 @@ def run(paths, verbose=False, interactive=False, cwd=None, basetmp=None,
                         errfile.write(line)
                 finally:
                     errfile.close()
-                for line in diff:
-                    yield line
-                if interactive:
-                    if _prompt('Accept this change?', 'yN', answer) == 'y':
-                        shutil.copy(errpath, abspath)
-                        os.remove(errpath)
-                        if verbose:
-                            yield '%s: merged output\n' % path
-            elif verbose:
+                if not quiet:
+                    for line in diff:
+                        yield line
+                    if interactive:
+                        if _prompt('Accept this change?', 'yN', answer) == 'y':
+                            shutil.copy(errpath, abspath)
+                            os.remove(errpath)
+                            if verbose:
+                                yield '%s: merged output\n' % path
+            elif not verbose:
+                yield '.'
+            else:
                 yield 'passed\n'
-        if not verbose:
-            yield '.'
+    if not verbose:
+        yield '\n'
+    yield '# Ran %s tests, %s skipped, %s failed.\n' % (len(seen), skipped,
+                                                        failed)
 
 def main(args):
     """Main entry point.
@@ -295,6 +310,8 @@ def main(args):
     from optparse import OptionParser
 
     p = OptionParser(usage='cram [OPTIONS] TESTS...')
+    p.add_option('-q', '--quiet', action='store_true',
+                 help="don't print diffs")
     p.add_option('-v', '--verbose', action='store_true',
                  help='show filenames and test status')
     p.add_option('-i', '--interactive', action='store_true',
@@ -311,15 +328,20 @@ def main(args):
     p.add_option('-E', action='store_false',
                  dest='sterilize', default=True,
                  help="don't reset common environment variables")
-
     opts, paths = p.parse_args(args)
-    if opts.yes and opts.no:
-        sys.stderr.write('options -y and -n are mutually exclusive\n')
-        return 2
+
+    conflicts = [('-y', opts.yes, '-n', opts.no),
+                 ('-q', opts.quiet, '-v', opts.verbose),
+                 ('-q', opts.quiet, '-i', opts.interactive)]
+    for s1, o1, s2, o2 in conflicts:
+        if o1 and o2:
+            sys.stderr.write('options %s and %s are mutually exclusive\n'
+                             % (s1, s2))
+            return 2
 
     if not paths:
         sys.stdout.write(p.get_usage())
-        return 1
+        return 2
 
     badpaths = [p for p in paths if not os.path.exists(p)]
     if badpaths:
@@ -363,8 +385,8 @@ def main(args):
         answer = None
 
     try:
-        for s in run(paths, opts.verbose, opts.interactive, oldcwd,
-                     basetmp, opts.keep_tmpdir, answer):
+        for s in run(paths, opts.quiet, opts.verbose, opts.interactive,
+                     oldcwd, basetmp, opts.keep_tmpdir, answer):
             sys.stdout.write(s)
             sys.stdout.flush()
         if not opts.verbose:

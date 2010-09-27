@@ -17,6 +17,7 @@ Usage:
   
   [Oo]ptions: (re)
     -h, --help            show this help message and exit
+    -q, --quiet           don't print diffs
     -v, --verbose         show filenames and test status
     -i, --interactive     interactively merge changed test output
     -y, --yes             answer yes to all questions
@@ -26,7 +27,7 @@ Usage:
     -E                    don't reset common environment variables
   $ cram
   [Uu]sage: cram \[OPTIONS\] TESTS\.\.\. (re)
-  [1]
+  [2]
   $ cram -y -n
   options -y and -n are mutually exclusive
   [2]
@@ -37,7 +38,7 @@ Usage:
 Run cram examples:
 
   $ cram -D . examples examples/fail.t examples/.hidden.t
-  ...
+  .s.!
   \-\-\- .*/examples/fail\.t\s* (re)
   \+\+\+ .*/examples/fail\.t\.err\s* (re)
   @@ -3,21 +3,22 @@
@@ -66,7 +67,9 @@ Run cram examples:
      [A-Z] (re)
   -  #
   +  @
-  ..
+  .
+  # Ran 5 tests, 1 skipped, 1 failed.
+  
   $ md5 examples/fail.t examples/fail.t.err
   .*\b571651198f015382b002c3ceaafb14c2\b.* (re)
   .*\b89bd872bf755ac3f190cc647be3a6cc7\b.* (re)
@@ -108,6 +111,7 @@ Verbose mode:
   -  #
   +  @
   examples/test.t: passed
+  # Ran 5 tests, 1 skipped, 1 failed.
   $ md5 examples/fail.t examples/fail.t.err
   .*\b571651198f015382b002c3ceaafb14c2\b.* (re)
   .*\b89bd872bf755ac3f190cc647be3a6cc7\b.* (re)
@@ -116,7 +120,7 @@ Verbose mode:
 Interactive mode (don't merge):
 
   $ cram -n -D . -i examples/fail.t
-  
+  !
   \-\-\- .*/examples/fail\.t\s* (re)
   \+\+\+ .*/examples/fail\.t\.err\s* (re)
   @@ -3,21 +3,22 @@
@@ -146,7 +150,9 @@ Interactive mode (don't merge):
   -  #
   +  @
   Accept this change? [yN] n
-  .
+  
+  # Ran 1 tests, 0 skipped, 1 failed.
+  
   $ md5 examples/fail.t examples/fail.t.err
   .*\b571651198f015382b002c3ceaafb14c2\b.* (re)
   .*\b89bd872bf755ac3f190cc647be3a6cc7\b.* (re)
@@ -155,7 +161,7 @@ Interactive mode (merge):
 
   $ cp examples/fail.t examples/fail.t.orig
   $ cram -y -D . -i examples/fail.t
-  
+  !
   \-\-\- .*/examples/fail\.t\s* (re)
   \+\+\+ .*/examples/fail\.t\.err\s* (re)
   @@ -3,21 +3,22 @@
@@ -185,7 +191,9 @@ Interactive mode (merge):
   -  #
   +  @
   Accept this change? [yN] y
-  .
+  
+  # Ran 1 tests, 0 skipped, 1 failed.
+  
   $ md5 examples/fail.t
   .*\b89bd872bf755ac3f190cc647be3a6cc7\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
@@ -222,7 +230,7 @@ Verbose interactive mode (answer manually and don't merge):
      [A-Z] (re)
   -  #
   +  @
-  Accept this change? [yN] Accept this change? [yN] %
+  Accept this change? [yN] Accept this change? [yN] # Ran 1 tests, 0 skipped, 1 failed.
   $ md5 examples/fail.t examples/fail.t.err
   .*\b571651198f015382b002c3ceaafb14c2\b.* (re)
   .*\b89bd872bf755ac3f190cc647be3a6cc7\b.* (re)
@@ -256,7 +264,7 @@ Verbose interactive mode (answer manually and don't merge):
      [A-Z] (re)
   -  #
   +  @
-  Accept this change? [yN] Accept this change? [yN] %
+  Accept this change? [yN] Accept this change? [yN] # Ran 1 tests, 0 skipped, 1 failed.
   $ md5 examples/fail.t examples/fail.t.err
   .*\b571651198f015382b002c3ceaafb14c2\b.* (re)
   .*\b89bd872bf755ac3f190cc647be3a6cc7\b.* (re)
@@ -295,6 +303,7 @@ Verbose interactive mode (answer manually and merge):
   -  #
   +  @
   Accept this change? [yN] Accept this change? [yN] examples/fail.t: merged output
+  # Ran 1 tests, 0 skipped, 1 failed.
   $ md5 examples/fail.t
   .*\b89bd872bf755ac3f190cc647be3a6cc7\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
@@ -302,7 +311,7 @@ Verbose interactive mode (answer manually and merge):
 Use temp dirs:
 
   $ cram examples
-  ...
+  .s.!
   \-\-\- .*/examples/fail\.t\s* (re)
   \+\+\+ .*/examples/fail\.t\.err\s* (re)
   @@ -3,21 +3,22 @@
@@ -331,7 +340,9 @@ Use temp dirs:
      [A-Z] (re)
   -  #
   +  @
-  ..
+  .
+  # Ran 5 tests, 1 skipped, 1 failed.
+  
 
 Invalid -D directory:
 
@@ -355,7 +366,7 @@ warnings for invalid locales.
   $ COLUMNS=4815162342; export COLUMNS
   $ GREP_OPTIONS=foo; export GREP_OPTIONS
   $ cram -E examples/env.t
-  
+  !
   \-\-\- .*/examples/env\.t\s* (re)
   \+\+\+ .*/examples/env\.t\.err\s* (re)
   @@ -7,13 +7,13 @@
@@ -376,7 +387,9 @@ warnings for invalid locales.
      $ echo "$RUNDIR"
      .+ (re)
      $ echo "$TESTDIR"
-  .
+  
+  # Ran 1 tests, 0 skipped, 1 failed.
+  
 
 Cleanup:
 

@@ -18,7 +18,7 @@ endif
 syn include @Shell syntax/sh.vim
 
 syn match cramComment /^[^ ].*$/
-syn region cramOutput start=/^  [^$>]/ start=/^  $/ end=/\v.(\n\n*[^ ])\@=/me=s end=/  [$>]/me=e-3 end=/^$/ fold containedin=cramBlock
+syn region cramOutput start=/^  [^$>]/ start=/^  $/ end=/\v.(\n\n*[^ ])\@=/me=s end=/^  [$>]/me=e-3 end=/^$/ fold containedin=cramBlock
 syn match cramCommandStart /^  \$ / containedin=cramCommand
 syn region cramCommand start=/^  \$ /hs=s+4,rs=s+4 end=/^  [^>]/me=e-3 end=/^  $/me=e-2 containedin=cramBlock contains=@Shell keepend
 syn region cramBlock start=/^  /ms=e-2 end=/\v.(\n\n*[^ ])\@=/me=s end=/^$/me=e-1 fold keepend

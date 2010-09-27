@@ -21,7 +21,10 @@ hi link cramCommandStart Keyword
 hi link cramComment Normal
 hi link cramOutput Comment
 
-set foldmethod=syntax
+if exists("cram_fold")
+  setlocal foldmethod=syntax
+endif
+
 syn sync maxlines=200
 
 let b:current_syntax = "cram"

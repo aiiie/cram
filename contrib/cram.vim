@@ -4,6 +4,12 @@
 "
 " Add the following line to your ~/.vimrc to enable:
 " au BufNewFile,BufRead *.t set filetype=cram
+"
+" If you want folding you'll need the following line as well:
+" let cram_fold=1
+"
+" You might also want to set the starting foldlevel for Cram files:
+" autocmd Syntax cram setlocal foldlevel=1
 
 if exists("b:current_syntax")
   finish

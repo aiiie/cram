@@ -4,6 +4,8 @@
 
 * Implement -j flag, most likely using spawnv().
 
+* Using spawnv() machinery, implement distributed testing.
+
 * Be able to run the Mercurial test suite.
 
 * Write cram plugins for other testing frameworks (nose, py.test,

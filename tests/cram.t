@@ -308,43 +308,6 @@ Verbose interactive mode (answer manually and merge):
   .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
 
-Use temp dirs:
-
-  $ cram examples
-  .s.!
-  \-\-\- .*/examples/fail\.t\s* (re)
-  \+\+\+ .*/examples/fail\.t\.err\s* (re)
-  @@ -3,21 +3,22 @@
-     $ echo 1
-     1
-     $ echo 1
-  -  2
-  +  1
-     $ echo 1
-     1
-   
-   Invalid regex:
-   
-     $ echo 1
-  -  +++ (re)
-  +  1
-   
-   Offset regular expression:
-   
-     $ printf 'foo\nbar\nbaz\n\n1\nA\n@\n'
-     foo
-  +  bar
-     baz
-     
-     \d (re)
-     [A-Z] (re)
-  -  #
-  +  @
-  .
-  # Ran 5 tests, 1 skipped, 1 failed.
-  
-  $ rm examples/fail.t.err
-
 Don't sterilize environment:
 
 Note: We can't set the locale to foo because some shells will issue

@@ -77,7 +77,7 @@ Run cram examples:
 
 Verbose mode:
 
-  $ cram -v examples/fail.t examples examples/.hidden.t
+  $ cram -v examples examples/fail.t examples/.hidden.t
   examples/bare.t: passed
   examples/empty.t: empty
   examples/env.t: passed

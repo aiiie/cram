@@ -30,7 +30,7 @@ def istest(path):
 
 def findtests(paths):
     """Yield tests in paths in naturally sorted order"""
-    for p in sorted(paths, key=_natkey):
+    for p in paths:
         if os.path.isdir(p):
             for root, dirs, files in os.walk(p):
                 if os.path.basename(root).startswith('.'):

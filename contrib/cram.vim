@@ -31,6 +31,7 @@ if exists("cram_fold")
   setlocal foldmethod=syntax
 endif
 
+syn sync match cramSync grouphere NONE "^$"
 syn sync maxlines=200
 
 let b:current_syntax = "cram"

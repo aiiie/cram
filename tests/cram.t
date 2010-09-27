@@ -1,12 +1,13 @@
 The $PYTHON environment variable should be set when running this test
 from Python.
 
+  $ cp -R "$TESTDIR"/../examples .
   $ [ -n "$PYTHON" ] || PYTHON=python
   $ if [ -n "$COVERAGE" ]; then
   >   coverage erase
-  >   alias cram='coverage run -a cram.py'
+  >   alias cram="coverage run -a $TESTDIR/../cram.py"
   > else
-  >   alias cram="$PYTHON cram.py"
+  >   alias cram="$PYTHON $TESTDIR/../cram.py"
   > fi
   $ command -v md5 > /dev/null || alias md5=md5sum
 
@@ -16,15 +17,14 @@ Usage:
   [Uu]sage: cram \[OPTIONS\] TESTS\.\.\. (re)
   
   [Oo]ptions: (re)
-    -h, --help            show this help message and exit
-    -q, --quiet           don't print diffs
-    -v, --verbose         show filenames and test status
-    -i, --interactive     interactively merge changed test output
-    -y, --yes             answer yes to all questions
-    -n, --no              answer no to all questions
-    -D DIR, --tmpdir=DIR  run tests in DIR
-    --keep-tmpdir         keep temporary directories
-    -E                    don't reset common environment variables
+    -h, --help         show this help message and exit
+    -q, --quiet        don't print diffs
+    -v, --verbose      show filenames and test status
+    -i, --interactive  interactively merge changed test output
+    -y, --yes          answer yes to all questions
+    -n, --no           answer no to all questions
+    --keep-tmpdir      keep temporary directories
+    -E                 don't reset common environment variables
   $ cram
   [Uu]sage: cram \[OPTIONS\] TESTS\.\.\. (re)
   [2]
@@ -37,7 +37,7 @@ Usage:
 
 Run cram examples:
 
-  $ cram -D . examples examples/fail.t examples/.hidden.t
+  $ cram examples examples/fail.t examples/.hidden.t
   .s.!
   \-\-\- .*/examples/fail\.t\s* (re)
   \+\+\+ .*/examples/fail\.t\.err\s* (re)
@@ -77,7 +77,7 @@ Run cram examples:
 
 Verbose mode:
 
-  $ cram -D . -v examples/fail.t examples examples/.hidden.t
+  $ cram -v examples/fail.t examples examples/.hidden.t
   examples/bare.t: passed
   examples/empty.t: empty
   examples/env.t: passed
@@ -119,7 +119,7 @@ Verbose mode:
 
 Interactive mode (don't merge):
 
-  $ cram -n -D . -i examples/fail.t
+  $ cram -n -i examples/fail.t
   !
   \-\-\- .*/examples/fail\.t\s* (re)
   \+\+\+ .*/examples/fail\.t\.err\s* (re)
@@ -160,7 +160,7 @@ Interactive mode (don't merge):
 Interactive mode (merge):
 
   $ cp examples/fail.t examples/fail.t.orig
-  $ cram -y -D . -i examples/fail.t
+  $ cram -y -i examples/fail.t
   !
   \-\-\- .*/examples/fail\.t\s* (re)
   \+\+\+ .*/examples/fail\.t\.err\s* (re)
@@ -200,7 +200,7 @@ Interactive mode (merge):
 
 Verbose interactive mode (answer manually and don't merge):
 
-  $ printf 'bad\nn\n' | cram -v -D . -i examples/fail.t
+  $ printf 'bad\nn\n' | cram -v -i examples/fail.t
   examples/fail.t: failed
   \-\-\- .*/examples/fail\.t\s* (re)
   \+\+\+ .*/examples/fail\.t\.err\s* (re)
@@ -234,7 +234,7 @@ Verbose interactive mode (answer manually and don't merge):
   $ md5 examples/fail.t examples/fail.t.err
   .*\b571651198f015382b002c3ceaafb14c2\b.* (re)
   .*\b89bd872bf755ac3f190cc647be3a6cc7\b.* (re)
-  $ printf 'bad\n\n' | cram -v -D . -i examples/fail.t
+  $ printf 'bad\n\n' | cram -v -i examples/fail.t
   examples/fail.t: failed
   \-\-\- .*/examples/fail\.t\s* (re)
   \+\+\+ .*/examples/fail\.t\.err\s* (re)
@@ -272,7 +272,7 @@ Verbose interactive mode (answer manually and don't merge):
 Verbose interactive mode (answer manually and merge):
 
   $ cp examples/fail.t examples/fail.t.orig
-  $ printf 'bad\ny\n' | cram -v -D . -i examples/fail.t
+  $ printf 'bad\ny\n' | cram -v -i examples/fail.t
   examples/fail.t: failed
   \-\-\- .*/examples/fail\.t\s* (re)
   \+\+\+ .*/examples/fail\.t\.err\s* (re)
@@ -343,18 +343,7 @@ Use temp dirs:
   .
   # Ran 5 tests, 1 skipped, 1 failed.
   
-
-Invalid -D directory:
-
-  $ cram -D foobarbaz examples
-  no such directory: foobarbaz
-  [2]
-  $ mkdir foobarbaz
-  $ chmod -x foobarbaz
-  $ cram -D foobarbaz examples
-  can't change directory: Permission denied
-  [2]
-  $ rmdir foobarbaz
+  $ rm examples/fail.t.err
 
 Don't sterilize environment:
 
@@ -384,14 +373,10 @@ warnings for invalid locales.
      $ echo "$GREP_OPTIONS"
   -  
   +  foo
-     $ echo "$RUNDIR"
+     $ echo "$CRAMTMP"
      .+ (re)
      $ echo "$TESTDIR"
   
   # Ran 1 tests, 0 skipped, 1 failed.
   
-
-Cleanup:
-
   $ rm examples/env.t.err
-  $ rm examples/fail.t.err

@@ -14,12 +14,13 @@ Here's a snippet from `Cram's own test suite`_::
     The $PYTHON environment variable should be set when running this
     test from Python.
 
+      $ cp -R "$TESTDIR"/../examples .
       $ [ -n "$PYTHON" ] || PYTHON=python
       $ if [ -n "$COVERAGE" ]; then
       >   coverage erase
-      >   alias cram='coverage run -a cram.py'
+      >   alias cram="coverage run -a $TESTDIR/../cram.py"
       > else
-      >   alias cram="$PYTHON cram.py"
+      >   alias cram="$PYTHON $TESTDIR/../cram.py"
       > fi
       $ command -v md5 > /dev/null || alias md5=md5sum
 
@@ -29,17 +30,17 @@ Here's a snippet from `Cram's own test suite`_::
       [Uu]sage: cram \[OPTIONS\] TESTS\.\.\. (re)
 
       [Oo]ptions:
-        -h, --help            show this help message and exit
-        -v, --verbose         show filenames and test status
-        -i, --interactive     interactively merge changed test output
-        -y, --yes             answer yes to all questions
-        -n, --no              answer no to all questions
-        -D DIR, --tmpdir=DIR  run tests in DIR
-        --keep-tmpdir         keep temporary directories
-        -E                    don't reset common environment variables
+        -h, --help         show this help message and exit
+        -q, --quiet        don't print diffs
+        -v, --verbose      show filenames and test status
+        -i, --interactive  interactively merge changed test output
+        -y, --yes          answer yes to all questions
+        -n, --no           answer no to all questions
+        --keep-tmpdir      keep temporary directories
+        -E                 don't reset common environment variables
       $ cram
       [Uu]sage: cram \[OPTIONS\] TESTS\.\.\. (re)
-      [1]
+      [2]
 
 The format in a nutshell:
 
@@ -153,9 +154,9 @@ are run:
 
 Cram also provides the following environment variables to tests:
 
-* ``RUNDIR``, set to the directory Cram was run from.
+* ``CRAMTMP``, set to the test runner's temporary directory.
 
-* ``TESTDIR``, set to the test runner's temporary directory.
+* ``TESTDIR``, set to the directory containing the test file.
 
 .. _unified context diff: http://en.wikipedia.org/wiki/Diff#Unified_format
 .. _its own example tests: http://bitbucket.org/brodie/cram/src/tip/examples/
@@ -177,6 +178,11 @@ Version 0.4
 * In addition to ``(re)``, ``(glob)`` has been added. It supports
   ``*``, ``?``, and escaping both characters (and backslashes) using
   ``\``.
+
+* **Environment settings have changed:** The ``-D`` flag has been
+  removed, ``$TESTDIR`` is now set to the directory containing the
+  ``.t`` file, and ``$CRAMTMP`` is set to the test runner's temporary
+  directory.
 
 * Added ``-q/--quiet`` to suppress diff output.
 

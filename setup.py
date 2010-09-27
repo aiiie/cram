@@ -26,7 +26,8 @@ class test(Command):
             # of Python it was installed with, NOT the version
             # setup.py was run with.
             os.environ['COVERAGE'] = '1'
-        cram.main(['-v', '-D', '.', 'tests'])
+            os.environ['COVERAGE_FILE'] = os.path.abspath('./.coverage')
+        cram.main(['-v', 'tests'])
 
 def long_description():
     try:

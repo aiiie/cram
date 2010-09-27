@@ -143,9 +143,12 @@ def test(path):
     diff is a generator that yields the diff between the two lists.
     """
     f = open(path)
+    abspath = os.path.abspath(path)
+    env = os.environ.copy()
+    env['TESTDIR'] = os.path.dirname(abspath)
     p = subprocess.Popen(['/bin/sh', '-'], bufsize=-1, stdin=subprocess.PIPE,
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                         universal_newlines=True,
+                         universal_newlines=True, env=env,
                          close_fds=os.name == 'posix')
     salt = 'CRAM%s' % time.time()
 
@@ -184,8 +187,7 @@ def test(path):
             postout.append('  ' + line)
     postout += after.pop(pos, [])
 
-    dpath = os.path.abspath(path)
-    diff = unified_diff(refout, postout, dpath, dpath + '.err')
+    diff = unified_diff(refout, postout, abspath, abspath + '.err')
     for firstline in diff:
         return refout, postout, itertools.chain([firstline], diff)
     return refout, postout, []
@@ -216,15 +218,13 @@ def _prompt(question, answers, auto=None):
         elif answer and answer in answers.lower():
             return answer
 
-def run(paths, quiet=False, verbose=False, interactive=False, cwd=None,
+def run(paths, quiet=False, verbose=False, interactive=False,
         basetmp=None, keeptmp=False, answer=None):
     """Run tests in paths and yield output.
 
     If quiet is True, diffs aren't yielded.
 
     If verbose is True, filenames and status information are yielded.
-
-    If cwd is set, os.chdir(cwd) is called after each test is run.
 
     If basetmp is set, each test is run in a random temporary
     directory inside basetmp.
@@ -236,9 +236,7 @@ def run(paths, quiet=False, verbose=False, interactive=False, cwd=None,
     changed output should be merged back into the original test. The
     answer is read from stdin.
     """
-    if cwd is None:
-        cwd = os.getcwd()
-
+    cwd = os.getcwd()
     seen = set()
     skipped = 0
     failed = 0
@@ -258,8 +256,8 @@ def run(paths, quiet=False, verbose=False, interactive=False, cwd=None,
                 yield 's'
         else:
             if basetmp:
-                tmpdir = tempfile.mkdtemp('', os.path.basename(path) + '-',
-                                          basetmp)
+                tmpdir = os.path.join(basetmp, os.path.basename(path))
+                os.mkdir(tmpdir)
             try:
                 if basetmp:
                     os.chdir(tmpdir)
@@ -320,9 +318,6 @@ def main(args):
                  help='answer yes to all questions')
     p.add_option('-n', '--no', action='store_true',
                  help='answer no to all questions')
-    p.add_option('-D', '--tmpdir', action='store',
-                 default=None, metavar='DIR',
-                 help="run tests in DIR")
     p.add_option('--keep-tmpdir', action='store_true',
                  help='keep temporary directories')
     p.add_option('-E', action='store_false',
@@ -348,26 +343,11 @@ def main(args):
         sys.stderr.write('no such file: %s\n' % badpaths[0])
         return 2
 
-    os.environ['RUNDIR'] = os.environ['TESTDIR'] = os.getcwd()
-    if opts.tmpdir:
-        oldcwd = os.getcwd()
-        basetmp = None
-        if not os.path.isdir(opts.tmpdir):
-            sys.stderr.write('no such directory: %s\n' % opts.tmpdir)
-            return 2
-        try:
-            os.chdir(opts.tmpdir)
-        except OSError:
-            e = sys.exc_info()[1]
-            sys.stderr.write("can't change directory: %s\n" % e.strerror)
-            return 2
-    else:
-        oldcwd = None
-        basetmp = os.environ['TESTDIR'] = tempfile.mkdtemp('', 'cramtests-')
-        proctmp = os.path.join(basetmp, 'tmp')
-        os.mkdir(proctmp)
-        for s in ('TMPDIR', 'TEMP', 'TMP'):
-            os.environ[s] = proctmp
+    basetmp = os.environ['CRAMTMP'] = tempfile.mkdtemp('', 'cramtests-')
+    proctmp = os.path.join(basetmp, 'tmp')
+    os.mkdir(proctmp)
+    for s in ('TMPDIR', 'TEMP', 'TMP'):
+        os.environ[s] = proctmp
 
     if opts.sterilize:
         for s in ('LANG', 'LC_ALL', 'LANGUAGE'):
@@ -386,13 +366,13 @@ def main(args):
 
     try:
         for s in run(paths, opts.quiet, opts.verbose, opts.interactive,
-                     oldcwd, basetmp, opts.keep_tmpdir, answer):
+                     basetmp, opts.keep_tmpdir, answer):
             sys.stdout.write(s)
             sys.stdout.flush()
         if not opts.verbose:
             sys.stdout.write('\n')
     finally:
-        if not opts.tmpdir and not opts.keep_tmpdir:
+        if not opts.keep_tmpdir:
             shutil.rmtree(basetmp)
 
 if __name__ == '__main__':

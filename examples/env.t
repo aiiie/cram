@@ -14,19 +14,15 @@ Check environment variables:
   80
   $ echo "$GREP_OPTIONS"
   
-  $ echo "$RUNDIR"
+  $ echo "$CRAMTMP"
   .+ (re)
   $ echo "$TESTDIR"
-  .+ (re)
-  $ if [ "$RUNDIR" != "$TESTDIR" ]; then
-  >   ls -a ..
-  > else
-  >   echo .
-  >   echo ..
-  >   echo env.t-0
-  >   echo tmp
-  > fi
-  .
-  ..
-  env\.t-.* (re)
-  tmp
+  */examples (glob)
+  $ ls "$TESTDIR"
+  bare.t
+  empty.t
+  env.t
+  fail.t
+  test.t
+  $ pwd
+  */cramtests*/env.t (glob)

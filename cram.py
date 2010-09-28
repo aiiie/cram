@@ -97,8 +97,8 @@ def unified_diff(a, b, fromfile='', tofile='', fromfiledate='',
     started = False
     for group in matcher(None, a, b).get_grouped_opcodes(n):
         if not started:
-            fromdate = '\t%s' % fromfiledate or ''
-            todate = '\t%s' % tofiledate or ''
+            fromdate = fromfiledate and '\t%s' % fromfiledate or ''
+            todate = fromfiledate and '\t%s' % tofiledate or ''
             yield '--- %s%s%s' % (fromfile, fromdate, lineterm)
             yield '+++ %s%s%s' % (tofile, todate, lineterm)
             started = True

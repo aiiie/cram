@@ -39,8 +39,8 @@ Run cram examples:
 
   $ cram examples examples/fail.t examples/.hidden.t
   .s.!
-  \-\-\- .*/examples/fail\.t\s* (re)
-  \+\+\+ .*/examples/fail\.t\.err\s* (re)
+  --- */examples/fail.t (glob)
+  +++ */examples/fail.t.err (glob)
   @@ -3,21 +3,22 @@
      $ echo 1
      1
@@ -81,8 +81,8 @@ Verbose mode:
   examples/empty.t: empty
   examples/env.t: passed
   examples/fail.t: failed
-  \-\-\- .*/examples/fail\.t\s* (re)
-  \+\+\+ .*/examples/fail\.t\.err\s* (re)
+  --- */examples/fail.t (glob)
+  +++ */examples/fail.t.err (glob)
   @@ -3,21 +3,22 @@
      $ echo 1
      1
@@ -120,8 +120,8 @@ Interactive mode (don't merge):
 
   $ cram -n -i examples/fail.t
   !
-  \-\-\- .*/examples/fail\.t\s* (re)
-  \+\+\+ .*/examples/fail\.t\.err\s* (re)
+  --- */examples/fail.t (glob)
+  +++ */examples/fail.t.err (glob)
   @@ -3,21 +3,22 @@
      $ echo 1
      1
@@ -160,8 +160,8 @@ Interactive mode (merge):
   $ cp examples/fail.t examples/fail.t.orig
   $ cram -y -i examples/fail.t
   !
-  \-\-\- .*/examples/fail\.t\s* (re)
-  \+\+\+ .*/examples/fail\.t\.err\s* (re)
+  --- */examples/fail.t (glob)
+  +++ */examples/fail.t.err (glob)
   @@ -3,21 +3,22 @@
      $ echo 1
      1
@@ -199,8 +199,8 @@ Verbose interactive mode (answer manually and don't merge):
 
   $ printf 'bad\nn\n' | cram -v -i examples/fail.t
   examples/fail.t: failed
-  \-\-\- .*/examples/fail\.t\s* (re)
-  \+\+\+ .*/examples/fail\.t\.err\s* (re)
+  --- */examples/fail.t (glob)
+  +++ */examples/fail.t.err (glob)
   @@ -3,21 +3,22 @@
      $ echo 1
      1
@@ -233,8 +233,8 @@ Verbose interactive mode (answer manually and don't merge):
   .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
   $ printf 'bad\n\n' | cram -v -i examples/fail.t
   examples/fail.t: failed
-  \-\-\- .*/examples/fail\.t\s* (re)
-  \+\+\+ .*/examples/fail\.t\.err\s* (re)
+  --- */examples/fail.t (glob)
+  +++ */examples/fail.t.err (glob)
   @@ -3,21 +3,22 @@
      $ echo 1
      1
@@ -271,8 +271,8 @@ Verbose interactive mode (answer manually and merge):
   $ cp examples/fail.t examples/fail.t.orig
   $ printf 'bad\ny\n' | cram -v -i examples/fail.t
   examples/fail.t: failed
-  \-\-\- .*/examples/fail\.t\s* (re)
-  \+\+\+ .*/examples/fail\.t\.err\s* (re)
+  --- */examples/fail.t (glob)
+  +++ */examples/fail.t.err (glob)
   @@ -3,21 +3,22 @@
      $ echo 1
      1
@@ -310,8 +310,8 @@ Test that a fixed .err file is deleted:
   $ echo "  $ echo 1" > fixed.t
   $ cram fixed.t
   !
-  \-\-\- .*/fixed\.t\s* (re)
-  \+\+\+ .*/fixed\.t\.err\s* (re)
+  --- */fixed.t (glob)
+  +++ */fixed.t.err (glob)
   @@ -1,1 +1,2 @@
      $ echo 1
   +  1

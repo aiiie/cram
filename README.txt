@@ -18,7 +18,7 @@ Here's a snippet from `Cram's own test suite`_::
       $ [ -n "$PYTHON" ] || PYTHON=python
       $ if [ -n "$COVERAGE" ]; then
       >   coverage erase
-      >   alias cram="coverage run -a $TESTDIR/../cram.py"
+      >   alias cram="`which coverage` run -a $TESTDIR/../cram.py"
       > else
       >   alias cram="$PYTHON $TESTDIR/../cram.py"
       > fi

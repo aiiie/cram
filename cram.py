@@ -227,7 +227,6 @@ def patch(cmd, diff):
                          universal_newlines=True, close_fds=os.name == 'posix')
     for line in diff:
         p.stdin.write(line)
-    p.stdin.flush()
     p.stdin.close()
     p.wait()
     return p.returncode == 0

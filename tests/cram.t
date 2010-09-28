@@ -69,6 +69,7 @@ Run cram examples:
   +  @
   .
   # Ran 5 tests, 1 skipped, 1 failed.
+  [1]
   $ md5 examples/fail.t examples/fail.t.err
   .*\ba36d8e81925296ce794f1a3b35994a68\b.* (re)
   .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
@@ -111,6 +112,7 @@ Verbose mode:
   +  @
   examples/test.t: passed
   # Ran 5 tests, 1 skipped, 1 failed.
+  [1]
   $ md5 examples/fail.t examples/fail.t.err
   .*\ba36d8e81925296ce794f1a3b35994a68\b.* (re)
   .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
@@ -151,6 +153,7 @@ Interactive mode (don't merge):
   Accept this change? [yN] n
   
   # Ran 1 tests, 0 skipped, 1 failed.
+  [1]
   $ md5 examples/fail.t examples/fail.t.err
   .*\ba36d8e81925296ce794f1a3b35994a68\b.* (re)
   .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
@@ -192,6 +195,7 @@ Interactive mode (merge):
   patching file */fail.t (glob)
   
   # Ran 1 tests, 0 skipped, 1 failed.
+  [1]
   $ md5 examples/fail.t
   .*\be977f4580168266f943f775a1923d157\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
@@ -229,6 +233,7 @@ Verbose interactive mode (answer manually and don't merge):
   -  #
   +  @
   Accept this change? [yN] Accept this change? [yN] # Ran 1 tests, 0 skipped, 1 failed.
+  [1]
   $ md5 examples/fail.t examples/fail.t.err
   .*\ba36d8e81925296ce794f1a3b35994a68\b.* (re)
   .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
@@ -263,6 +268,7 @@ Verbose interactive mode (answer manually and don't merge):
   -  #
   +  @
   Accept this change? [yN] Accept this change? [yN] # Ran 1 tests, 0 skipped, 1 failed.
+  [1]
   $ md5 examples/fail.t examples/fail.t.err
   .*\ba36d8e81925296ce794f1a3b35994a68\b.* (re)
   .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
@@ -303,6 +309,7 @@ Verbose interactive mode (answer manually and merge):
   Accept this change? [yN] Accept this change? [yN] patching file */fail.t (glob)
   examples/fail.t: merged output
   # Ran 1 tests, 0 skipped, 1 failed.
+  [1]
   $ md5 examples/fail.t
   .*\be977f4580168266f943f775a1923d157\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
@@ -353,6 +360,7 @@ Test missing patch(1) and patch(1) error:
   examples/fail.t: merge failed
   
   # Ran 1 tests, 0 skipped, 1 failed.
+  [1]
   $ md5 examples/fail.t examples/fail.t.err
   .*\ba36d8e81925296ce794f1a3b35994a68\b.* (re)
   .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
@@ -370,6 +378,7 @@ Test that a fixed .err file is deleted:
   +  1
   
   # Ran 1 tests, 0 skipped, 1 failed.
+  [1]
   $ cp fixed.t.err fixed.t
   $ cram fixed.t
   .
@@ -410,4 +419,5 @@ warnings for invalid locales.
      $ echo "$TESTDIR"
   
   # Ran 1 tests, 0 skipped, 1 failed.
+  [1]
   $ rm examples/env.t.err

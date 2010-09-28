@@ -300,6 +300,7 @@ def run(paths, quiet=False, verbose=False, basetmp=None, keeptmp=False,
     log('\n', None, verbose)
     log('# Ran %s tests, %s skipped, %s failed.\n'
         % (len(seen), skipped, failed))
+    return bool(failed)
 
 def which(cmd):
     """Return the patch to cmd or None if not found"""
@@ -380,8 +381,8 @@ def main(args):
         answer = None
 
     try:
-        run(paths, opts.quiet, opts.verbose, basetmp, opts.keep_tmpdir,
-            patchcmd, answer)
+        return run(paths, opts.quiet, opts.verbose, basetmp, opts.keep_tmpdir,
+                   patchcmd, answer)
     finally:
         if not opts.keep_tmpdir:
             shutil.rmtree(basetmp)

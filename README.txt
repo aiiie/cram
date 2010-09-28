@@ -61,8 +61,8 @@ The format in a nutshell:
 
 * Lines ending with a space and the keyword ``(glob)`` are matched
   with a glob-like syntax. The only special characters supported are
-  "``*``" and "``?``". Both characters can be escaped using "``\``",
-  and the backslash can be escaped itself.
+  ``*`` and ``?``. Both characters can be escaped using ``\``, and the
+  backslash can be escaped itself.
 
 * Output lines ending with either of the above keywords are always
   first matched literally with actual command output.
@@ -182,12 +182,12 @@ News
 Version 0.4 (Sep. 28, 2010)
 ```````````````````````````
 * **The test format has changed:** Output lines containing regular
-  expressions must now end in "`` (re)``" or they'll be matched
+  expressions must now end in ``(re)`` or they'll be matched
   literally. Lines ending with keywords are matched literally first,
   however.
 
 * Regular expressions are now matched from beginning to end. In other
-  words "``  \d (re)``" is matched as "``^\d$``".
+  words ``\d (re)`` is matched as ``^\d$``.
 
 * In addition to ``(re)``, ``(glob)`` has been added. It supports
   ``*``, ``?``, and escaping both characters (and backslashes) using

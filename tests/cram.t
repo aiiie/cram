@@ -5,7 +5,7 @@ from Python.
   $ [ -n "$PYTHON" ] || PYTHON=python
   $ if [ -n "$COVERAGE" ]; then
   >   coverage erase
-  >   alias cram="coverage run -a $TESTDIR/../cram.py"
+  >   alias cram="`which coverage` run -a $TESTDIR/../cram.py"
   > else
   >   alias cram="$PYTHON $TESTDIR/../cram.py"
   > fi
@@ -189,10 +189,11 @@ Interactive mode (merge):
   -  #
   +  @
   Accept this change? [yN] y
+  patching file */fail.t (glob)
   
   # Ran 1 tests, 0 skipped, 1 failed.
   $ md5 examples/fail.t
-  .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
+  .*\be977f4580168266f943f775a1923d157\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
 
 Verbose interactive mode (answer manually and don't merge):
@@ -299,11 +300,63 @@ Verbose interactive mode (answer manually and merge):
      [A-Z] (re)
   -  #
   +  @
-  Accept this change? [yN] Accept this change? [yN] examples/fail.t: merged output
+  Accept this change? [yN] Accept this change? [yN] patching file */fail.t (glob)
+  examples/fail.t: merged output
   # Ran 1 tests, 0 skipped, 1 failed.
   $ md5 examples/fail.t
-  .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
+  .*\be977f4580168266f943f775a1923d157\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
+
+Test missing patch(1) and patch(1) error:
+
+  $ PATH=. cram -i examples/fail.t
+  patch(1) required for -i
+  [2]
+  $ cat > patch <<EOF
+  > #!/bin/sh
+  > echo "patch failed" 1>&2
+  > exit 1
+  > EOF
+  $ chmod +x patch
+  $ PATH=. cram -y -i examples/fail.t
+  !
+  --- */examples/fail.t (glob)
+  +++ */examples/fail.t.err (glob)
+  @@ -3,21 +3,22 @@
+     $ echo 1
+     1
+     $ echo 1
+  -  2
+  +  1
+     $ echo 1
+     1
+   
+   Invalid regex:
+   
+     $ echo 1
+  -  +++ (re)
+  +  1
+   
+   Offset regular expression:
+   
+     $ printf 'foo\nbar\nbaz\n\n1\nA\n@\n'
+     foo
+  +  bar
+     baz
+     
+     \d (re)
+     [A-Z] (re)
+  -  #
+  +  @
+  Accept this change? [yN] y
+  patch failed
+  examples/fail.t: merge failed
+  
+  # Ran 1 tests, 0 skipped, 1 failed.
+  $ md5 examples/fail.t examples/fail.t.err
+  .*\ba36d8e81925296ce794f1a3b35994a68\b.* (re)
+  .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
+  $ rm patch examples/fail.t.err
 
 Test that a fixed .err file is deleted:
 

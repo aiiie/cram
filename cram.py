@@ -194,6 +194,7 @@ def prompt(question, answers, auto=None):
         sys.stdout.flush()
         if auto is not None:
             sys.stdout.write(auto + '\n')
+            sys.stdout.flush()
             return auto
 
         answer = sys.stdin.readline().strip().lower()
@@ -213,23 +214,31 @@ def log(msg=None, verbosemsg=None, verbose=False):
         sys.stdout.write(msg)
         sys.stdout.flush()
 
-def run(paths, quiet=False, verbose=False, interactive=False,
-        basetmp=None, keeptmp=False, answer=None):
+def patch(cmd, diff):
+    p = subprocess.Popen([cmd, '-p0'], bufsize=-1, stdin=subprocess.PIPE,
+                         universal_newlines=True, close_fds=os.name == 'posix')
+    for line in diff:
+        p.stdin.write(line)
+    p.stdin.flush()
+    p.stdin.close()
+    p.wait()
+    return p.returncode == 0
+
+def run(paths, quiet=False, verbose=False, basetmp=None, keeptmp=False,
+        patchcmd=None, answer=None):
     """Run tests in paths.
 
-    If quiet is True, diffs aren't printed.
-
-    If verbose is True, filenames and status information are printed.
+    If quiet is True, diffs aren't printed. If verbose is True,
+    filenames and status information are printed.
 
     If basetmp is set, each test is run in a random temporary
-    directory inside basetmp.
+    directory inside basetmp. If keeptmp is also True, temporary
+    directories are preserved after use.
 
-    If basetmp is set and keeptmp is True, temporary directories are
-    preserved after use.
-
-    If interactive is True, a prompt is written to stdout asking if
+    If patchcmd is set, a prompt is written to stdout asking if
     changed output should be merged back into the original test. The
-    answer is read from stdin.
+    answer is read from stdin. If 'y', the test is patched using patch
+    based on the changed output.
     """
     cwd = os.getcwd()
     seen = set()
@@ -276,16 +285,28 @@ def run(paths, quiet=False, verbose=False, interactive=False,
                 finally:
                     errfile.close()
                 if not quiet:
+                    if patchcmd:
+                        diff = list(diff)
                     for line in diff:
                         log(line)
-                    if interactive:
-                        if prompt('Accept this change?', 'yN', answer) == 'y':
-                            shutil.copy(errpath, abspath)
-                            os.remove(errpath)
+                    if (patchcmd and
+                        prompt('Accept this change?', 'yN', answer) == 'y'):
+                        if patch(patchcmd, diff):
                             log(None, '%s: merged output\n' % path, verbose)
+                            os.remove(errpath)
+                        else:
+                            log('%s: merge failed\n' % path)
     log('\n', None, verbose)
     log('# Ran %s tests, %s skipped, %s failed.\n'
         % (len(seen), skipped, failed))
+
+def which(cmd):
+    """Return the patch to cmd or None if not found"""
+    for p in os.environ['PATH'].split(os.pathsep):
+        path = os.path.join(p, cmd)
+        if os.path.exists(path) and os.access(path, os.X_OK):
+            return path
+    return None
 
 def main(args):
     """Main entry point.
@@ -320,6 +341,13 @@ def main(args):
                              % (s1, s2))
             return 2
 
+    patchcmd = None
+    if opts.interactive:
+        patchcmd = which('patch')
+        if not patchcmd:
+            sys.stderr.write('patch(1) required for -i\n')
+            return 2
+
     if not paths:
         sys.stdout.write(p.get_usage())
         return 2
@@ -351,8 +379,8 @@ def main(args):
         answer = None
 
     try:
-        run(paths, opts.quiet, opts.verbose, opts.interactive, basetmp,
-            opts.keep_tmpdir, answer)
+        run(paths, opts.quiet, opts.verbose, basetmp, opts.keep_tmpdir,
+            patchcmd, answer)
     finally:
         if not opts.keep_tmpdir:
             shutil.rmtree(basetmp)

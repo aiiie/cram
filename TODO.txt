@@ -1,7 +1,3 @@
-* Use patch(1) or something similar to merge diff output back in when
-  using -i. This would have the benefit of not clobbering regexes and
-  globs that matched fine.
-
 * Implement -j flag, most likely using spawnv().
 
 * Using spawnv() machinery, implement distributed testing.

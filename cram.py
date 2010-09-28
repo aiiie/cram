@@ -35,10 +35,8 @@ def findtests(paths):
 def _match(pattern, s):
     """Match pattern or return False if invalid.
 
-    >>> bool(_match('foo.*', 'foobar'))
-    True
-    >>> _match('***', 'foobar')
-    False
+    >>> [bool(_match(r, 'foobar')) for r in ('foo.*', '***')]
+    [True, False]
     """
     try:
         return re.match(pattern, s)

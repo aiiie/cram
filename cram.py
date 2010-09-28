@@ -11,15 +11,6 @@ import shutil
 import time
 import tempfile
 
-_natsub = re.compile(r'\d+').sub
-def _natkey(s):
-    """Return a key usable for natural sorting.
-
-    >>> [_natkey(s) for s in ('foo', 'foo1', 'foo10')]
-    ['foo', 'foo11', 'foo210']
-    """
-    return _natsub(lambda i: str(len(i.group())) + i.group(), s)
-
 def istest(path):
     """Return whether or not a file is a test.
 
@@ -35,7 +26,7 @@ def findtests(paths):
             for root, dirs, files in os.walk(p):
                 if os.path.basename(root).startswith('.'):
                     continue
-                for f in sorted(files, key=_natkey):
+                for f in sorted(files):
                     if istest(f):
                         yield os.path.normpath(os.path.join(root, f))
         elif istest(os.path.basename(p)):

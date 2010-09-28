@@ -191,6 +191,8 @@ Version 0.4
 
 * Previous ``.err`` files are removed when tests pass.
 
+* Cram now exits with return code ``1`` if any tests failed.
+
 * Added ``-q``/``--quiet`` to suppress diff output.
 
 * The number of tests, the number of skipped tests, and the number of

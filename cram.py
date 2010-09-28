@@ -258,12 +258,17 @@ def run(paths, quiet=False, verbose=False, interactive=False,
                     os.chdir(cwd)
                     if not keeptmp:
                         shutil.rmtree(tmpdir)
-            if diff:
+
+            errpath = abspath + '.err'
+            if not diff:
+                log('.', 'passed\n', verbose)
+                if os.path.exists(errpath):
+                    os.remove(errpath)
+            else:
                 failed += 1
                 log('!', 'failed\n', verbose)
                 if not quiet:
                     log('\n', None, verbose)
-                errpath = abspath + '.err'
                 errfile = open(errpath, 'w')
                 try:
                     for line in postout:
@@ -278,8 +283,6 @@ def run(paths, quiet=False, verbose=False, interactive=False,
                             shutil.copy(errpath, abspath)
                             os.remove(errpath)
                             log(None, '%s: merged output\n' % path, verbose)
-            else:
-                log('.', 'passed\n', verbose)
     log('\n', None, verbose)
     log('# Ran %s tests, %s skipped, %s failed.\n'
         % (len(seen), skipped, failed))

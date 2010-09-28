@@ -305,6 +305,25 @@ Verbose interactive mode (answer manually and merge):
   .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
 
+Test that a fixed .err file is deleted:
+
+  $ echo "  $ echo 1" > fixed.t
+  $ cram fixed.t
+  !
+  \-\-\- .*/fixed\.t\s* (re)
+  \+\+\+ .*/fixed\.t\.err\s* (re)
+  @@ -1,1 +1,2 @@
+     $ echo 1
+  +  1
+  
+  # Ran 1 tests, 0 skipped, 1 failed.
+  $ cp fixed.t.err fixed.t
+  $ cram fixed.t
+  .
+  # Ran 1 tests, 0 skipped, 0 failed.
+  $ test \! -f fixed.t.err
+  $ rm fixed.t
+
 Don't sterilize environment:
 
 Note: We can't set the locale to foo because some shells will issue

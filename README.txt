@@ -184,6 +184,8 @@ Version 0.4
   ``.t`` file, and ``$CRAMTMP`` is set to the test runner's temporary
   directory.
 
+* Previous ``.err`` files are removed when tests pass.
+
 * Added ``-q/--quiet`` to suppress diff output.
 
 * The number of tests, the number of skipped tests, and the number of

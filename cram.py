@@ -327,6 +327,8 @@ def main(args):
     from optparse import OptionParser
 
     p = OptionParser(usage='cram [OPTIONS] TESTS...')
+    p.add_option('-V', '--version', action='store_true',
+                 help='show version information and exit')
     p.add_option('-q', '--quiet', action='store_true',
                  help="don't print diffs")
     p.add_option('-v', '--verbose', action='store_true',
@@ -342,6 +344,15 @@ def main(args):
     p.add_option('-E', action='store_false', dest='sterilize', default=True,
                  help="don't reset common environment variables")
     opts, paths = p.parse_args(args)
+
+    if opts.version:
+        sys.stdout.write("""Cram CLI testing framework (version 0.4)
+
+Copyright (C) 2010 Brodie Rao <brodie@bitheap.org> and others
+This is free software; see the source for copying conditions. There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+""")
+        return
 
     conflicts = [('-y', opts.yes, '-n', opts.no),
                  ('-q', opts.quiet, '-v', opts.verbose),

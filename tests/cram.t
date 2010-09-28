@@ -18,6 +18,7 @@ Usage:
   
   [Oo]ptions: (re)
     -h, --help         show this help message and exit
+    -V, --version      show version information and exit
     -q, --quiet        don't print diffs
     -v, --verbose      show filenames and test status
     -i, --interactive  interactively merge changed test output
@@ -25,6 +26,12 @@ Usage:
     -n, --no           answer no to all questions
     --keep-tmpdir      keep temporary directories
     -E                 don't reset common environment variables
+  $ cram -V
+  Cram CLI testing framework (version 0.4)
+  
+  Copyright (C) 2010 Brodie Rao <brodie@bitheap.org> and others
+  This is free software; see the source for copying conditions. There is NO
+  warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
   $ cram
   [Uu]sage: cram \[OPTIONS\] TESTS\.\.\. (re)
   [2]

@@ -31,6 +31,7 @@ Here's a snippet from `Cram's own test suite`_::
 
       [Oo]ptions:
         -h, --help         show this help message and exit
+        -V, --version      show version information and exit
         -q, --quiet        don't print diffs
         -v, --verbose      show filenames and test status
         -i, --interactive  interactively merge changed test output

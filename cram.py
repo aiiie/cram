@@ -11,6 +11,8 @@ import shutil
 import time
 import tempfile
 
+__all__ = ['main', 'test']
+
 def istest(path):
     """Return whether or not a file is a test.
 
@@ -32,10 +34,10 @@ def findtests(paths):
         elif istest(os.path.basename(p)):
             yield os.path.normpath(p)
 
-def _match(pattern, s):
+def match(pattern, s):
     """Match pattern or return False if invalid.
 
-    >>> [bool(_match(r, 'foobar')) for r in ('foo.*', '***')]
+    >>> [bool(match(r, 'foobar')) for r in ('foo.*', '***')]
     [True, False]
     """
     try:
@@ -43,13 +45,13 @@ def _match(pattern, s):
     except re.error:
         return False
 
-def _glob(el, l):
+def glob(el, l):
     """Match a glob-like pattern.
 
     The only supported special characters are * and ?. Escaping is
     supported.
 
-    >>> bool(_glob(r'\* \\ \? fo?b*', '* \\ ? foobar'))
+    >>> bool(glob(r'\* \\ \? fo?b*', '* \\ ? foobar'))
     True
     """
     i, n = 0, len(el)
@@ -66,7 +68,7 @@ def _glob(el, l):
             res += '.'
         else:
             res += re.escape(c)
-    return _match(res, l)
+    return match(res, l)
 
 class SequenceMatcher(difflib.SequenceMatcher, object):
     """Like difflib.SequenceMatcher, but matches globs and regexes"""
@@ -78,8 +80,8 @@ class SequenceMatcher(difflib.SequenceMatcher, object):
         # Because of this, we can end up doing the same matches many times.
         matches = []
         for n, (el, line) in enumerate(zip(self.a[alo:ahi], self.b[blo:bhi])):
-            if (el.endswith(" (re)\n") and _match(el[:-6] + '\n', line) or
-                el.endswith(" (glob)\n") and _glob(el[:-8] + '\n', line)):
+            if (el.endswith(" (re)\n") and match(el[:-6] + '\n', line) or
+                el.endswith(" (glob)\n") and glob(el[:-8] + '\n', line)):
                 # This fools the superclass's method into thinking that the
                 # regex/glob in a is identical to b by replacing a's line (the
                 # expected output) with b's line (the actual output).
@@ -181,7 +183,7 @@ def test(path):
         return refout, postout, itertools.chain([firstline], diff)
     return refout, postout, []
 
-def _prompt(question, answers, auto=None):
+def prompt(question, answers, auto=None):
     """Write a prompt to stdout and ask for answer in stdin.
 
     answers should be a string, with each character a single
@@ -275,7 +277,7 @@ def run(paths, quiet=False, verbose=False, interactive=False,
                     for line in diff:
                         yield line
                     if interactive:
-                        if _prompt('Accept this change?', 'yN', answer) == 'y':
+                        if prompt('Accept this change?', 'yN', answer) == 'y':
                             shutil.copy(errpath, abspath)
                             os.remove(errpath)
                             if verbose:

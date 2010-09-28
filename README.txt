@@ -197,10 +197,15 @@ Version 0.4
   test. This is useful for intentionally disabling tests when they
   only work on certain platforms or in certain settings.
 
-* Added ``-q``/``--quiet`` to suppress diff output.
-
 * The number of tests, the number of skipped tests, and the number of
   failed tests are now printed after all tests are finished.
+
+* Added ``-q``/``--quiet`` to suppress diff output.
+
+* Added ``contrib/cram.vim`` syntax highlighting script for
+  Vim. Contributed by `Steve Losh`_.
+
+.. _Steve Losh: http://stevelosh.com/
 
 Version 0.3 (Sep. 20, 2010)
 ```````````````````````````
@@ -225,7 +230,6 @@ Version 0.2 (Sep. 19, 2010)
 ```````````````````````````
 * Changed the test runner to run tests with a random temporary working
   directory.
-
 
 Version 0.1 (Sep. 19, 2010)
 ```````````````````````````

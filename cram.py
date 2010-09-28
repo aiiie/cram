@@ -209,13 +209,24 @@ def prompt(question, answers, auto=None):
         elif answer and answer in answers.lower():
             return answer
 
+def log(msg=None, verbosemsg=None, verbose=False):
+    """Write msg to standard out and flush.
+
+    If verbose is True, write verbosemg instead.
+    """
+    if verbose:
+        msg = verbosemsg
+    if msg:
+        sys.stdout.write(msg)
+        sys.stdout.flush()
+
 def run(paths, quiet=False, verbose=False, interactive=False,
         basetmp=None, keeptmp=False, answer=None):
-    """Run tests in paths and yield output.
+    """Run tests in paths.
 
-    If quiet is True, diffs aren't yielded.
+    If quiet is True, diffs aren't printed.
 
-    If verbose is True, filenames and status information are yielded.
+    If verbose is True, filenames and status information are printed.
 
     If basetmp is set, each test is run in a random temporary
     directory inside basetmp.
@@ -232,19 +243,15 @@ def run(paths, quiet=False, verbose=False, interactive=False,
     skipped = 0
     failed = 0
     for path in findtests(paths):
-        if path in seen:
+        abspath = os.path.abspath(path)
+        if abspath in seen:
             continue
-        seen.add(path)
+        seen.add(abspath)
 
-        abspath = os.path.join(cwd, path)
-        if verbose:
-            yield '%s: ' % path
+        log(None, '%s: ' % path, verbose)
         if not os.stat(abspath).st_size:
             skipped += 1
-            if verbose:
-                yield 'empty\n'
-            else:
-                yield 's'
+            log('s', 'empty\n', verbose)
         else:
             if basetmp:
                 tmpdir = os.path.join(basetmp, os.path.basename(path))
@@ -260,12 +267,9 @@ def run(paths, quiet=False, verbose=False, interactive=False,
                         shutil.rmtree(tmpdir)
             if diff:
                 failed += 1
-                if verbose:
-                    yield 'failed\n'
-                else:
-                    yield '!'
-                    if not quiet:
-                        yield '\n'
+                log('!', 'failed\n', verbose)
+                if not quiet:
+                    log('\n', None, verbose)
                 errpath = abspath + '.err'
                 errfile = open(errpath, 'w')
                 try:
@@ -275,21 +279,17 @@ def run(paths, quiet=False, verbose=False, interactive=False,
                     errfile.close()
                 if not quiet:
                     for line in diff:
-                        yield line
+                        log(line)
                     if interactive:
                         if prompt('Accept this change?', 'yN', answer) == 'y':
                             shutil.copy(errpath, abspath)
                             os.remove(errpath)
-                            if verbose:
-                                yield '%s: merged output\n' % path
-            elif not verbose:
-                yield '.'
+                            log(None, '%s: merged output\n' % path, verbose)
             else:
-                yield 'passed\n'
-    if not verbose:
-        yield '\n'
-    yield '# Ran %s tests, %s skipped, %s failed.\n' % (len(seen), skipped,
-                                                        failed)
+                log('.', 'passed\n', verbose)
+    log('\n', None, verbose)
+    log('# Ran %s tests, %s skipped, %s failed.\n'
+        % (len(seen), skipped, failed))
 
 def main(args):
     """Main entry point.
@@ -356,12 +356,8 @@ def main(args):
         answer = None
 
     try:
-        for s in run(paths, opts.quiet, opts.verbose, opts.interactive,
-                     basetmp, opts.keep_tmpdir, answer):
-            sys.stdout.write(s)
-            sys.stdout.flush()
-        if not opts.verbose:
-            sys.stdout.write('\n')
+        run(paths, opts.quiet, opts.verbose, opts.interactive, basetmp,
+            opts.keep_tmpdir, answer)
     finally:
         if not opts.keep_tmpdir:
             shutil.rmtree(basetmp)

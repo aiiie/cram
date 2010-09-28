@@ -69,7 +69,6 @@ Run cram examples:
   +  @
   .
   # Ran 5 tests, 1 skipped, 1 failed.
-  
   $ md5 examples/fail.t examples/fail.t.err
   .*\ba36d8e81925296ce794f1a3b35994a68\b.* (re)
   .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
@@ -152,7 +151,6 @@ Interactive mode (don't merge):
   Accept this change? [yN] n
   
   # Ran 1 tests, 0 skipped, 1 failed.
-  
   $ md5 examples/fail.t examples/fail.t.err
   .*\ba36d8e81925296ce794f1a3b35994a68\b.* (re)
   .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
@@ -193,7 +191,6 @@ Interactive mode (merge):
   Accept this change? [yN] y
   
   # Ran 1 tests, 0 skipped, 1 failed.
-  
   $ md5 examples/fail.t
   .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
@@ -341,5 +338,4 @@ warnings for invalid locales.
      $ echo "$TESTDIR"
   
   # Ran 1 tests, 0 skipped, 1 failed.
-  
   $ rm examples/env.t.err

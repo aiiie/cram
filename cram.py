@@ -205,7 +205,7 @@ def prompt(question, answers, auto=None):
 def log(msg=None, verbosemsg=None, verbose=False):
     """Write msg to standard out and flush.
 
-    If verbose is True, write verbosemg instead.
+    If verbose is True, write verbosemsg instead.
     """
     if verbose:
         msg = verbosemsg

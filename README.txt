@@ -80,9 +80,9 @@ The format in a nutshell:
 Download
 --------
 
-* cram-0.3.tar.gz_ (13 KB, requires Python 2.4-2.7 or Python 3.1)
+* cram-0.4.tar.gz_ (19 KB, requires Python 2.4-2.7 or Python 3.1)
 
-.. _cram-0.3.tar.gz: http://bitheap.org/cram/cram-0.3.tar.gz
+.. _cram-0.4.tar.gz: http://bitheap.org/cram/cram-0.4.tar.gz
 
 Installation
 ------------
@@ -93,9 +93,9 @@ You can use pip_ to install Cram::
 
 Or you can install Cram the old fashioned way::
 
-    $ wget http://bitheap.org/cram/cram-0.3.tar.gz
-    $ tar zxvf cram-0.3.tar.gz
-    $ cd cram-0.3.tar.gz
+    $ wget http://bitheap.org/cram/cram-0.4.tar.gz
+    $ tar zxvf cram-0.4.tar.gz
+    $ cd cram-0.4.tar.gz
     $ sudo python setup.py install
 
 .. _pip: http://pypi.python.org/pypi/pip
@@ -106,15 +106,15 @@ Usage
 
 Cram will print a dot for each passing test. If a test fails, a
 `unified context diff`_ is printed showing the test's expected output
-and the actual output.
+and the actual output. Skipped tests (empty tests and tests that exit
+with return code ``80``) are marked with ``s`` instead of a dot.
 
 For example, if we run Cram on `its own example tests`_::
 
-    $ cram examples
-    ..
-    --- examples/fail.t
-    +++ examples/fail.t.out
-    @@ -3,11 +3,11 @@
+    .s.!
+    --- /home/brodie/src/cram/examples/fail.t
+    +++ /home/brodie/src/cram/examples/fail.t.err
+    @@ -3,21 +3,22 @@
        $ echo 1
        1
        $ echo 1
@@ -128,7 +128,20 @@ For example, if we run Cram on `its own example tests`_::
        $ echo 1
     -  +++ (re)
     +  1
-    ..
+
+     Offset regular expression:
+
+       $ printf 'foo\nbar\nbaz\n\n1\nA\n@\n'
+       foo
+    +  bar
+       baz
+
+       \d (re)
+       [A-Z] (re)
+    -  #
+    +  @
+    s.
+    # Ran 6 tests, 2 skipped, 1 failed.
 
 Cram will also write the test with its actual output to
 ``examples/fail.t.err``.
@@ -165,8 +178,8 @@ Cram also provides the following environment variables to tests:
 News
 ----
 
-Version 0.4
-```````````
+Version 0.4 (Sep. 28, 2010)
+```````````````````````````
 * **The test format has changed:** Output lines containing regular
   expressions must now end in "`` (re)``" or they'll be matched
   literally. Lines ending with keywords are matched literally first,
@@ -185,15 +198,16 @@ Version 0.4
   directory.
 
 * ``-i``/``--interactive`` now requires ``patch(1)``. Instead of the
-  ``.err`` replacing the original test file when answering yes to a
-  merge, the diff output is ran through ``patch(1)`` this prevents
-  matching regular expressions and globs from getting clobbered.
+  ``.err`` files replacing the original test file when answering yes
+  to a merge, the diff output is ran through ``patch(1)`` this
+  prevents matching regular expressions and globs from getting
+  clobbered.
 
-* Previous ``.err`` files are removed when tests pass.
+* Previous ``.err`` files are now removed when tests pass.
 
 * Cram now exits with return code ``1`` if any tests failed.
 
-* If a test exits with return code 80, it's considered a skipped a
+* If a test exits with return code ``80``, it's considered a skipped a
   test. This is useful for intentionally disabling tests when they
   only work on certain platforms or in certain settings.
 
@@ -202,9 +216,10 @@ Version 0.4
 
 * Added ``-q``/``--quiet`` to suppress diff output.
 
-* Added ``contrib/cram.vim`` syntax highlighting script for
-  Vim. Contributed by `Steve Losh`_.
+* Added `contrib/cram.vim`_ syntax file for Vim. Contributed by `Steve
+  Losh`_.
 
+.. _contrib/cram.vim: http://bitbucket.org/brodie/cram/src/tip/contrib/cram.vim
 .. _Steve Losh: http://stevelosh.com/
 
 Version 0.3 (Sep. 20, 2010)

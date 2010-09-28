@@ -307,8 +307,7 @@ def main(args):
                  help='answer no to all questions')
     p.add_option('--keep-tmpdir', action='store_true',
                  help='keep temporary directories')
-    p.add_option('-E', action='store_false',
-                 dest='sterilize', default=True,
+    p.add_option('-E', action='store_false', dest='sterilize', default=True,
                  help="don't reset common environment variables")
     opts, paths = p.parse_args(args)
 

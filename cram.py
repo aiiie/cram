@@ -13,16 +13,9 @@ import tempfile
 
 __all__ = ['main', 'test']
 
-def istest(path):
-    """Return whether or not a file is a test.
-
-    >>> [istest(s) for s in ('foo', '.foo.t', 'foo.t')]
-    [False, False, True]
-    """
-    return not path.startswith('.') and path.endswith('.t')
-
 def findtests(paths):
     """Yield tests in paths in sorted order"""
+    istest = lambda p: not p.startswith('.') and p.endswith('.t')
     for p in paths:
         if os.path.isdir(p):
             for root, dirs, files in os.walk(p):

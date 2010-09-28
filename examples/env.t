@@ -23,6 +23,7 @@ Check environment variables:
   empty.t
   env.t
   fail.t
+  skip.t
   test.t
   $ pwd
   */cramtests*/env.t (glob)

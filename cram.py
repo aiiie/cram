@@ -125,6 +125,9 @@ def test(path):
         (list of lines in test, same list with actual output, diff)
 
     diff is a generator that yields the diff between the two lists.
+
+    If a test exits with return code 80, the actual output is set to
+    None and diff is set to [].
     """
     f = open(path)
     abspath = os.path.abspath(path)
@@ -155,9 +158,13 @@ def test(path):
             after.setdefault(pos, []).append(line)
     p.stdin.write('echo "\n%s %s $?"\n' % (salt, i + 1))
 
+    output = p.communicate()[0]
+    if p.returncode == 80:
+        return (refout, None, [])
+
     pos = -1
     ret = 0
-    for i, line in enumerate(p.communicate()[0].splitlines(True)):
+    for i, line in enumerate(output.splitlines(True)):
         if line.startswith(salt):
             presalt = postout.pop()
             if presalt != '  \n':
@@ -270,7 +277,10 @@ def run(paths, quiet=False, verbose=False, basetmp=None, keeptmp=False,
                         shutil.rmtree(tmpdir)
 
             errpath = abspath + '.err'
-            if not diff:
+            if not postout:
+                skipped += 1
+                log('s', 'skipped\n', verbose)
+            elif not diff:
                 log('.', 'passed\n', verbose)
                 if os.path.exists(errpath):
                     os.remove(errpath)

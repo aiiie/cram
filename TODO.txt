@@ -13,8 +13,6 @@
 
 * Setup/teardown support.
 
-* hghave-like capability (exit 80 -> skipped).
-
 * Coverage integration.
 
 * unittest integration.

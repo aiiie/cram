@@ -67,8 +67,8 @@ Run cram examples:
      [A-Z] (re)
   -  #
   +  @
-  .
-  # Ran 5 tests, 1 skipped, 1 failed.
+  s.
+  # Ran 6 tests, 2 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
   .*\ba36d8e81925296ce794f1a3b35994a68\b.* (re)
@@ -110,8 +110,9 @@ Verbose mode:
      [A-Z] (re)
   -  #
   +  @
+  examples/skip.t: skipped
   examples/test.t: passed
-  # Ran 5 tests, 1 skipped, 1 failed.
+  # Ran 6 tests, 2 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
   .*\ba36d8e81925296ce794f1a3b35994a68\b.* (re)

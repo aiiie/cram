@@ -193,6 +193,10 @@ Version 0.4
 
 * Cram now exits with return code ``1`` if any tests failed.
 
+* If a test exits with return code 80, it's considered a skipped a
+  test. This is useful for intentionally disabling tests when they
+  only work on certain platforms or in certain settings.
+
 * Added ``-q``/``--quiet`` to suppress diff output.
 
 * The number of tests, the number of skipped tests, and the number of

@@ -33,7 +33,7 @@ Literal match ending in (re) and (glob):
 
 Exit code:
 
-  $ false
+  $ (exit 1)
   [1]
 
 Write to stderr:

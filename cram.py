@@ -20,7 +20,7 @@ def istest(path):
     return not path.startswith('.') and path.endswith('.t')
 
 def findtests(paths):
-    """Yield tests in paths in naturally sorted order"""
+    """Yield tests in paths in sorted order"""
     for p in paths:
         if os.path.isdir(p):
             for root, dirs, files in os.walk(p):

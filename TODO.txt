@@ -21,8 +21,6 @@
 
 * hghave-like capability (exit 80 -> skipped).
 
-* Quiet mode.
-
 * Coverage integration.
 
 * unittest integration.
@@ -32,9 +30,7 @@
 * Two kinds of setup/teardown: for all tests or a group of tests, and
   for each test.
 
-* Annotate commands with comments at the end.
-
-* Vim syntax/Emacs mode.
+* Emacs mode.
 
 * If a specific file is specified, it should be run even if it doesn't
   end .t (for tests embedded in docs). This might require making the
@@ -43,6 +39,3 @@
 * On that note, make it possible to specify tests in Python doc
   strings (and similar things in other languages like Perl, Ruby,
   etc.).
-
-* Find a test case where previous mismatched lines cause a regex test
-  to not be matched with the right line. And then fix it somehow.

@@ -215,6 +215,7 @@ def log(msg=None, verbosemsg=None, verbose=False):
         sys.stdout.flush()
 
 def patch(cmd, diff):
+    """Run echo [lines from diff] | cmd -p0"""
     p = subprocess.Popen([cmd, '-p0'], bufsize=-1, stdin=subprocess.PIPE,
                          universal_newlines=True, close_fds=os.name == 'posix')
     for line in diff:

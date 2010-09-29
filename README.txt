@@ -14,8 +14,7 @@ Here's a snippet from `Cram's own test suite`_::
     The $PYTHON environment variable should be set when running this
     test from Python.
 
-      $ cp -R "$TESTDIR"/../examples .
-      $ [ -n "$PYTHON" ] || PYTHON=python
+      $ [ -n "$PYTHON" ] || PYTHON="`which python`"
       $ if [ -n "$COVERAGE" ]; then
       >   coverage erase
       >   alias cram="`which coverage` run -a $TESTDIR/../cram.py"
@@ -29,7 +28,7 @@ Here's a snippet from `Cram's own test suite`_::
       $ cram -h
       [Uu]sage: cram \[OPTIONS\] TESTS\.\.\. (re)
 
-      [Oo]ptions:
+      [Oo]ptions: (re)
         -h, --help         show this help message and exit
         -V, --version      show version information and exit
         -q, --quiet        don't print diffs
@@ -39,9 +38,6 @@ Here's a snippet from `Cram's own test suite`_::
         -n, --no           answer no to all questions
         --keep-tmpdir      keep temporary directories
         -E                 don't reset common environment variables
-      $ cram
-      [Uu]sage: cram \[OPTIONS\] TESTS\.\.\. (re)
-      [2]
 
 The format in a nutshell:
 

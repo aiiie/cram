@@ -276,7 +276,7 @@ def run(paths, quiet=False, verbose=False, basetmp=None, keeptmp=False,
                         shutil.rmtree(tmpdir)
 
             errpath = abspath + '.err'
-            if not postout:
+            if postout is None:
                 skipped += 1
                 log('s', 'skipped\n', verbose)
             elif not diff:

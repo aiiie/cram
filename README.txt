@@ -198,11 +198,10 @@ Version 0.4 (Sep. 28, 2010)
   ``.t`` file, and ``$CRAMTMP`` is set to the test runner's temporary
   directory.
 
-* ``-i``/``--interactive`` now requires ``patch(1)``. Instead of the
-  ``.err`` files replacing the original test file when answering yes
-  to a merge, the diff output is ran through ``patch(1)`` this
-  prevents matching regular expressions and globs from getting
-  clobbered.
+* ``-i``/``--interactive`` now requires ``patch(1)``. Instead of
+  ``.err`` files replacing ``.t`` during a merge, diffs are applied
+  using ``patch(1)``. This prevents matching regular expressions and
+  globs from getting clobbered.
 
 * Previous ``.err`` files are now removed when tests pass.
 

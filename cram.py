@@ -355,7 +355,6 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
         return
 
     conflicts = [('-y', opts.yes, '-n', opts.no),
-                 ('-q', opts.quiet, '-v', opts.verbose),
                  ('-q', opts.quiet, '-i', opts.interactive)]
     for s1, o1, s2, o2 in conflicts:
         if o1 and o2:

@@ -1,7 +1,6 @@
 The $PYTHON environment variable should be set when running this test
 from Python.
 
-  $ cp -R "$TESTDIR"/../examples .
   $ [ -n "$PYTHON" ] || PYTHON="`which python`"
   $ if [ -n "$COVERAGE" ]; then
   >   coverage erase
@@ -41,6 +40,11 @@ Usage:
   $ cram non-existent also-not-here
   no such file: non-existent
   [2]
+
+Copy in example tests:
+
+  $ cp -R "$TESTDIR"/../examples .
+  $ find . -name '*.err' -exec rm '{}' \;
 
 Run cram examples:
 

@@ -53,8 +53,8 @@ Run cram examples:
   # Ran 6 tests, 2 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\ba36d8e81925296ce794f1a3b35994a68\b.* (re)
-  .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
+  .*\b617ba7bef9af6e11007a60dd51725647\b.* (re)
+  .*\b0c3a7058bd9c13d20bceb56873a1fe98\b.* (re)
   $ rm examples/fail.t.err
 
 Verbose mode:
@@ -69,8 +69,8 @@ Verbose mode:
   # Ran 6 tests, 2 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\ba36d8e81925296ce794f1a3b35994a68\b.* (re)
-  .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
+  .*\b617ba7bef9af6e11007a60dd51725647\b.* (re)
+  .*\b0c3a7058bd9c13d20bceb56873a1fe98\b.* (re)
   $ rm examples/fail.t.err
 
 Interactive mode (don't merge):
@@ -79,39 +79,29 @@ Interactive mode (don't merge):
   !
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -3,21 +3,22 @@
-     $ echo 1
-     1
+  @@ -1,12 +1,13 @@
+   Wrong output and invalid regex:
+   
      $ echo 1
   -  2
   +  1
-     $ echo 1
-     1
-   
-   Invalid regex:
-   
      $ echo 1
   -  +++ (re)
   +  1
    
    Offset regular expression:
    
-     $ printf 'foo\nbar\nbaz\n\n1\nA\n@\n'
-     foo
-  +  bar
-     baz
+     $ printf 'foo\n\n1\n'
+  +  foo
      
      \d (re)
-     [A-Z] (re)
-  -  #
-  +  @
   Accept this change? [yN] n
   
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\ba36d8e81925296ce794f1a3b35994a68\b.* (re)
-  .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
+  .*\b617ba7bef9af6e11007a60dd51725647\b.* (re)
+  .*\b0c3a7058bd9c13d20bceb56873a1fe98\b.* (re)
 
 Interactive mode (merge):
 
@@ -120,39 +110,29 @@ Interactive mode (merge):
   !
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -3,21 +3,22 @@
-     $ echo 1
-     1
+  @@ -1,12 +1,13 @@
+   Wrong output and invalid regex:
+   
      $ echo 1
   -  2
   +  1
-     $ echo 1
-     1
-   
-   Invalid regex:
-   
      $ echo 1
   -  +++ (re)
   +  1
    
    Offset regular expression:
    
-     $ printf 'foo\nbar\nbaz\n\n1\nA\n@\n'
-     foo
-  +  bar
-     baz
+     $ printf 'foo\n\n1\n'
+  +  foo
      
      \d (re)
-     [A-Z] (re)
-  -  #
-  +  @
   Accept this change? [yN] y
   patching file */fail.t (glob)
   
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t
-  .*\be977f4580168266f943f775a1923d157\b.* (re)
+  .*\b570b9c79a3d19112b2ea91475a48610d\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
 
 Verbose interactive mode (answer manually and don't merge):
@@ -161,72 +141,52 @@ Verbose interactive mode (answer manually and don't merge):
   examples/fail.t: failed
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -3,21 +3,22 @@
-     $ echo 1
-     1
+  @@ -1,12 +1,13 @@
+   Wrong output and invalid regex:
+   
      $ echo 1
   -  2
   +  1
-     $ echo 1
-     1
-   
-   Invalid regex:
-   
      $ echo 1
   -  +++ (re)
   +  1
    
    Offset regular expression:
    
-     $ printf 'foo\nbar\nbaz\n\n1\nA\n@\n'
-     foo
-  +  bar
-     baz
+     $ printf 'foo\n\n1\n'
+  +  foo
      
      \d (re)
-     [A-Z] (re)
-  -  #
-  +  @
   Accept this change? [yN] Accept this change? [yN] # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\ba36d8e81925296ce794f1a3b35994a68\b.* (re)
-  .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
+  .*\b617ba7bef9af6e11007a60dd51725647\b.* (re)
+  .*\b0c3a7058bd9c13d20bceb56873a1fe98\b.* (re)
   $ printf 'bad\n\n' | cram -v -i examples/fail.t
   examples/fail.t: failed
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -3,21 +3,22 @@
-     $ echo 1
-     1
+  @@ -1,12 +1,13 @@
+   Wrong output and invalid regex:
+   
      $ echo 1
   -  2
   +  1
-     $ echo 1
-     1
-   
-   Invalid regex:
-   
      $ echo 1
   -  +++ (re)
   +  1
    
    Offset regular expression:
    
-     $ printf 'foo\nbar\nbaz\n\n1\nA\n@\n'
-     foo
-  +  bar
-     baz
+     $ printf 'foo\n\n1\n'
+  +  foo
      
      \d (re)
-     [A-Z] (re)
-  -  #
-  +  @
   Accept this change? [yN] Accept this change? [yN] # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\ba36d8e81925296ce794f1a3b35994a68\b.* (re)
-  .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
+  .*\b617ba7bef9af6e11007a60dd51725647\b.* (re)
+  .*\b0c3a7058bd9c13d20bceb56873a1fe98\b.* (re)
 
 Verbose interactive mode (answer manually and merge):
 
@@ -235,38 +195,28 @@ Verbose interactive mode (answer manually and merge):
   examples/fail.t: failed
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -3,21 +3,22 @@
-     $ echo 1
-     1
+  @@ -1,12 +1,13 @@
+   Wrong output and invalid regex:
+   
      $ echo 1
   -  2
   +  1
-     $ echo 1
-     1
-   
-   Invalid regex:
-   
      $ echo 1
   -  +++ (re)
   +  1
    
    Offset regular expression:
    
-     $ printf 'foo\nbar\nbaz\n\n1\nA\n@\n'
-     foo
-  +  bar
-     baz
+     $ printf 'foo\n\n1\n'
+  +  foo
      
      \d (re)
-     [A-Z] (re)
-  -  #
-  +  @
   Accept this change? [yN] Accept this change? [yN] patching file */fail.t (glob)
   examples/fail.t: merged output
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t
-  .*\be977f4580168266f943f775a1923d157\b.* (re)
+  .*\b570b9c79a3d19112b2ea91475a48610d\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
 
 Test missing patch(1) and patch(1) error:
@@ -284,32 +234,22 @@ Test missing patch(1) and patch(1) error:
   !
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -3,21 +3,22 @@
-     $ echo 1
-     1
+  @@ -1,12 +1,13 @@
+   Wrong output and invalid regex:
+   
      $ echo 1
   -  2
   +  1
-     $ echo 1
-     1
-   
-   Invalid regex:
-   
      $ echo 1
   -  +++ (re)
   +  1
    
    Offset regular expression:
    
-     $ printf 'foo\nbar\nbaz\n\n1\nA\n@\n'
-     foo
-  +  bar
-     baz
+     $ printf 'foo\n\n1\n'
+  +  foo
      
      \d (re)
-     [A-Z] (re)
-  -  #
-  +  @
   Accept this change? [yN] y
   patch failed
   examples/fail.t: merge failed
@@ -317,8 +257,8 @@ Test missing patch(1) and patch(1) error:
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\ba36d8e81925296ce794f1a3b35994a68\b.* (re)
-  .*\b6aed028cafd917d35ce7db5029e8f559\b.* (re)
+  .*\b617ba7bef9af6e11007a60dd51725647\b.* (re)
+  .*\b0c3a7058bd9c13d20bceb56873a1fe98\b.* (re)
   $ rm patch examples/fail.t.err
 
 Test that a fixed .err file is deleted:

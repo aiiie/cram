@@ -1,23 +1,12 @@
-Wrong output:
+Wrong output and invalid regex:
 
-  $ echo 1
-  1
   $ echo 1
   2
-  $ echo 1
-  1
-
-Invalid regex:
-
   $ echo 1
   +++ (re)
 
 Offset regular expression:
 
-  $ printf 'foo\nbar\nbaz\n\n1\nA\n@\n'
-  foo
-  baz
+  $ printf 'foo\n\n1\n'
   
   \d (re)
-  [A-Z] (re)
-  #

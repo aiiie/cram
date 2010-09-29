@@ -141,7 +141,6 @@ def test(path):
 
     after = {}
     refout, postout = [], []
-
     i = pos = prepos = -1
     for i, line in enumerate(f):
         refout.append(line)
@@ -249,8 +248,7 @@ def run(paths, quiet=False, verbose=False, basetmp=None, keeptmp=False,
     """
     cwd = os.getcwd()
     seen = set()
-    skipped = 0
-    failed = 0
+    skipped = failed = 0
     for path in findtests(paths):
         abspath = os.path.abspath(path)
         if abspath in seen:

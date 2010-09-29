@@ -53,8 +53,8 @@ Run cram examples:
   # Ran 6 tests, 2 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b617ba7bef9af6e11007a60dd51725647\b.* (re)
-  .*\b0c3a7058bd9c13d20bceb56873a1fe98\b.* (re)
+  .*\bec9a94814a64428cd2327580164a01b9\b.* (re)
+  .*\b114b031c5361553b32d9337a31f39ce5\b.* (re)
   $ rm examples/fail.t.err
 
 Verbose mode:
@@ -69,8 +69,8 @@ Verbose mode:
   # Ran 6 tests, 2 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b617ba7bef9af6e11007a60dd51725647\b.* (re)
-  .*\b0c3a7058bd9c13d20bceb56873a1fe98\b.* (re)
+  .*\bec9a94814a64428cd2327580164a01b9\b.* (re)
+  .*\b114b031c5361553b32d9337a31f39ce5\b.* (re)
   $ rm examples/fail.t.err
 
 Interactive mode (don't merge):
@@ -79,14 +79,18 @@ Interactive mode (don't merge):
   !
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -1,12 +1,13 @@
-   Wrong output and invalid regex:
+  @@ -1,14 +1,15 @@
+   Wrong output and bad regexes:
    
      $ echo 1
   -  2
   +  1
-     $ echo 1
+     $ printf '1\nfoo\n1\n'
   -  +++ (re)
+  -  foo\ (re)
+  -   (re)
+  +  1
+  +  foo
   +  1
    
    Offset regular expression:
@@ -100,8 +104,8 @@ Interactive mode (don't merge):
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b617ba7bef9af6e11007a60dd51725647\b.* (re)
-  .*\b0c3a7058bd9c13d20bceb56873a1fe98\b.* (re)
+  .*\bec9a94814a64428cd2327580164a01b9\b.* (re)
+  .*\b114b031c5361553b32d9337a31f39ce5\b.* (re)
 
 Interactive mode (merge):
 
@@ -110,14 +114,18 @@ Interactive mode (merge):
   !
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -1,12 +1,13 @@
-   Wrong output and invalid regex:
+  @@ -1,14 +1,15 @@
+   Wrong output and bad regexes:
    
      $ echo 1
   -  2
   +  1
-     $ echo 1
+     $ printf '1\nfoo\n1\n'
   -  +++ (re)
+  -  foo\ (re)
+  -   (re)
+  +  1
+  +  foo
   +  1
    
    Offset regular expression:
@@ -132,7 +140,7 @@ Interactive mode (merge):
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t
-  .*\b570b9c79a3d19112b2ea91475a48610d\b.* (re)
+  .*\b44b27872ea5380df986e19ba23aed934\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
 
 Verbose interactive mode (answer manually and don't merge):
@@ -141,14 +149,18 @@ Verbose interactive mode (answer manually and don't merge):
   examples/fail.t: failed
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -1,12 +1,13 @@
-   Wrong output and invalid regex:
+  @@ -1,14 +1,15 @@
+   Wrong output and bad regexes:
    
      $ echo 1
   -  2
   +  1
-     $ echo 1
+     $ printf '1\nfoo\n1\n'
   -  +++ (re)
+  -  foo\ (re)
+  -   (re)
+  +  1
+  +  foo
   +  1
    
    Offset regular expression:
@@ -160,20 +172,24 @@ Verbose interactive mode (answer manually and don't merge):
   Accept this change? [yN] Accept this change? [yN] # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b617ba7bef9af6e11007a60dd51725647\b.* (re)
-  .*\b0c3a7058bd9c13d20bceb56873a1fe98\b.* (re)
+  .*\bec9a94814a64428cd2327580164a01b9\b.* (re)
+  .*\b114b031c5361553b32d9337a31f39ce5\b.* (re)
   $ printf 'bad\n\n' | cram -v -i examples/fail.t
   examples/fail.t: failed
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -1,12 +1,13 @@
-   Wrong output and invalid regex:
+  @@ -1,14 +1,15 @@
+   Wrong output and bad regexes:
    
      $ echo 1
   -  2
   +  1
-     $ echo 1
+     $ printf '1\nfoo\n1\n'
   -  +++ (re)
+  -  foo\ (re)
+  -   (re)
+  +  1
+  +  foo
   +  1
    
    Offset regular expression:
@@ -185,8 +201,8 @@ Verbose interactive mode (answer manually and don't merge):
   Accept this change? [yN] Accept this change? [yN] # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b617ba7bef9af6e11007a60dd51725647\b.* (re)
-  .*\b0c3a7058bd9c13d20bceb56873a1fe98\b.* (re)
+  .*\bec9a94814a64428cd2327580164a01b9\b.* (re)
+  .*\b114b031c5361553b32d9337a31f39ce5\b.* (re)
 
 Verbose interactive mode (answer manually and merge):
 
@@ -195,14 +211,18 @@ Verbose interactive mode (answer manually and merge):
   examples/fail.t: failed
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -1,12 +1,13 @@
-   Wrong output and invalid regex:
+  @@ -1,14 +1,15 @@
+   Wrong output and bad regexes:
    
      $ echo 1
   -  2
   +  1
-     $ echo 1
+     $ printf '1\nfoo\n1\n'
   -  +++ (re)
+  -  foo\ (re)
+  -   (re)
+  +  1
+  +  foo
   +  1
    
    Offset regular expression:
@@ -216,7 +236,7 @@ Verbose interactive mode (answer manually and merge):
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t
-  .*\b570b9c79a3d19112b2ea91475a48610d\b.* (re)
+  .*\b44b27872ea5380df986e19ba23aed934\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
 
 Test missing patch(1) and patch(1) error:
@@ -234,14 +254,18 @@ Test missing patch(1) and patch(1) error:
   !
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -1,12 +1,13 @@
-   Wrong output and invalid regex:
+  @@ -1,14 +1,15 @@
+   Wrong output and bad regexes:
    
      $ echo 1
   -  2
   +  1
-     $ echo 1
+     $ printf '1\nfoo\n1\n'
   -  +++ (re)
+  -  foo\ (re)
+  -   (re)
+  +  1
+  +  foo
   +  1
    
    Offset regular expression:
@@ -257,8 +281,8 @@ Test missing patch(1) and patch(1) error:
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b617ba7bef9af6e11007a60dd51725647\b.* (re)
-  .*\b0c3a7058bd9c13d20bceb56873a1fe98\b.* (re)
+  .*\bec9a94814a64428cd2327580164a01b9\b.* (re)
+  .*\b114b031c5361553b32d9337a31f39ce5\b.* (re)
   $ rm patch examples/fail.t.err
 
 Test that a fixed .err file is deleted:

@@ -1,9 +1,11 @@
-Wrong output and invalid regex:
+Wrong output and bad regexes:
 
   $ echo 1
   2
-  $ echo 1
+  $ printf '1\nfoo\n1\n'
   +++ (re)
+  foo\ (re)
+   (re)
 
 Offset regular expression:
 

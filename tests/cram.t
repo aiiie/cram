@@ -48,7 +48,7 @@ Copy in example tests:
 
 Run cram examples:
 
-  $ cram -q examples examples/fail.t examples/.hidden.t
+  $ cram -q examples examples/fail.t
   .s.!s.
   # Ran 6 tests, 2 skipped, 1 failed.
   [1]
@@ -59,7 +59,7 @@ Run cram examples:
 
 Verbose mode:
 
-  $ cram -q -v examples examples/fail.t examples/.hidden.t
+  $ cram -q -v examples examples/fail.t
   examples/bare.t: passed
   examples/empty.t: empty
   examples/env.t: passed

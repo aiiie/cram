@@ -15,16 +15,15 @@ __all__ = ['main', 'test']
 
 def findtests(paths):
     """Yield tests in paths in sorted order"""
-    istest = lambda p: not p.startswith('.') and p.endswith('.t')
     for p in paths:
         if os.path.isdir(p):
             for root, dirs, files in os.walk(p):
                 if os.path.basename(root).startswith('.'):
                     continue
                 for f in sorted(files):
-                    if istest(f):
+                    if not f.startswith('.') and f.endswith('.t'):
                         yield os.path.normpath(os.path.join(root, f))
-        elif istest(os.path.basename(p)):
+        else:
             yield os.path.normpath(p)
 
 def match(pattern, s):

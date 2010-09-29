@@ -199,9 +199,9 @@ Version 0.4 (Sep. 28, 2010)
   directory.
 
 * ``-i``/``--interactive`` now requires ``patch(1)``. Instead of
-  ``.err`` files replacing ``.t`` during merges, diffs are applied
-  using ``patch(1)``. This prevents matching regular expressions and
-  globs from getting clobbered.
+  ``.err`` files replacing ``.t`` files during merges, diffs are
+  applied using ``patch(1)``. This prevents matching regular
+  expressions and globs from getting clobbered.
 
 * Previous ``.err`` files are now removed when tests pass.
 

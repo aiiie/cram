@@ -2,7 +2,7 @@ The $PYTHON environment variable should be set when running this test
 from Python.
 
   $ cp -R "$TESTDIR"/../examples .
-  $ [ -n "$PYTHON" ] || PYTHON=python
+  $ [ -n "$PYTHON" ] || PYTHON="`which python`"
   $ if [ -n "$COVERAGE" ]; then
   >   coverage erase
   >   alias cram="`which coverage` run -a $TESTDIR/../cram.py"

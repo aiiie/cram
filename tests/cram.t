@@ -48,37 +48,8 @@ Copy in example tests:
 
 Run cram examples:
 
-  $ cram examples examples/fail.t examples/.hidden.t
-  .s.!
-  --- */examples/fail.t (glob)
-  +++ */examples/fail.t.err (glob)
-  @@ -3,21 +3,22 @@
-     $ echo 1
-     1
-     $ echo 1
-  -  2
-  +  1
-     $ echo 1
-     1
-   
-   Invalid regex:
-   
-     $ echo 1
-  -  +++ (re)
-  +  1
-   
-   Offset regular expression:
-   
-     $ printf 'foo\nbar\nbaz\n\n1\nA\n@\n'
-     foo
-  +  bar
-     baz
-     
-     \d (re)
-     [A-Z] (re)
-  -  #
-  +  @
-  s.
+  $ cram -q examples examples/fail.t examples/.hidden.t
+  .s.!s.
   # Ran 6 tests, 2 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
@@ -88,39 +59,11 @@ Run cram examples:
 
 Verbose mode:
 
-  $ cram -v examples examples/fail.t examples/.hidden.t
+  $ cram -q -v examples examples/fail.t examples/.hidden.t
   examples/bare.t: passed
   examples/empty.t: empty
   examples/env.t: passed
   examples/fail.t: failed
-  --- */examples/fail.t (glob)
-  +++ */examples/fail.t.err (glob)
-  @@ -3,21 +3,22 @@
-     $ echo 1
-     1
-     $ echo 1
-  -  2
-  +  1
-     $ echo 1
-     1
-   
-   Invalid regex:
-   
-     $ echo 1
-  -  +++ (re)
-  +  1
-   
-   Offset regular expression:
-   
-     $ printf 'foo\nbar\nbaz\n\n1\nA\n@\n'
-     foo
-  +  bar
-     baz
-     
-     \d (re)
-     [A-Z] (re)
-  -  #
-  +  @
   examples/skip.t: skipped
   examples/test.t: passed
   # Ran 6 tests, 2 skipped, 1 failed.

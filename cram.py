@@ -229,16 +229,11 @@ def patch(cmd, diff):
     p.wait()
     return p.returncode == 0
 
-def run(paths, quiet=False, verbose=False, basetmp=None, keeptmp=False,
-        patchcmd=None, answer=None):
-    """Run tests in paths.
+def run(paths, tmpdir, quiet=False, verbose=False, patchcmd=None, answer=None):
+    """Run tests in paths in tmpdir.
 
     If quiet is True, diffs aren't printed. If verbose is True,
     filenames and status information are printed.
-
-    If basetmp is set, each test is run in a random temporary
-    directory inside basetmp. If keeptmp is also True, temporary
-    directories are preserved after use.
 
     If patchcmd is set, a prompt is written to stdout asking if
     changed output should be merged back into the original test. The
@@ -259,18 +254,13 @@ def run(paths, quiet=False, verbose=False, basetmp=None, keeptmp=False,
             skipped += 1
             log('s', 'empty\n', verbose)
         else:
-            if basetmp:
-                tmpdir = os.path.join(basetmp, os.path.basename(path))
-                os.mkdir(tmpdir)
+            testdir = os.path.join(tmpdir, os.path.basename(path))
+            os.mkdir(testdir)
             try:
-                if basetmp:
-                    os.chdir(tmpdir)
+                os.chdir(testdir)
                 refout, postout, diff = test(abspath)
             finally:
-                if basetmp:
-                    os.chdir(cwd)
-                    if not keeptmp:
-                        shutil.rmtree(tmpdir)
+                os.chdir(cwd)
 
             errpath = abspath + '.err'
             if postout is None:
@@ -375,8 +365,8 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
         sys.stderr.write('no such file: %s\n' % badpaths[0])
         return 2
 
-    basetmp = os.environ['CRAMTMP'] = tempfile.mkdtemp('', 'cramtests-')
-    proctmp = os.path.join(basetmp, 'tmp')
+    tmpdir = os.environ['CRAMTMP'] = tempfile.mkdtemp('', 'cramtests-')
+    proctmp = os.path.join(tmpdir, 'tmp')
     os.mkdir(proctmp)
     for s in ('TMPDIR', 'TEMP', 'TMP'):
         os.environ[s] = proctmp
@@ -397,11 +387,10 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
         answer = None
 
     try:
-        return run(paths, opts.quiet, opts.verbose, basetmp, opts.keep_tmpdir,
-                   patchcmd, answer)
+        return run(paths, tmpdir, opts.quiet, opts.verbose, patchcmd, answer)
     finally:
         if not opts.keep_tmpdir:
-            shutil.rmtree(basetmp)
+            shutil.rmtree(tmpdir)
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv[1:]))

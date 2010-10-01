@@ -338,5 +338,21 @@ Don't sterilize environment:
   [1]
   $ rm examples/env.t.err
 
+Test --keep-tmpdir:
+
+  $ cram -q --keep-tmpdir examples/test.t | while read line; do
+  >   echo "$line" 1>&2
+  >   msg=`echo "$line" | cut -d ' ' -f 1-4`
+  >   if [ "$msg" = '# Kept temporary directory:' ]; then
+  >     echo "$line" | cut -d ' ' -f 5
+  >   fi
+  > done > keeptmp
+  .
+  # Ran 1 tests, 0 skipped, 0 failed.
+  # Kept temporary directory: */cramtests-* (glob)
+  $ ls "`cat keeptmp`" | sort
+  test.t
+  tmp
+
 Note: We can't set the locale to foo because some shells will issue
 warnings for invalid locales.

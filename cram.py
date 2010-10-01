@@ -389,7 +389,9 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
     try:
         return run(paths, tmpdir, opts.quiet, opts.verbose, patchcmd, answer)
     finally:
-        if not opts.keep_tmpdir:
+        if opts.keep_tmpdir:
+            log('# Kept temporary directory: %s\n' % tmpdir)
+        else:
             shutil.rmtree(tmpdir)
 
 if __name__ == '__main__':

@@ -307,9 +307,6 @@ Test that a fixed .err file is deleted:
 
 Don't sterilize environment:
 
-Note: We can't set the locale to foo because some shells will issue
-warnings for invalid locales.
-
   $ TZ=foo; export TZ
   $ CDPATH=foo; export CDPATH
   $ COLUMNS=4815162342; export COLUMNS
@@ -340,3 +337,6 @@ warnings for invalid locales.
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ rm examples/env.t.err
+
+Note: We can't set the locale to foo because some shells will issue
+warnings for invalid locales.

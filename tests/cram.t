@@ -4,7 +4,7 @@ from Python.
   $ [ -n "$PYTHON" ] || PYTHON="`which python`"
   $ if [ -n "$COVERAGE" ]; then
   >   coverage erase
-  >   alias cram="`which coverage` run -a $TESTDIR/../cram.py"
+  >   alias cram="`which coverage` run --branch -a $TESTDIR/../cram.py"
   > else
   >   alias cram="$PYTHON $TESTDIR/../cram.py"
   > fi

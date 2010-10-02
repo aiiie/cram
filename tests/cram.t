@@ -309,7 +309,7 @@ Don't sterilize environment:
 
   $ TZ=foo; export TZ
   $ CDPATH=foo; export CDPATH
-  $ COLUMNS=4815162342; export COLUMNS
+  $ COLUMNS=42; export COLUMNS
   $ GREP_OPTIONS=foo; export GREP_OPTIONS
   $ cram -E examples/env.t
   !
@@ -326,7 +326,7 @@ Don't sterilize environment:
   +  foo
      $ echo "$COLUMNS"
   -  80
-  +  4815162342
+  +  42
      $ echo "$GREP_OPTIONS"
   -  
   +  foo

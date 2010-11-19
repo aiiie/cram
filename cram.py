@@ -82,7 +82,7 @@ class SequenceMatcher(difflib.SequenceMatcher, object):
         # Because of this, we can end up doing the same matches many times.
         matches = []
         for n, (el, line) in enumerate(zip(self.a[alo:ahi], self.b[blo:bhi])):
-            if match(el, line):
+            if el != line and match(el, line):
                 # This fools the superclass's method into thinking that the
                 # regex/glob in a is identical to b by replacing a's line (the
                 # expected output) with b's line (the actual output).

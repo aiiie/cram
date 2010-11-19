@@ -43,14 +43,14 @@ Write to stderr:
 
 No newline:
 
-  $ python -c 'import sys; sys.stdout.write("foo"); sys.stdout.flush()'
+  $ printf 'foo'
   foo%
-  $ python -c 'import sys; sys.stdout.write("foo\nbar"); sys.stdout.flush()'
+  $ printf 'foo\nbar'
   foo
   bar%
-  $ python -c 'import sys; sys.stdout.write("  "); sys.stdout.flush()'
+  $ printf '  '
     %
-  $ python -c 'import sys; sys.stdout.write("  \n  "); sys.stdout.flush()'
+  $ printf '  \n  '
     
     %
   $ echo foo

@@ -26,10 +26,10 @@ def findtests(paths):
         else:
             yield os.path.normpath(p)
 
-def match(pattern, s):
-    """Match pattern or return False if invalid.
+def regex(pattern, s):
+    """Match a regular expression or return False if invalid.
 
-    >>> [bool(match(r, 'foobar')) for r in ('foo.*', '***')]
+    >>> [bool(regex(r, 'foobar')) for r in ('foo.*', '***')]
     [True, False]
     """
     try:
@@ -60,7 +60,17 @@ def glob(el, l):
             res += '.'
         else:
             res += re.escape(c)
-    return match(res, l)
+    return regex(res, l)
+
+annotations = {'glob': glob, 're': regex}
+
+def match(el, l):
+    """Match patterns based on annotations"""
+    for k in annotations:
+        ann = ' (%s)\n' % k
+        if el.endswith(ann) and annotations[k](el[:-len(ann)], l[:-1]):
+            return True
+    return False
 
 class SequenceMatcher(difflib.SequenceMatcher, object):
     """Like difflib.SequenceMatcher, but matches globs and regexes"""
@@ -72,8 +82,7 @@ class SequenceMatcher(difflib.SequenceMatcher, object):
         # Because of this, we can end up doing the same matches many times.
         matches = []
         for n, (el, line) in enumerate(zip(self.a[alo:ahi], self.b[blo:bhi])):
-            if (el.endswith(" (re)\n") and match(el[:-6], line[:-1]) or
-                el.endswith(" (glob)\n") and glob(el[:-8], line[:-1])):
+            if match(el, line):
                 # This fools the superclass's method into thinking that the
                 # regex/glob in a is identical to b by replacing a's line (the
                 # expected output) with b's line (the actual output).

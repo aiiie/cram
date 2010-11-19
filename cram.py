@@ -125,6 +125,14 @@ def unified_diff(a, b, fromfile='', tofile='', fromfiledate='',
                 for line in b[j1:j2]:
                     yield '+' + line
 
+needescape = re.compile(r'[\x00-\x09\x0b-\x1f\x7f-\xff]').search
+escapesub = re.compile(r'[\x00-\x09\x0b-\x1f\\\x7f-\xff]').sub
+escapemap = dict((chr(i), r'\x%02x' % i) for i in range(256))
+escapemap.update({'\\': '\\\\', '\r': r'\r', '\t': r'\t'})
+
+def escape(s):
+    return escapesub(lambda m: escapemap[m.group(0)], s[:-1]) + ' (esc)\n'
+
 def test(path):
     """Run test at path and return input, output, and diff.
 
@@ -182,6 +190,8 @@ def test(path):
             postout += after.pop(pos, [])
             pos = int(line.split()[1])
         else:
+            if needescape(line):
+                line = escape(line)
             postout.append('  ' + line)
     postout += after.pop(pos, [])
 

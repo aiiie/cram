@@ -53,8 +53,8 @@ Run cram examples:
   # Ran 6 tests, 2 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\bec9a94814a64428cd2327580164a01b9\b.* (re)
-  .*\b114b031c5361553b32d9337a31f39ce5\b.* (re)
+  .*\b2acb5acec51dc4bca77709a4cda84b30\b.* (re)
+  .*\bf846f866c4635b3028e87735d7161111\b.* (re)
   $ rm examples/fail.t.err
 
 Verbose mode:
@@ -69,8 +69,8 @@ Verbose mode:
   # Ran 6 tests, 2 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\bec9a94814a64428cd2327580164a01b9\b.* (re)
-  .*\b114b031c5361553b32d9337a31f39ce5\b.* (re)
+  .*\b2acb5acec51dc4bca77709a4cda84b30\b.* (re)
+  .*\bf846f866c4635b3028e87735d7161111\b.* (re)
   $ rm examples/fail.t.err
 
 Interactive mode (don't merge):
@@ -79,7 +79,16 @@ Interactive mode (don't merge):
   !
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -1,14 +1,15 @@
+  @@ -1,21 +1,22 @@
+   Output needing escaping:
+   
+     $ printf '\00\01\02\03\04\05\06\07\010\011\013\014\016\017\020\021\022\n'
+  -  foo
+  +  \x00\x01\x02\x03\x04\x05\x06\x07\x08\t\x0b\x0c\x0e\x0f\x10\x11\x12 (esc)
+     $ printf '\023\024\025\026\027\030\031\032\033\034\035\036\037\040\047\n'
+  -  bar
+  +  \x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f ' (esc)
+   
    Wrong output and bad regexes:
    
      $ echo 1
@@ -104,8 +113,8 @@ Interactive mode (don't merge):
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\bec9a94814a64428cd2327580164a01b9\b.* (re)
-  .*\b114b031c5361553b32d9337a31f39ce5\b.* (re)
+  .*\b2acb5acec51dc4bca77709a4cda84b30\b.* (re)
+  .*\bf846f866c4635b3028e87735d7161111\b.* (re)
 
 Interactive mode (merge):
 
@@ -114,7 +123,16 @@ Interactive mode (merge):
   !
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -1,14 +1,15 @@
+  @@ -1,21 +1,22 @@
+   Output needing escaping:
+   
+     $ printf '\00\01\02\03\04\05\06\07\010\011\013\014\016\017\020\021\022\n'
+  -  foo
+  +  \x00\x01\x02\x03\x04\x05\x06\x07\x08\t\x0b\x0c\x0e\x0f\x10\x11\x12 (esc)
+     $ printf '\023\024\025\026\027\030\031\032\033\034\035\036\037\040\047\n'
+  -  bar
+  +  \x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f ' (esc)
+   
    Wrong output and bad regexes:
    
      $ echo 1
@@ -140,7 +158,7 @@ Interactive mode (merge):
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t
-  .*\b44b27872ea5380df986e19ba23aed934\b.* (re)
+  .*\b699925ff4bee53873a304438b4a4dc6d\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
 
 Verbose interactive mode (answer manually and don't merge):
@@ -149,7 +167,16 @@ Verbose interactive mode (answer manually and don't merge):
   examples/fail.t: failed
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -1,14 +1,15 @@
+  @@ -1,21 +1,22 @@
+   Output needing escaping:
+   
+     $ printf '\00\01\02\03\04\05\06\07\010\011\013\014\016\017\020\021\022\n'
+  -  foo
+  +  \x00\x01\x02\x03\x04\x05\x06\x07\x08\t\x0b\x0c\x0e\x0f\x10\x11\x12 (esc)
+     $ printf '\023\024\025\026\027\030\031\032\033\034\035\036\037\040\047\n'
+  -  bar
+  +  \x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f ' (esc)
+   
    Wrong output and bad regexes:
    
      $ echo 1
@@ -172,13 +199,22 @@ Verbose interactive mode (answer manually and don't merge):
   Accept this change? [yN] Accept this change? [yN] # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\bec9a94814a64428cd2327580164a01b9\b.* (re)
-  .*\b114b031c5361553b32d9337a31f39ce5\b.* (re)
+  .*\b2acb5acec51dc4bca77709a4cda84b30\b.* (re)
+  .*\bf846f866c4635b3028e87735d7161111\b.* (re)
   $ printf 'bad\n\n' | cram -v -i examples/fail.t
   examples/fail.t: failed
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -1,14 +1,15 @@
+  @@ -1,21 +1,22 @@
+   Output needing escaping:
+   
+     $ printf '\00\01\02\03\04\05\06\07\010\011\013\014\016\017\020\021\022\n'
+  -  foo
+  +  \x00\x01\x02\x03\x04\x05\x06\x07\x08\t\x0b\x0c\x0e\x0f\x10\x11\x12 (esc)
+     $ printf '\023\024\025\026\027\030\031\032\033\034\035\036\037\040\047\n'
+  -  bar
+  +  \x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f ' (esc)
+   
    Wrong output and bad regexes:
    
      $ echo 1
@@ -201,8 +237,8 @@ Verbose interactive mode (answer manually and don't merge):
   Accept this change? [yN] Accept this change? [yN] # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\bec9a94814a64428cd2327580164a01b9\b.* (re)
-  .*\b114b031c5361553b32d9337a31f39ce5\b.* (re)
+  .*\b2acb5acec51dc4bca77709a4cda84b30\b.* (re)
+  .*\bf846f866c4635b3028e87735d7161111\b.* (re)
 
 Verbose interactive mode (answer manually and merge):
 
@@ -211,7 +247,16 @@ Verbose interactive mode (answer manually and merge):
   examples/fail.t: failed
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -1,14 +1,15 @@
+  @@ -1,21 +1,22 @@
+   Output needing escaping:
+   
+     $ printf '\00\01\02\03\04\05\06\07\010\011\013\014\016\017\020\021\022\n'
+  -  foo
+  +  \x00\x01\x02\x03\x04\x05\x06\x07\x08\t\x0b\x0c\x0e\x0f\x10\x11\x12 (esc)
+     $ printf '\023\024\025\026\027\030\031\032\033\034\035\036\037\040\047\n'
+  -  bar
+  +  \x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f ' (esc)
+   
    Wrong output and bad regexes:
    
      $ echo 1
@@ -236,7 +281,7 @@ Verbose interactive mode (answer manually and merge):
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t
-  .*\b44b27872ea5380df986e19ba23aed934\b.* (re)
+  .*\b699925ff4bee53873a304438b4a4dc6d\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
 
 Test missing patch(1) and patch(1) error:
@@ -254,7 +299,16 @@ Test missing patch(1) and patch(1) error:
   !
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -1,14 +1,15 @@
+  @@ -1,21 +1,22 @@
+   Output needing escaping:
+   
+     $ printf '\00\01\02\03\04\05\06\07\010\011\013\014\016\017\020\021\022\n'
+  -  foo
+  +  \x00\x01\x02\x03\x04\x05\x06\x07\x08\t\x0b\x0c\x0e\x0f\x10\x11\x12 (esc)
+     $ printf '\023\024\025\026\027\030\031\032\033\034\035\036\037\040\047\n'
+  -  bar
+  +  \x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f ' (esc)
+   
    Wrong output and bad regexes:
    
      $ echo 1
@@ -281,8 +335,8 @@ Test missing patch(1) and patch(1) error:
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\bec9a94814a64428cd2327580164a01b9\b.* (re)
-  .*\b114b031c5361553b32d9337a31f39ce5\b.* (re)
+  .*\b2acb5acec51dc4bca77709a4cda84b30\b.* (re)
+  .*\bf846f866c4635b3028e87735d7161111\b.* (re)
   $ rm patch examples/fail.t.err
 
 Test that a fixed .err file is deleted:

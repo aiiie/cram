@@ -43,15 +43,17 @@ Write to stderr:
 
 No newline:
 
-  $ printf 'foo'
-  foo%
+  $ printf foo
+  foo (no-eol)
   $ printf 'foo\nbar'
   foo
-  bar%
+  bar (no-eol)
   $ printf '  '
-    %
+     (no-eol)
   $ printf '  \n  '
     
-    %
+     (no-eol)
   $ echo foo
   foo
+  $ printf foo
+  foo (no-eol)

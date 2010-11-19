@@ -175,7 +175,7 @@ def test(path):
         if line.startswith(salt):
             presalt = postout.pop()
             if presalt != '  \n':
-                postout.append(presalt[:-1] + '%\n')
+                postout.append(presalt[:-1] + ' (no-eol)\n')
             ret = int(line.split()[2])
             if ret != 0:
                 postout.append('  [%s]\n' % ret)

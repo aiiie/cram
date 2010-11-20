@@ -42,6 +42,12 @@ Usage:
   no such file: non-existent
   [2]
 
+Options in an environment variable:
+
+  $ CRAM='-y -n' cram
+  options -y and -n are mutually exclusive
+  [2]
+
 Copy in example tests:
 
   $ cp -R "$TESTDIR"/../examples .

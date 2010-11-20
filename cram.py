@@ -346,6 +346,11 @@ def main(args):
     """
     from optparse import OptionParser
 
+    eargs = os.environ.get('CRAM', '').strip()
+    if eargs:
+        import shlex
+        args += shlex.split(eargs)
+
     p = OptionParser(usage='cram [OPTIONS] TESTS...')
     p.add_option('-V', '--version', action='store_true',
                  help='show version information and exit')

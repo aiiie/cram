@@ -1,2 +1,2 @@
-  $ echo foo
-  foo
+  $ printf foo
+  foo (no-eol)

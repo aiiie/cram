@@ -53,8 +53,8 @@ Run cram examples:
   # Ran 7 tests, 2 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b2acb5acec51dc4bca77709a4cda84b30\b.* (re)
-  .*\bf846f866c4635b3028e87735d7161111\b.* (re)
+  .*\b0f598c2b7b8ca5bcb8880e492ff6b452\b.* (re)
+  .*\b7a23dfa85773c77648f619ad0f9df554\b.* (re)
   $ rm examples/fail.t.err
 
 Verbose mode:
@@ -70,8 +70,8 @@ Verbose mode:
   # Ran 7 tests, 2 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b2acb5acec51dc4bca77709a4cda84b30\b.* (re)
-  .*\bf846f866c4635b3028e87735d7161111\b.* (re)
+  .*\b0f598c2b7b8ca5bcb8880e492ff6b452\b.* (re)
+  .*\b7a23dfa85773c77648f619ad0f9df554\b.* (re)
   $ rm examples/fail.t.err
 
 Interactive mode (don't merge):
@@ -80,7 +80,7 @@ Interactive mode (don't merge):
   !
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -1,21 +1,22 @@
+  @@ -1,18 +1,18 @@
    Output needing escaping:
    
      $ printf '\00\01\02\03\04\05\06\07\010\011\013\014\016\017\020\021\022\n'
@@ -103,6 +103,9 @@ Interactive mode (don't merge):
   +  foo
   +  1
    
+   Filler to force a second diff hunk:
+   
+  @@ -20,5 +20,6 @@
    Offset regular expression:
    
      $ printf 'foo\n\n1\n'
@@ -114,8 +117,8 @@ Interactive mode (don't merge):
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b2acb5acec51dc4bca77709a4cda84b30\b.* (re)
-  .*\bf846f866c4635b3028e87735d7161111\b.* (re)
+  .*\b0f598c2b7b8ca5bcb8880e492ff6b452\b.* (re)
+  .*\b7a23dfa85773c77648f619ad0f9df554\b.* (re)
 
 Interactive mode (merge):
 
@@ -124,7 +127,7 @@ Interactive mode (merge):
   !
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -1,21 +1,22 @@
+  @@ -1,18 +1,18 @@
    Output needing escaping:
    
      $ printf '\00\01\02\03\04\05\06\07\010\011\013\014\016\017\020\021\022\n'
@@ -147,6 +150,9 @@ Interactive mode (merge):
   +  foo
   +  1
    
+   Filler to force a second diff hunk:
+   
+  @@ -20,5 +20,6 @@
    Offset regular expression:
    
      $ printf 'foo\n\n1\n'
@@ -159,7 +165,7 @@ Interactive mode (merge):
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t
-  .*\b699925ff4bee53873a304438b4a4dc6d\b.* (re)
+  .*\b1d9e5b527f01fbf2d9b1c121d005108c\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
 
 Verbose interactive mode (answer manually and don't merge):
@@ -168,7 +174,7 @@ Verbose interactive mode (answer manually and don't merge):
   examples/fail.t: failed
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -1,21 +1,22 @@
+  @@ -1,18 +1,18 @@
    Output needing escaping:
    
      $ printf '\00\01\02\03\04\05\06\07\010\011\013\014\016\017\020\021\022\n'
@@ -191,6 +197,9 @@ Verbose interactive mode (answer manually and don't merge):
   +  foo
   +  1
    
+   Filler to force a second diff hunk:
+   
+  @@ -20,5 +20,6 @@
    Offset regular expression:
    
      $ printf 'foo\n\n1\n'
@@ -200,13 +209,13 @@ Verbose interactive mode (answer manually and don't merge):
   Accept this change? [yN] Accept this change? [yN] # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b2acb5acec51dc4bca77709a4cda84b30\b.* (re)
-  .*\bf846f866c4635b3028e87735d7161111\b.* (re)
+  .*\b0f598c2b7b8ca5bcb8880e492ff6b452\b.* (re)
+  .*\b7a23dfa85773c77648f619ad0f9df554\b.* (re)
   $ printf 'bad\n\n' | cram -v -i examples/fail.t
   examples/fail.t: failed
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -1,21 +1,22 @@
+  @@ -1,18 +1,18 @@
    Output needing escaping:
    
      $ printf '\00\01\02\03\04\05\06\07\010\011\013\014\016\017\020\021\022\n'
@@ -229,6 +238,9 @@ Verbose interactive mode (answer manually and don't merge):
   +  foo
   +  1
    
+   Filler to force a second diff hunk:
+   
+  @@ -20,5 +20,6 @@
    Offset regular expression:
    
      $ printf 'foo\n\n1\n'
@@ -238,8 +250,8 @@ Verbose interactive mode (answer manually and don't merge):
   Accept this change? [yN] Accept this change? [yN] # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b2acb5acec51dc4bca77709a4cda84b30\b.* (re)
-  .*\bf846f866c4635b3028e87735d7161111\b.* (re)
+  .*\b0f598c2b7b8ca5bcb8880e492ff6b452\b.* (re)
+  .*\b7a23dfa85773c77648f619ad0f9df554\b.* (re)
 
 Verbose interactive mode (answer manually and merge):
 
@@ -248,7 +260,7 @@ Verbose interactive mode (answer manually and merge):
   examples/fail.t: failed
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -1,21 +1,22 @@
+  @@ -1,18 +1,18 @@
    Output needing escaping:
    
      $ printf '\00\01\02\03\04\05\06\07\010\011\013\014\016\017\020\021\022\n'
@@ -271,6 +283,9 @@ Verbose interactive mode (answer manually and merge):
   +  foo
   +  1
    
+   Filler to force a second diff hunk:
+   
+  @@ -20,5 +20,6 @@
    Offset regular expression:
    
      $ printf 'foo\n\n1\n'
@@ -282,7 +297,7 @@ Verbose interactive mode (answer manually and merge):
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t
-  .*\b699925ff4bee53873a304438b4a4dc6d\b.* (re)
+  .*\b1d9e5b527f01fbf2d9b1c121d005108c\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
 
 Test missing patch(1) and patch(1) error:
@@ -300,7 +315,7 @@ Test missing patch(1) and patch(1) error:
   !
   --- */examples/fail.t (glob)
   +++ */examples/fail.t.err (glob)
-  @@ -1,21 +1,22 @@
+  @@ -1,18 +1,18 @@
    Output needing escaping:
    
      $ printf '\00\01\02\03\04\05\06\07\010\011\013\014\016\017\020\021\022\n'
@@ -323,6 +338,9 @@ Test missing patch(1) and patch(1) error:
   +  foo
   +  1
    
+   Filler to force a second diff hunk:
+   
+  @@ -20,5 +20,6 @@
    Offset regular expression:
    
      $ printf 'foo\n\n1\n'
@@ -336,8 +354,8 @@ Test missing patch(1) and patch(1) error:
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
-  .*\b2acb5acec51dc4bca77709a4cda84b30\b.* (re)
-  .*\bf846f866c4635b3028e87735d7161111\b.* (re)
+  .*\b0f598c2b7b8ca5bcb8880e492ff6b452\b.* (re)
+  .*\b7a23dfa85773c77648f619ad0f9df554\b.* (re)
   $ rm patch examples/fail.t.err
 
 Test that a fixed .err file is deleted:

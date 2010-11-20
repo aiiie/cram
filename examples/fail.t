@@ -14,6 +14,9 @@ Wrong output and bad regexes:
   foo\ (re)
    (re)
 
+Filler to force a second diff hunk:
+
+
 Offset regular expression:
 
   $ printf 'foo\n\n1\n'

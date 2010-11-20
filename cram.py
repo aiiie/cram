@@ -131,6 +131,7 @@ escapemap = dict((chr(i), r'\x%02x' % i) for i in range(256))
 escapemap.update({'\\': '\\\\', '\r': r'\r', '\t': r'\t'})
 
 def escape(s):
+    """Like the string-escape codec, but doesn't escape quotes"""
     return escapesub(lambda m: escapemap[m.group(0)], s[:-1]) + ' (esc)\n'
 
 def test(path):

@@ -23,6 +23,7 @@ Check environment variables:
   empty.t
   env.t
   fail.t
+  missingeol.t
   skip.t
   test.t
   $ pwd

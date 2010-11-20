@@ -49,8 +49,8 @@ Copy in example tests:
 Run cram examples:
 
   $ cram -q examples examples/fail.t
-  .s.!s.
-  # Ran 6 tests, 2 skipped, 1 failed.
+  .s.!.s.
+  # Ran 7 tests, 2 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
   .*\b2acb5acec51dc4bca77709a4cda84b30\b.* (re)
@@ -64,9 +64,10 @@ Verbose mode:
   examples/empty.t: empty
   examples/env.t: passed
   examples/fail.t: failed
+  examples/missingeol.t: passed
   examples/skip.t: skipped
   examples/test.t: passed
-  # Ran 6 tests, 2 skipped, 1 failed.
+  # Ran 7 tests, 2 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
   .*\b2acb5acec51dc4bca77709a4cda84b30\b.* (re)

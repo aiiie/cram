@@ -177,6 +177,10 @@ def test(path):
     if p.returncode == 80:
         return (refout, None, [])
 
+    # Add a trailing newline to the input script if it's missing.
+    if refout and not refout[-1].endswith('\n'):
+        refout[-1] += '\n'
+
     # We use str.split instead of splitlines to get consistent
     # behavior between Python 2 and 3. In 3, we use unicode strings,
     # which has more line breaks than \n and \r.

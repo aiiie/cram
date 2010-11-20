@@ -1,0 +1,2 @@
+  $ echo foo
+  foo

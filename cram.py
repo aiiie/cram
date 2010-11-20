@@ -134,7 +134,7 @@ def escape(s):
     """Like the string-escape codec, but doesn't escape quotes"""
     return escapesub(lambda m: escapemap[m.group(0)], s[:-1]) + ' (esc)\n'
 
-def test(path):
+def test(path, indent=2):
     """Run test at path and return input, output, and diff.
 
     This returns a 3-tuple containing the following:
@@ -146,6 +146,10 @@ def test(path):
     If a test exits with return code 80, the actual output is set to
     None and diff is set to [].
     """
+    indent = ' ' * indent
+    cmdline = '%s$ ' % indent
+    conline = '%s> ' % indent
+
     f = open(path)
     abspath = os.path.abspath(path)
     env = os.environ.copy()
@@ -161,16 +165,16 @@ def test(path):
     i = pos = prepos = -1
     for i, line in enumerate(f):
         refout.append(line)
-        if line.startswith('  $ '):
+        if line.startswith(cmdline):
             after.setdefault(pos, []).append(line)
             prepos = pos
             pos = i
             p.stdin.write('echo "\n%s %s $?"\n' % (salt, i))
-            p.stdin.write(line[4:])
-        elif line.startswith('  > '):
+            p.stdin.write(line[len(cmdline):])
+        elif line.startswith(conline):
             after.setdefault(prepos, []).append(line)
-            p.stdin.write(line[4:])
-        elif not line.startswith('  '):
+            p.stdin.write(line[len(conline):])
+        elif not line.startswith(indent):
             after.setdefault(pos, []).append(line)
     p.stdin.write('echo "\n%s %s $?"\n' % (salt, i + 1))
 
@@ -191,17 +195,17 @@ def test(path):
         line += '\n'
         if line.startswith(salt):
             presalt = postout.pop()
-            if presalt != '  \n':
+            if presalt != '%s\n' % indent:
                 postout.append(presalt[:-1] + ' (no-eol)\n')
             ret = int(line.split()[2])
             if ret != 0:
-                postout.append('  [%s]\n' % ret)
+                postout.append('%s[%s]\n' % (indent, ret))
             postout += after.pop(pos, [])
             pos = int(line.split()[1])
         else:
             if needescape(line):
                 line = escape(line)
-            postout.append('  ' + line)
+            postout.append(indent + line)
     postout += after.pop(pos, [])
 
     diff = unified_diff(refout, postout, abspath, abspath + '.err')
@@ -257,7 +261,8 @@ def patch(cmd, diff):
     p.wait()
     return p.returncode == 0
 
-def run(paths, tmpdir, quiet=False, verbose=False, patchcmd=None, answer=None):
+def run(paths, tmpdir, quiet=False, verbose=False, patchcmd=None, answer=None,
+        indent=2):
     """Run tests in paths in tmpdir.
 
     If quiet is True, diffs aren't printed. If verbose is True,
@@ -286,7 +291,7 @@ def run(paths, tmpdir, quiet=False, verbose=False, patchcmd=None, answer=None):
             os.mkdir(testdir)
             try:
                 os.chdir(testdir)
-                refout, postout, diff = test(abspath)
+                refout, postout, diff = test(abspath, indent)
             finally:
                 os.chdir(cwd)
 
@@ -356,6 +361,8 @@ def main(args):
                  help='answer no to all questions')
     p.add_option('--keep-tmpdir', action='store_true',
                  help='keep temporary directories')
+    p.add_option('--indent', action='store', default=2, metavar='NUM',
+                 type='int', help='number of spaces to use for indentation')
     p.add_option('-E', action='store_false', dest='sterilize', default=True,
                  help="don't reset common environment variables")
     opts, paths = p.parse_args(args)
@@ -415,7 +422,8 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
         answer = None
 
     try:
-        return run(paths, tmpdir, opts.quiet, opts.verbose, patchcmd, answer)
+        return run(paths, tmpdir, opts.quiet, opts.verbose, patchcmd, answer,
+                   opts.indent)
     finally:
         if opts.keep_tmpdir:
             log('# Kept temporary directory: %s\n' % tmpdir)

@@ -24,6 +24,7 @@ Usage:
     -y, --yes          answer yes to all questions
     -n, --no           answer no to all questions
     --keep-tmpdir      keep temporary directories
+    --indent=NUM       number of spaces to use for indentation
     -E                 don't reset common environment variables
   $ cram -V
   Cram CLI testing framework (version 0.4)
@@ -429,3 +430,20 @@ Test --keep-tmpdir:
 
 Note: We can't set the locale to foo because some shells will issue
 warnings for invalid locales.
+
+Custom indentation:
+
+  $ cat > indent.t <<EOF
+  > Indented by 4 spaces:
+  > 
+  >     $ echo foo
+  >     foo
+  > 
+  > Not part of the test:
+  > 
+  >   $ echo foo
+  >   bar
+  > EOF
+  $ cram --indent=4 indent.t
+  .
+  # Ran 1 tests, 0 skipped, 0 failed.

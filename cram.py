@@ -185,11 +185,9 @@ def test(path):
     # We use str.split instead of splitlines to get consistent
     # behavior between Python 2 and 3. In 3, we use unicode strings,
     # which has more line breaks than \n and \r.
-    if output.endswith('\n'):
-        output = output[:-1]
     pos = -1
     ret = 0
-    for i, line in enumerate(output.split('\n')):
+    for i, line in enumerate(output[:-1].split('\n')):
         line += '\n'
         if line.startswith(salt):
             presalt = postout.pop()

@@ -400,7 +400,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
         sys.stdout.write(p.get_usage())
         return 2
 
-    badpaths = [path for path in paths if not os.path.exists(p)]
+    badpaths = [path for path in paths if not os.path.exists(path)]
     if badpaths:
         sys.stderr.write('no such file: %s\n' % badpaths[0])
         return 2

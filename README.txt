@@ -63,8 +63,12 @@ The format in a nutshell:
 * Output lines ending with either of the above keywords are always
   first matched literally with actual command output.
 
-* Command output in the test that ends with a percent sign will match
+* Lines ending with a space and the keyword ``(no-eol)`` will match
   actual output that doesn't end in a newline.
+
+* Actual output containing unprintable characters are escaped and
+  suffixed with a space and the keyword ``(esc)``. Lines matching
+  unprintable output must also contain the keyword.
 
 * Anything else is a comment.
 
@@ -174,6 +178,36 @@ Cram also provides the following environment variables to tests:
 
 News
 ----
+
+Version 0.5 (Jan. 8, 2011)
+``````````````````````````
+* **The test format has changed:** Matching output not ending in a
+    newline now requires the ``(no-eol)`` keyword instead of ending
+    the line in ``%``.
+
+* Matching output containing unprintable characters now requires the
+  ``(esc)`` keyword. Real output containing unprintable characters
+  will automatically receive ``(esc)``.
+
+* If an expected line matches its real output line exactly, special
+  matching like ``(re)`` or ``(glob)`` will be ignored.
+
+* Regular expressions ending in a trailing backslash are now
+  considered invalid.
+
+* Added an ``--indent`` option for changing the default amount of
+  indentation required to specify commands and output.
+
+* Added support for specifying command line options in the ``CRAM``
+  environment variable.
+
+* The ``--quiet`` and ``--verbose`` options can now be used together.
+
+* When running Cram under Python 3, Unicode-specific line break
+  characters will no longer be parsed as newlines.
+
+* Tests are no longer required to end in a trailing newline.
+
 
 Version 0.4 (Sep. 28, 2010)
 ```````````````````````````

@@ -40,7 +40,13 @@ coverage:
 	coverage report && \
 	coverage annotate
 
+pyflakes:
+	pyflakes cram.py setup.py
+
+pylint:
+	pylint --rcfile=.pylintrc cram.py setup.py
+
 markdown:
 	pandoc -f rst -t markdown README.txt > README.md
 
-.PHONY: all build clean install dist tests coverage markdown
+.PHONY: all build clean install dist tests coverage pyflakes pylint markdown

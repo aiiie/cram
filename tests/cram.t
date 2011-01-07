@@ -27,7 +27,7 @@ Usage:
     --indent=NUM       number of spaces to use for indentation
     -E                 don't reset common environment variables
   $ cram -V
-  Cram CLI testing framework (version 0.4)
+  Cram CLI testing framework (version 0.5)
   
   Copyright (C) 2010-2011 Brodie Rao <brodie@bitheap.org> and others
   This is free software; see the source for copying conditions. There is NO

@@ -40,6 +40,12 @@ coverage:
 	coverage report && \
 	coverage annotate
 
+# E261: two spaces before inline comment
+# E301: expected blank line
+# E302: two new lines between functions/etc.
+pep8:
+	pep8 --ignore=E261,E301,E302 --repeat cram.py setup.py
+
 pyflakes:
 	pyflakes cram.py setup.py
 
@@ -49,4 +55,5 @@ pylint:
 markdown:
 	pandoc -f rst -t markdown README.txt > README.md
 
-.PHONY: all build clean install dist tests coverage pyflakes pylint markdown
+.PHONY: all build clean install dist tests coverage pep8 pyflakes pylint \
+	markdown

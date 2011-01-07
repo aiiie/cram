@@ -8,6 +8,7 @@ disable=design,R0201,W0141,W0142,W0201
 
 [REPORTS]
 include-ids=yes
+reports=no
 
 [TYPECHECK]
 ignored-classes=

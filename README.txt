@@ -81,9 +81,9 @@ The format in a nutshell:
 Download
 --------
 
-* cram-0.4.tar.gz_ (20 KB, requires Python 2.4-2.7 or Python 3.1)
+* cram-0.5.tar.gz_ (22 KB, requires Python 2.4-2.7 or Python 3.1-3.2)
 
-.. _cram-0.4.tar.gz: http://bitheap.org/cram/cram-0.4.tar.gz
+.. _cram-0.5.tar.gz: http://bitheap.org/cram/cram-0.5.tar.gz
 
 Installation
 ------------
@@ -94,9 +94,9 @@ You can use pip_ to install Cram::
 
 Or you can install Cram the old fashioned way::
 
-    $ wget http://bitheap.org/cram/cram-0.4.tar.gz
-    $ tar zxvf cram-0.4.tar.gz
-    $ cd cram-0.4.tar.gz
+    $ wget http://bitheap.org/cram/cram-0.5.tar.gz
+    $ tar zxvf cram-0.5.tar.gz
+    $ cd cram-0.5.tar.gz
     $ python setup.py install
 
 .. _pip: http://pypi.python.org/pypi/pip

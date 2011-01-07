@@ -1,10 +1,12 @@
 #!/usr/bin/env python
+"""Installs cram"""
 
 import os
 import sys
 from distutils.core import setup, Command
 
 class test(Command):
+    """Runs doctests and Cram tests"""
     description = 'run test suite'
     user_options = [('coverage', None, 'run tests using coverage.py')]
 
@@ -30,6 +32,7 @@ class test(Command):
         cram.main(['-v', 'tests'])
 
 def long_description():
+    """Get the long description from the README"""
     return open(os.path.join(sys.path[0], 'README.txt')).read()
 
 setup(

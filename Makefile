@@ -13,7 +13,7 @@ clean:
 	-$(PYTHON) setup.py clean --all
 	find . -name '*.py[cdo]' -exec rm -f '{}' ';'
 	find . -name '*.err' -exec rm -f '{}' ';'
-	rm -rf dist build htmlcov
+	rm -rf __pycache__ dist build htmlcov
 	rm -f README.md MANIFEST *,cover .coverage
 
 install: build

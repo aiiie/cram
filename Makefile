@@ -30,6 +30,7 @@ ifeq ($(PYTHON),all)
 	python2.6 setup.py -q test
 	python2.7 setup.py -q test
 	python3.1 setup.py -q test
+	python3.2 setup.py -q test
 else
 	$(PYTHON) setup.py -q test
 endif

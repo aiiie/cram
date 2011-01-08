@@ -66,8 +66,8 @@ The format in a nutshell:
 * Lines ending with a space and the keyword ``(no-eol)`` will match
   actual output that doesn't end in a newline.
 
-* Actual output containing unprintable characters are escaped and
-  suffixed with a space and the keyword ``(esc)``. Lines matching
+* Actual output lines containing unprintable characters are escaped
+  and suffixed with a space and the keyword ``(esc)``. Lines matching
   unprintable output must also contain the keyword.
 
 * Anything else is a comment.
@@ -182,8 +182,8 @@ News
 Version 0.5 (Jan. 8, 2011)
 ``````````````````````````
 * **The test format has changed:** Matching output not ending in a
-    newline now requires the ``(no-eol)`` keyword instead of ending
-    the line in ``%``.
+  newline now requires the ``(no-eol)`` keyword instead of ending the
+  line in ``%``.
 
 * Matching output containing unprintable characters now requires the
   ``(esc)`` keyword. Real output containing unprintable characters

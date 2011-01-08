@@ -361,25 +361,22 @@ class OptionParser(optparse.OptionParser):
         option = optparse.OptionParser.add_option(self, *args, **kwargs)
         if option.dest and option.dest != 'version':
             key = option.dest.replace('_', '-')
-            if option.action == 'store_true':
-                type_ = 'bool'
-            else:
-                type_ = option.type
-            self._config_opts[key] = type_
+            self._config_opts[key] = option.action == 'store_true'
         return option
 
     def parse_args(self, args=None, values=None):
         config = configparser.RawConfigParser()
         config.read(expandpath(os.environ.get('CRAMRC', '.cramrc')))
         defaults = {}
-        for key, type_ in self._config_opts.items():
+        for key, isbool in self._config_opts.items():
             try:
-                if type_ == 'bool':
-                    value = config.getboolean('cram', key)
-                elif type_ == 'int':
-                    value = config.getint('cram', key)
-                elif type_ == 'float':
-                    value = config.getfloat('cram', key)
+                if isbool:
+                    try:
+                        value = config.getboolean('cram', key)
+                    except ValueError:
+                        value = config.get('cram', key)
+                        self.error('--%s: invalid boolean value: %r'
+                                   % (key, value))
                 else:
                     value = config.get('cram', key)
             except (configparser.NoSectionError, configparser.NoOptionError):
@@ -394,7 +391,10 @@ class OptionParser(optparse.OptionParser):
             args = args or []
             args += shlex.split(eargs)
 
-        return optparse.OptionParser.parse_args(self, args, values)
+        try:
+            return optparse.OptionParser.parse_args(self, args, values)
+        except optparse.OptionValueError:
+            self.error(str(sys.exc_info()[1]))
 
 def main(args):
     """Main entry point.

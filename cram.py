@@ -3,6 +3,7 @@
 
 import difflib
 import itertools
+import optparse
 import os
 import re
 import subprocess
@@ -10,6 +11,11 @@ import sys
 import shutil
 import time
 import tempfile
+
+try:
+    import configparser
+except ImportError:
+    import ConfigParser as configparser
 
 __all__ = ['main', 'test']
 
@@ -339,18 +345,62 @@ def which(cmd):
             return path
     return None
 
+def expandpath(path):
+    """Expands ~ and environment variables in path"""
+    return os.path.expanduser(os.path.expandvars(path))
+
+class OptionParser(optparse.OptionParser):
+    """Like optparse.OptionParser, but supports setting values through
+    CRAM= and .cramrc."""
+
+    def __init__(self, *args, **kwargs):
+        self.config_opts = {}
+        optparse.OptionParser.__init__(self, *args, **kwargs)
+
+    def add_option(self, *args, **kwargs):
+        option = optparse.OptionParser.add_option(self, *args, **kwargs)
+        if option.dest and option.dest != 'version':
+            key = option.dest.replace('_', '-')
+            if option.action == 'store_true':
+                type_ = 'bool'
+            else:
+                type_ = option.type
+            self.config_opts[key] = type_
+        return option
+
+    def parse_args(self, args=None, values=None):
+        config = configparser.RawConfigParser()
+        config.read(expandpath(os.environ.get('CRAMRC', '.cramrc')))
+        defaults = {}
+        for key, type_ in self.config_opts.items():
+            try:
+                if type_ == 'bool':
+                    value = config.getboolean('cram', key)
+                elif type_ == 'int':
+                    value = config.getint('cram', key)
+                elif type_ == 'float':
+                    value = config.getfloat('cram', key)
+                else:
+                    value = config.get('cram', key)
+            except (configparser.NoSectionError, configparser.NoOptionError):
+                pass
+            else:
+                defaults[key] = value
+        self.set_defaults(**defaults)
+
+        eargs = os.environ.get('CRAM', '').strip()
+        if eargs:
+            import shlex
+            args = args or []
+            args += shlex.split(eargs)
+
+        return optparse.OptionParser.parse_args(self, args, values)
+
 def main(args):
     """Main entry point.
 
     args should not contain the script name.
     """
-    from optparse import OptionParser
-
-    eargs = os.environ.get('CRAM', '').strip()
-    if eargs:
-        import shlex
-        args += shlex.split(eargs)
-
     p = OptionParser(usage='cram [OPTIONS] TESTS...')
     p.add_option('-V', '--version', action='store_true',
                  help='show version information and exit')

@@ -152,6 +152,19 @@ and run the test to see what happens. If you run Cram with ``-i`` or
 ``--interactive``, you'll be prompted to merge the actual output back
 into the test. This makes it easy to quickly prototype new tests.
 
+You can specify a default set of options by creating a ``.cramrc``
+file. For example::
+
+    [cram]
+    verbose = True
+    indent = 4
+
+Is the same as invoking Cram with ``--verbose`` and ``--indent=4``.
+
+To change what configuration file Cram loads, you can set the
+``CRAMRC`` environment variable. You can also specify command line
+options in the ``CRAM`` environment variable.
+
 Note that the following environment variables are reset before tests
 are run:
 

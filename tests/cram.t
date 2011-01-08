@@ -42,6 +42,23 @@ Usage:
   no such file: non-existent
   [2]
 
+Options in .cramrc:
+
+  $ cat > .cramrc <<EOF
+  > [cram]
+  > yes = True
+  > no = 1
+  > indent = 4
+  > EOF
+  $ cram
+  options -y and -n are mutually exclusive
+  [2]
+  $ mv .cramrc config
+  $ CRAMRC=config cram
+  options -y and -n are mutually exclusive
+  [2]
+  $ rm config
+
 Options in an environment variable:
 
   $ CRAM='-y -n' cram

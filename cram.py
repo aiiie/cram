@@ -354,7 +354,7 @@ class OptionParser(optparse.OptionParser):
     CRAM= and .cramrc."""
 
     def __init__(self, *args, **kwargs):
-        self.config_opts = {}
+        self._config_opts = {}
         optparse.OptionParser.__init__(self, *args, **kwargs)
 
     def add_option(self, *args, **kwargs):
@@ -365,14 +365,14 @@ class OptionParser(optparse.OptionParser):
                 type_ = 'bool'
             else:
                 type_ = option.type
-            self.config_opts[key] = type_
+            self._config_opts[key] = type_
         return option
 
     def parse_args(self, args=None, values=None):
         config = configparser.RawConfigParser()
         config.read(expandpath(os.environ.get('CRAMRC', '.cramrc')))
         defaults = {}
-        for key, type_ in self.config_opts.items():
+        for key, type_ in self._config_opts.items():
             try:
                 if type_ == 'bool':
                     value = config.getboolean('cram', key)

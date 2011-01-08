@@ -401,7 +401,7 @@ def main(args):
 
     args should not contain the script name.
     """
-    p = OptionParser(usage='cram [OPTIONS] TESTS...')
+    p = OptionParser(usage='cram [OPTIONS] TESTS...', prog='cram')
     p.add_option('-V', '--version', action='store_true',
                  help='show version information and exit')
     p.add_option('-q', '--quiet', action='store_true',

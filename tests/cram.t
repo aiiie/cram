@@ -16,16 +16,16 @@ Usage:
   [Uu]sage: cram \[OPTIONS\] TESTS\.\.\. (re)
   
   [Oo]ptions: (re)
-    -h, --help         show this help message and exit
-    -V, --version      show version information and exit
-    -q, --quiet        don't print diffs
-    -v, --verbose      show filenames and test status
-    -i, --interactive  interactively merge changed test output
-    -y, --yes          answer yes to all questions
-    -n, --no           answer no to all questions
-    --keep-tmpdir      keep temporary directories
-    --indent=NUM       number of spaces to use for indentation
-    -E                 don't reset common environment variables
+    -h, --help          show this help message and exit
+    -V, --version       show version information and exit
+    -q, --quiet         don't print diffs
+    -v, --verbose       show filenames and test status
+    -i, --interactive   interactively merge changed test output
+    -y, --yes           answer yes to all questions
+    -n, --no            answer no to all questions
+    -E, --preserve-env  don't reset common environment variables
+    --keep-tmpdir       keep temporary directories
+    --indent=NUM        number of spaces to use for indentation
   $ cram -V
   Cram CLI testing framework (version 0.5)
   

@@ -364,12 +364,12 @@ def main(args):
                  help='answer yes to all questions')
     p.add_option('-n', '--no', action='store_true',
                  help='answer no to all questions')
+    p.add_option('-E', '--preserve-env', action='store_true',
+                 help="don't reset common environment variables")
     p.add_option('--keep-tmpdir', action='store_true',
                  help='keep temporary directories')
     p.add_option('--indent', action='store', default=2, metavar='NUM',
                  type='int', help='number of spaces to use for indentation')
-    p.add_option('-E', action='store_false', dest='sterilize', default=True,
-                 help="don't reset common environment variables")
     opts, paths = p.parse_args(args)
 
     if opts.version:
@@ -411,7 +411,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
     for s in ('TMPDIR', 'TEMP', 'TMP'):
         os.environ[s] = proctmp
 
-    if opts.sterilize:
+    if not opts.preserve_env:
         for s in ('LANG', 'LC_ALL', 'LANGUAGE'):
             os.environ[s] = 'C'
         os.environ['TZ'] = 'GMT'

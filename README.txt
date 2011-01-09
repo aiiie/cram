@@ -11,13 +11,13 @@ command's actual output.
 
 Here's a snippet from `Cram's own test suite`_::
 
-    The $PYTHON environment variable should be set when running this
-    test from Python.
+    The $PYTHON environment variable should be set when running this test
+    from Python.
 
       $ [ -n "$PYTHON" ] || PYTHON="`which python`"
       $ if [ -n "$COVERAGE" ]; then
       >   coverage erase
-      >   alias cram="`which coverage` run -a $TESTDIR/../cram.py"
+      >   alias cram="`which coverage` run --branch -a $TESTDIR/../cram.py"
       > else
       >   alias cram="$PYTHON $TESTDIR/../cram.py"
       > fi
@@ -29,15 +29,17 @@ Here's a snippet from `Cram's own test suite`_::
       [Uu]sage: cram \[OPTIONS\] TESTS\.\.\. (re)
 
       [Oo]ptions: (re)
-        -h, --help         show this help message and exit
-        -V, --version      show version information and exit
-        -q, --quiet        don't print diffs
-        -v, --verbose      show filenames and test status
-        -i, --interactive  interactively merge changed test output
-        -y, --yes          answer yes to all questions
-        -n, --no           answer no to all questions
-        --keep-tmpdir      keep temporary directories
-        -E                 don't reset common environment variables
+        -h, --help          show this help message and exit
+        -V, --version       show version information and exit
+        -q, --quiet         don't print diffs
+        -v, --verbose       show filenames and test status
+        -i, --interactive   interactively merge changed test output
+        -y, --yes           answer yes to all questions
+        -n, --no            answer no to all questions
+        -E, --preserve-env  don't reset common environment variables
+        --keep-tmpdir       keep temporary directories
+        --shell=PATH        shell to use for running tests
+        --indent=NUM        number of spaces to use for indentation
 
 The format in a nutshell:
 

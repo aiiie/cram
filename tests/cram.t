@@ -474,6 +474,9 @@ Don't sterilize environment:
   [1]
   $ rm examples/env.t.err
 
+Note: We can't set the locale to foo because some shells will issue
+warnings for invalid locales.
+
 Test --keep-tmpdir:
 
   $ cram -q --keep-tmpdir examples/test.t | while read line; do
@@ -489,9 +492,6 @@ Test --keep-tmpdir:
   $ ls "`cat keeptmp`" | sort
   test.t
   tmp
-
-Note: We can't set the locale to foo because some shells will issue
-warnings for invalid locales.
 
 Custom indentation:
 

@@ -199,8 +199,8 @@ Version 0.6
 * Added support for specifying options in ``.cramrc`` (configurable
   with the ``CRAMRC`` environment variable).
 
-* Added a ``--shell`` option to change the shell tests are run with
-  (contributed by `Kamil Kisiel`_).
+* Added a ``--shell`` option to change the shell tests are run
+  with. Contributed by `Kamil Kisiel`_.
 
 * Added the long option ``--preserve-env`` for ``-E``.
 

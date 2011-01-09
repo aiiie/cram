@@ -1,6 +1,7 @@
 The $PYTHON environment variable should be set when running this test
 from Python.
 
+  $ [ "$0" != "/bin/bash" ] || shopt -s expand_aliases
   $ [ -n "$PYTHON" ] || PYTHON="`which python`"
   $ if [ -n "$COVERAGE" ]; then
   >   coverage erase
@@ -9,6 +10,9 @@ from Python.
   >   alias cram="$PYTHON $TESTDIR/../cram.py"
   > fi
   $ command -v md5 > /dev/null || alias md5=md5sum
+
+Note: Bash doesn't expand aliases by default in non-interactive mode,
+so we enable it manually if the test is run with --shell=/bin/bash.
 
 Usage:
 
@@ -25,6 +29,7 @@ Usage:
     -n, --no            answer no to all questions
     -E, --preserve-env  don't reset common environment variables
     --keep-tmpdir       keep temporary directories
+    --shell=PATH        shell to use for running tests
     --indent=NUM        number of spaces to use for indentation
   $ cram -V
   Cram CLI testing framework (version 0.5)
@@ -96,6 +101,17 @@ Copy in example tests:
 Run cram examples:
 
   $ cram -q examples examples/fail.t
+  .s.!.s.
+  # Ran 7 tests, 2 skipped, 1 failed.
+  [1]
+  $ md5 examples/fail.t examples/fail.t.err
+  .*\b0f598c2b7b8ca5bcb8880e492ff6b452\b.* (re)
+  .*\b7a23dfa85773c77648f619ad0f9df554\b.* (re)
+  $ rm examples/fail.t.err
+
+Run examples with bash:
+
+  $ cram --shell=/bin/bash -q examples examples/fail.t
   .s.!.s.
   # Ran 7 tests, 2 skipped, 1 failed.
   [1]

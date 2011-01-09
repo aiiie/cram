@@ -140,7 +140,7 @@ def escape(s):
     """Like the string-escape codec, but doesn't escape quotes"""
     return escapesub(lambda m: escapemap[m.group(0)], s[:-1]) + ' (esc)\n'
 
-def test(path, indent=2):
+def test(path, indent=2, shell='/bin/sh'):
     """Run test at path and return input, output, and diff.
 
     This returns a 3-tuple containing the following:
@@ -160,7 +160,7 @@ def test(path, indent=2):
     abspath = os.path.abspath(path)
     env = os.environ.copy()
     env['TESTDIR'] = os.path.dirname(abspath)
-    p = subprocess.Popen(['/bin/sh', '-'], bufsize=-1, stdin=subprocess.PIPE,
+    p = subprocess.Popen([shell, '-'], bufsize=-1, stdin=subprocess.PIPE,
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                          universal_newlines=True, env=env,
                          close_fds=os.name == 'posix')
@@ -268,7 +268,7 @@ def patch(cmd, diff):
     return p.returncode == 0
 
 def run(paths, tmpdir, quiet=False, verbose=False, patchcmd=None, answer=None,
-        indent=2):
+        indent=2, shell='/bin/sh'):
     """Run tests in paths in tmpdir.
 
     If quiet is True, diffs aren't printed. If verbose is True,
@@ -297,7 +297,7 @@ def run(paths, tmpdir, quiet=False, verbose=False, patchcmd=None, answer=None,
             os.mkdir(testdir)
             try:
                 os.chdir(testdir)
-                refout, postout, diff = test(abspath, indent)
+                refout, postout, diff = test(abspath, indent, shell)
             finally:
                 os.chdir(cwd)
 
@@ -418,6 +418,8 @@ def main(args):
                  help="don't reset common environment variables")
     p.add_option('--keep-tmpdir', action='store_true',
                  help='keep temporary directories')
+    p.add_option('--shell', action='store', default='/bin/sh', metavar='PATH',
+                 help='shell to use for running tests')
     p.add_option('--indent', action='store', default=2, metavar='NUM',
                  type='int', help='number of spaces to use for indentation')
     opts, paths = p.parse_args(args)
@@ -478,7 +480,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
     try:
         return run(paths, tmpdir, opts.quiet, opts.verbose, patchcmd, answer,
-                   opts.indent)
+                   opts.indent, shell=opts.shell)
     finally:
         if opts.keep_tmpdir:
             log('# Kept temporary directory: %s\n' % tmpdir)

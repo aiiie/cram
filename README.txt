@@ -192,6 +192,18 @@ Cram also provides the following environment variables to tests:
 News
 ----
 
+Version 0.6
+```````````
+* Added support for specifying options in ``.cramrc`` (configurable
+  with the ``CRAMRC`` environment variable).
+
+* Added a ``--shell`` option to change the shell tests are run with
+  (contributed by `Kamil Kisiel`_).
+
+* Added the long option ``--preserve-env`` for ``-E``.
+
+.. _Kamil Kisiel: http://kamilkisiel.net/
+
 Version 0.5 (Jan. 8, 2011)
 ``````````````````````````
 * **The test format has changed:** Matching output not ending in a
@@ -220,7 +232,6 @@ Version 0.5 (Jan. 8, 2011)
   characters will no longer be parsed as newlines.
 
 * Tests are no longer required to end in a trailing newline.
-
 
 Version 0.4 (Sep. 28, 2010)
 ```````````````````````````

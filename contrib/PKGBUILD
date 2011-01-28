@@ -1,0 +1,18 @@
+# Maintainer: Andrey Vlasovskikh <andrey.vlasovskikh@gmail.com>
+
+pkgname=cram
+pkgver=0.5
+pkgrel=1
+pkgdesc="A simple testing framework for command line applications"
+arch=(any)
+url="http://bitheap.org/cram/"
+license=('GPL')
+depends=('python2')
+source=("http://pypi.python.org/packages/source/c/cram/cram-$pkgver.tar.gz")
+md5sums=('3b484aa4569e479a267c45841a0d429d')
+
+build() {
+    cd "$srcdir/$pkgname-$pkgver"
+    python2 setup.py build || return 1
+    python2 setup.py install --root=$pkgdir --optimize=1 || return 1
+}

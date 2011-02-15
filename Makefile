@@ -25,14 +25,14 @@ dist:
 
 tests:
 ifeq ($(PYTHON),all)
-	python2.4 setup.py -q test
-	python2.5 setup.py -q test
-	python2.6 setup.py -q test
-	python2.7 setup.py -q test
-	python3.1 setup.py -q test
-	python3.2 setup.py -q test
+	python2.4 -tt setup.py -q test
+	python2.5 -tt setup.py -q test
+	python2.6 -tt -3 setup.py -q test
+	python2.7 -tt -3 setup.py -q test
+	python3.1 -tt -bb setup.py -q test
+	python3.2 -tt -bb setup.py -q test
 else
-	$(PYTHON) setup.py -q test
+	$(PYTHON) -tt setup.py -q test
 endif
 
 coverage:

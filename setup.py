@@ -46,6 +46,8 @@ setup(
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Programming Language :: Unix Shell',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
         'Topic :: Software Development :: Testing',
     ],
     cmdclass={'test': test},

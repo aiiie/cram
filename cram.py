@@ -6,6 +6,7 @@ import itertools
 import optparse
 import os
 import re
+import signal
 import subprocess
 import sys
 import shutil
@@ -140,6 +141,15 @@ def escape(s):
     """Like the string-escape codec, but doesn't escape quotes"""
     return escapesub(lambda m: escapemap[m.group(0)], s[:-1]) + ' (esc)\n'
 
+def resetsigpipe():
+    """Reset SIGPIPE to SIG_DFL (for use in subprocesses).
+
+    Doing subprocess.Popen(..., preexec_fn=resetsigpipe) will prevent
+    Python's SIGPIPE handler (SIG_IGN) from being inherited by the
+    child process.
+    """
+    signal.signal(signal.SIGPIPE, signal.SIG_DFL)
+
 def test(path, indent=2, shell='/bin/sh'):
     """Run test at path and return input, output, and diff.
 
@@ -163,6 +173,7 @@ def test(path, indent=2, shell='/bin/sh'):
     p = subprocess.Popen([shell, '-'], bufsize=-1, stdin=subprocess.PIPE,
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                          universal_newlines=True, env=env,
+                         preexec_fn=resetsigpipe,
                          close_fds=os.name == 'posix')
     salt = 'CRAM%s' % time.time()
 
@@ -260,7 +271,8 @@ def log(msg=None, verbosemsg=None, verbose=False):
 def patch(cmd, diff):
     """Run echo [lines from diff] | cmd -p0"""
     p = subprocess.Popen([cmd, '-p0'], bufsize=-1, stdin=subprocess.PIPE,
-                         universal_newlines=True, close_fds=os.name == 'posix')
+                         universal_newlines=True, preexec_fn=resetsigpipe,
+                         close_fds=os.name == 'posix')
     for line in diff:
         p.stdin.write(line)
     p.stdin.close()

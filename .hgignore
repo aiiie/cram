@@ -1,0 +1,32 @@
+syntax: glob
+
+*.orig
+*.rej
+*~
+*.mergebackup
+*.o
+*.so
+*.dll
+*.py[cdo]
+*$py.class
+__pycache__
+*.swp
+*.prof
+\#*\#
+.\#*
+.coverage
+*,cover
+htmlcov
+tests/*.err
+examples/*.err
+build
+dist
+MANIFEST
+cram.egg-info
+.DS_Store
+tags
+cscope.*
+
+syntax: regexp
+^\.pc/
+^\.(pydev)?project

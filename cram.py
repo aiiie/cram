@@ -273,10 +273,7 @@ def patch(cmd, diff):
     p = subprocess.Popen([cmd, '-p0'], bufsize=-1, stdin=subprocess.PIPE,
                          universal_newlines=True, preexec_fn=resetsigpipe,
                          close_fds=os.name == 'posix')
-    for line in diff:
-        p.stdin.write(line)
-    p.stdin.close()
-    p.wait()
+    p.communicate(''.join(diff))
     return p.returncode == 0
 
 def run(paths, tmpdir, quiet=False, verbose=False, patchcmd=None, answer=None,

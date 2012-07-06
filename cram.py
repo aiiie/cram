@@ -159,7 +159,8 @@ def encodeinput(s):
     For Python 2, this returns the string as-is. For Python 3, it encodes it
     based on the locale (to match open() decoding in the same manner).
     """
-    if sys.version_info == 2:
+    # This is absurd. Surely there's a better way?!
+    if sys.platform == 'win32' or sys.version_info == 2:
         return s
     return s.encode(locale.getpreferredencoding())
 

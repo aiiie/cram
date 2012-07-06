@@ -3,6 +3,7 @@
 
 import difflib
 import itertools
+import locale
 import optparse
 import os
 import re
@@ -152,6 +153,16 @@ def makeresetsigpipe():
         return None
     return lambda: signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 
+def encodeinput(s):
+    """Encode s so it can be used as subprocess input.
+
+    For Python 2, this returns the string as-is. For Python 3, it encodes it
+    based on the locale (to match open() decoding in the same manner).
+    """
+    if sys.version_info == 2:
+        return s
+    return s.encode(locale.getpreferredencoding())
+
 def test(path, shell, indent=2):
     """Run test at path and return input, output, and diff.
 
@@ -198,7 +209,7 @@ def test(path, shell, indent=2):
             after.setdefault(pos, []).append(line)
     stdin.append('echo "\n%s %s $?"\n' % (salt, i + 1))
 
-    output = p.communicate(input=''.join(stdin))[0]
+    output = p.communicate(input=encodeinput(''.join(stdin)))[0]
     if p.returncode == 80:
         return (refout, None, [])
 

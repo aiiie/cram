@@ -274,7 +274,8 @@ def log(msg=None, verbosemsg=None, verbose=False):
 def patch(cmd, diff):
     """Run echo [lines from diff] | cmd -p0"""
     p = subprocess.Popen([cmd, '-p0'], bufsize=-1, stdin=subprocess.PIPE,
-                         universal_newlines=True, preexec_fn=resetsigpipe,
+                         universal_newlines=True,
+                         preexec_fn=makeresetsigpipe(),
                          close_fds=os.name == 'posix')
     p.communicate(''.join(diff))
     return p.returncode == 0

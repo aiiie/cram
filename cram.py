@@ -352,7 +352,7 @@ def which(cmd):
     """Return the patch to cmd or None if not found"""
     for p in os.environ['PATH'].split(os.pathsep):
         path = os.path.join(p, cmd)
-        if os.path.exists(path) and os.access(path, os.X_OK):
+        if os.access(path, os.X_OK):
             return path
     return None
 

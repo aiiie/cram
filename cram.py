@@ -182,22 +182,23 @@ def test(path, indent=2, shell='/bin/sh'):
     after = {}
     refout, postout = [], []
     i = pos = prepos = -1
+    stdin = []
     for i, line in enumerate(f):
         refout.append(line)
         if line.startswith(cmdline):
             after.setdefault(pos, []).append(line)
             prepos = pos
             pos = i
-            p.stdin.write('echo "\n%s %s $?"\n' % (salt, i))
-            p.stdin.write(line[len(cmdline):])
+            stdin.append('echo "\n%s %s $?"\n' % (salt, i))
+            stdin.append(line[len(cmdline):])
         elif line.startswith(conline):
             after.setdefault(prepos, []).append(line)
-            p.stdin.write(line[len(conline):])
+            stdin.append(line[len(conline):])
         elif not line.startswith(indent):
             after.setdefault(pos, []).append(line)
-    p.stdin.write('echo "\n%s %s $?"\n' % (salt, i + 1))
+    stdin.append('echo "\n%s %s $?"\n' % (salt, i + 1))
 
-    output = p.communicate()[0]
+    output = p.communicate(input=''.join(stdin))[0]
     if p.returncode == 80:
         return (refout, None, [])
 

@@ -509,8 +509,8 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
         answer = None
 
     try:
-        return run(paths, tmpdir, shell, opts.quiet, opts.verbose, patchcmd,
-                   answer, opts.indent)
+        return run(paths, tmpdir, opts.shell, opts.quiet, opts.verbose,
+                   patchcmd, answer, opts.indent)
     finally:
         if opts.keep_tmpdir:
             log('# Kept temporary directory: %s\n' % tmpdir)

@@ -426,11 +426,6 @@ def main(args):
 
     args should not contain the script name.
     """
-    if sys.platform == 'win32':
-        shell = 'cmd'
-    else:
-        shell = '/bin/sh'
-
     p = OptionParser(usage='cram [OPTIONS] TESTS...', prog='cram')
     p.add_option('-V', '--version', action='store_true',
                  help='show version information and exit')
@@ -448,7 +443,7 @@ def main(args):
                  help="don't reset common environment variables")
     p.add_option('--keep-tmpdir', action='store_true',
                  help='keep temporary directories')
-    p.add_option('--shell', action='store', default=shell, metavar='PATH',
+    p.add_option('--shell', action='store', default='/bin/sh', metavar='PATH',
                  help='shell to use for running tests')
     p.add_option('--indent', action='store', default=2, metavar='NUM',
                  type='int', help='number of spaces to use for indentation')

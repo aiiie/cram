@@ -241,7 +241,8 @@ def test(path, shell, indent=2):
             postout.append(indent + line)
     postout += after.pop(pos, [])
 
-    diff = unified_diff(refout, postout, abspath, abspath + '.err')
+    diffpath = os.path.basename(abspath)
+    diff = unified_diff(refout, postout, diffpath, diffpath + '.err')
     for firstline in diff:
         return refout, postout, itertools.chain([firstline], diff)
     return refout, postout, []
@@ -284,11 +285,12 @@ def log(msg=None, verbosemsg=None, verbose=False):
         sys.stdout.write(msg)
         sys.stdout.flush()
 
-def patch(cmd, diff):
+def patch(cmd, diff, path):
     """Run echo [lines from diff] | cmd -p0"""
     p = subprocess.Popen([cmd, '-p0'], bufsize=-1, stdin=subprocess.PIPE,
                          universal_newlines=True,
                          preexec_fn=makeresetsigpipe(),
+                         cwd=path,
                          close_fds=os.name == 'posix')
     p.communicate(''.join(diff))
     return p.returncode == 0
@@ -353,7 +355,7 @@ def run(paths, tmpdir, shell, quiet=False, verbose=False, patchcmd=None,
                         log(line)
                     if (patchcmd and
                         prompt('Accept this change?', 'yN', answer) == 'y'):
-                        if patch(patchcmd, diff):
+                        if patch(patchcmd, diff, os.path.dirname(abspath)):
                             log(None, '%s: merged output\n' % path, verbose)
                             os.remove(errpath)
                         else:
@@ -368,7 +370,7 @@ def which(cmd):
     for p in os.environ['PATH'].split(os.pathsep):
         path = os.path.join(p, cmd)
         if os.path.isfile(path) and os.access(path, os.X_OK):
-            return path
+            return os.path.abspath(path)
     return None
 
 def expandpath(path):

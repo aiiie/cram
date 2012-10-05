@@ -141,8 +141,8 @@ Interactive mode (don't merge):
 
   $ cram -n -i examples/fail.t
   !
-  --- */examples/fail.t (glob)
-  +++ */examples/fail.t.err (glob)
+  --- fail.t
+  +++ fail.t.err
   @@ -1,18 +1,18 @@
    Output needing escaping:
    
@@ -188,8 +188,8 @@ Interactive mode (merge):
   $ cp examples/fail.t examples/fail.t.orig
   $ cram -y -i examples/fail.t
   !
-  --- */examples/fail.t (glob)
-  +++ */examples/fail.t.err (glob)
+  --- fail.t
+  +++ fail.t.err
   @@ -1,18 +1,18 @@
    Output needing escaping:
    
@@ -223,7 +223,7 @@ Interactive mode (merge):
      
      \d (re)
   Accept this change? [yN] y
-  patching file */fail.t (glob)
+  patching file fail.t
   
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
@@ -235,8 +235,8 @@ Verbose interactive mode (answer manually and don't merge):
 
   $ printf 'bad\nn\n' | cram -v -i examples/fail.t
   examples/fail.t: failed
-  --- */examples/fail.t (glob)
-  +++ */examples/fail.t.err (glob)
+  --- fail.t
+  +++ fail.t.err
   @@ -1,18 +1,18 @@
    Output needing escaping:
    
@@ -276,8 +276,8 @@ Verbose interactive mode (answer manually and don't merge):
   .*\b7a23dfa85773c77648f619ad0f9df554\b.* (re)
   $ printf 'bad\n\n' | cram -v -i examples/fail.t
   examples/fail.t: failed
-  --- */examples/fail.t (glob)
-  +++ */examples/fail.t.err (glob)
+  --- fail.t
+  +++ fail.t.err
   @@ -1,18 +1,18 @@
    Output needing escaping:
    
@@ -321,8 +321,8 @@ Verbose interactive mode (answer manually and merge):
   $ cp examples/fail.t examples/fail.t.orig
   $ printf 'bad\ny\n' | cram -v -i examples/fail.t
   examples/fail.t: failed
-  --- */examples/fail.t (glob)
-  +++ */examples/fail.t.err (glob)
+  --- fail.t
+  +++ fail.t.err
   @@ -1,18 +1,18 @@
    Output needing escaping:
    
@@ -355,7 +355,7 @@ Verbose interactive mode (answer manually and merge):
   +  foo
      
      \d (re)
-  Accept this change? [yN] Accept this change? [yN] patching file */fail.t (glob)
+  Accept this change? [yN] Accept this change? [yN] patching file fail.t
   examples/fail.t: merged output
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
@@ -376,8 +376,8 @@ Test missing patch(1) and patch(1) error:
   $ chmod +x patch
   $ PATH=. cram -y -i examples/fail.t
   !
-  --- */examples/fail.t (glob)
-  +++ */examples/fail.t.err (glob)
+  --- fail.t
+  +++ fail.t.err
   @@ -1,18 +1,18 @@
    Output needing escaping:
    
@@ -426,8 +426,8 @@ Test that a fixed .err file is deleted:
   $ echo "  $ echo 1" > fixed.t
   $ cram fixed.t
   !
-  --- */fixed.t (glob)
-  +++ */fixed.t.err (glob)
+  --- fixed.t
+  +++ fixed.t.err
   @@ -1,1 +1,2 @@
      $ echo 1
   +  1
@@ -449,8 +449,8 @@ Don't sterilize environment:
   $ GREP_OPTIONS=foo; export GREP_OPTIONS
   $ cram -E examples/env.t
   !
-  \-\-\- .*/examples/env\.t\s* (re)
-  \+\+\+ .*/examples/env\.t\.err\s* (re)
+  \-\-\- env\.t\s* (re)
+  \+\+\+ env\.t\.err\s* (re)
   @@ -7,13 +7,13 @@
      $ echo "$LANGUAGE"
      C

@@ -160,7 +160,7 @@ def encodeinput(s):
     based on the locale (to match open() decoding in the same manner).
     """
     # This is absurd. Surely there's a better way?!
-    if sys.platform == 'win32' or sys.version_info == 2:
+    if sys.platform == 'win32' or sys.version_info[0] == 2:
         return s
     return s.encode(locale.getpreferredencoding())
 

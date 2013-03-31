@@ -309,8 +309,9 @@ def run(paths, tmpdir, shell, quiet=False, verbose=False, patchcmd=None,
     """
     cwd = os.getcwd()
     seen = set()
+    basenames = set()
     skipped = failed = 0
-    for path in findtests(paths):
+    for i, path in enumerate(findtests(paths)):
         abspath = os.path.abspath(path)
         if abspath in seen:
             continue
@@ -321,7 +322,12 @@ def run(paths, tmpdir, shell, quiet=False, verbose=False, patchcmd=None,
             skipped += 1
             log('s', 'empty\n', verbose)
         else:
-            testdir = os.path.join(tmpdir, os.path.basename(path))
+            basename = os.path.basename(path)
+            if basename in basenames:
+                basename = '%s-%s' % (basename, i)
+            else:
+                basenames.add(basename)
+            testdir = os.path.join(tmpdir, basename)
             os.mkdir(testdir)
             try:
                 os.chdir(testdir)

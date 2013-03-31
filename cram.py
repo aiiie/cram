@@ -184,6 +184,7 @@ def test(path, shell, indent=2):
     abspath = os.path.abspath(path)
     env = os.environ.copy()
     env['TESTDIR'] = os.path.dirname(abspath)
+    env['TESTFILE'] = os.path.basename(abspath)
     p = subprocess.Popen([shell, '-'], bufsize=-1, stdin=subprocess.PIPE,
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                          universal_newlines=True, env=env,

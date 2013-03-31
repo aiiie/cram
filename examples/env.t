@@ -26,5 +26,7 @@ Check environment variables:
   missingeol.t
   skip.t
   test.t
+  $ echo "$TESTFILE"
+  env.t
   $ pwd
   */cramtests*/env.t (glob)

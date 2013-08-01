@@ -52,7 +52,7 @@ setup(
     ],
     cmdclass={'test': test},
     description='A simple testing framework for command line applications',
-    download_url='https://bitheap.org/cram/cram-0.5.tar.gz',
+    download_url='https://bitheap.org/cram/cram-0.6.tar.gz',
     keywords='automatic functional test framework',
     license='GNU GPL',
     long_description=long_description(),
@@ -60,5 +60,5 @@ setup(
     py_modules=['cram'],
     scripts=['scripts/cram'],
     url='https://bitheap.org/cram/',
-    version='0.5',
+    version='0.6',
 )

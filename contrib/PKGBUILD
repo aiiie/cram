@@ -1,7 +1,7 @@
 # Maintainer: Andrey Vlasovskikh <andrey.vlasovskikh@gmail.com>
 
 pkgname=cram
-pkgver=0.5
+pkgver=0.6
 pkgrel=1
 pkgdesc="A simple testing framework for command line applications"
 arch=(any)

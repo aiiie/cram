@@ -83,9 +83,9 @@ The format in a nutshell:
 Download
 --------
 
-* cram-0.5.tar.gz_ (22 KB, requires Python 2.4-2.7 or Python 3.1-3.2)
+* cram-0.6.tar.gz_ (24 KB, requires Python 2.4-2.7 or Python 3.1-3.2)
 
-.. _cram-0.5.tar.gz: https://bitheap.org/cram/cram-0.5.tar.gz
+.. _cram-0.6.tar.gz: https://bitheap.org/cram/cram-0.6.tar.gz
 
 Installation
 ------------
@@ -96,9 +96,9 @@ You can use pip_ to install Cram::
 
 Or you can install Cram using GNU make::
 
-    $ wget https://bitheap.org/cram/cram-0.5.tar.gz
-    $ tar zxvf cram-0.5.tar.gz
-    $ cd cram-0.5
+    $ wget https://bitheap.org/cram/cram-0.6.tar.gz
+    $ tar zxvf cram-0.6.tar.gz
+    $ cd cram-0.6
     $ make install
 
 .. _pip: https://pypi.python.org/pypi/pip
@@ -194,8 +194,8 @@ Cram also provides the following environment variables to tests:
 News
 ----
 
-Version 0.6
-```````````
+Version 0.6 (Aug. 1, 2013)
+``````````````````````````
 * Added the long option ``--preserve-env`` for ``-E``.
 
 * Added support for specifying options in ``.cramrc`` (configurable

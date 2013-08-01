@@ -447,7 +447,7 @@ def main(args):
     opts, paths = p.parse_args(args)
 
     if opts.version:
-        sys.stdout.write("""Cram CLI testing framework (version 0.5)
+        sys.stdout.write("""Cram CLI testing framework (version 0.6)
 
 Copyright (C) 2010-2011 Brodie Rao <brodie@bitheap.org> and others
 This is free software; see the source for copying conditions. There is NO

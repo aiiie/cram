@@ -76,8 +76,8 @@ The format in a nutshell:
 
 .. _Mercurial: http://mercurial.selenic.com/
 .. _unified test format: http://www.selenic.com/blog/?p=663
-.. _Cram's own test suite: http://bitbucket.org/brodie/cram/src/tip/tests/cram.t
-.. _Perl-compatible regular expressions: http://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions
+.. _Cram's own test suite: https://bitbucket.org/brodie/cram/src/tip/tests/cram.t
+.. _Perl-compatible regular expressions: https://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions
 
 
 Download
@@ -85,7 +85,7 @@ Download
 
 * cram-0.5.tar.gz_ (22 KB, requires Python 2.4-2.7 or Python 3.1-3.2)
 
-.. _cram-0.5.tar.gz: http://bitheap.org/cram/cram-0.5.tar.gz
+.. _cram-0.5.tar.gz: https://bitheap.org/cram/cram-0.5.tar.gz
 
 Installation
 ------------
@@ -96,12 +96,12 @@ You can use pip_ to install Cram::
 
 Or you can install Cram using GNU make::
 
-    $ wget http://bitheap.org/cram/cram-0.5.tar.gz
+    $ wget https://bitheap.org/cram/cram-0.5.tar.gz
     $ tar zxvf cram-0.5.tar.gz
     $ cd cram-0.5
     $ make install
 
-.. _pip: http://pypi.python.org/pypi/pip
+.. _pip: https://pypi.python.org/pypi/pip
 
 
 Usage
@@ -187,8 +187,8 @@ Cram also provides the following environment variables to tests:
 
 * ``TESTDIR``, set to the directory containing the test file.
 
-.. _unified context diff: http://en.wikipedia.org/wiki/Diff#Unified_format
-.. _its own example tests: http://bitbucket.org/brodie/cram/src/tip/examples/
+.. _unified context diff: https://en.wikipedia.org/wiki/Diff#Unified_format
+.. _its own example tests: https://bitbucket.org/brodie/cram/src/tip/examples/
 
 
 News
@@ -275,7 +275,7 @@ Version 0.4 (Sep. 28, 2010)
 * Added `contrib/cram.vim`_ syntax file for Vim. Contributed by `Steve
   Losh`_.
 
-.. _contrib/cram.vim: http://bitbucket.org/brodie/cram/src/tip/contrib/cram.vim
+.. _contrib/cram.vim: https://bitbucket.org/brodie/cram/src/tip/contrib/cram.vim
 .. _Steve Losh: http://stevelosh.com/
 
 Version 0.3 (Sep. 20, 2010)
@@ -312,7 +312,7 @@ Development
 
 Download the official development repository using Mercurial_::
 
-    hg clone http://bitbucket.org/brodie/cram
+    hg clone https://bitbucket.org/brodie/cram
 
 Test Cram using Cram::
 
@@ -327,4 +327,4 @@ changes, or report issues.
 
 .. _Mercurial: http://mercurial.selenic.com/
 .. _coverage.py: http://nedbatchelder.com/code/coverage/
-.. _Bitbucket: http://bitbucket.org/brodie/cram
+.. _Bitbucket: https://bitbucket.org/brodie/cram

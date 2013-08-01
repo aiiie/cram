@@ -9,7 +9,7 @@ url="https://bitheap.org/cram/"
 license=('GPL')
 depends=('python2')
 source=("https://pypi.python.org/packages/source/c/cram/cram-$pkgver.tar.gz")
-md5sums=('3b484aa4569e479a267c45841a0d429d')
+md5sums=('3808e3e7812c68ca962c4db9abac9069')
 
 build() {
     cd "$srcdir/$pkgname-$pkgver"

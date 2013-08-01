@@ -44,7 +44,7 @@ coverage:
 # E301: expected blank line
 # E302: two new lines between functions/etc.
 pep8:
-	pep8 --ignore=E261,E301,E302 --repeat cram.py setup.py
+	pep8 --ignore=E125,E261,E301,E302 --repeat cram.py setup.py
 
 pyflakes:
 	pyflakes cram.py setup.py

@@ -3,7 +3,6 @@
 
 import difflib
 import itertools
-import locale
 import optparse
 import os
 import re

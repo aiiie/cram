@@ -196,15 +196,41 @@ News
 
 Version 0.6
 ```````````
+* Added the long option ``--preserve-env`` for ``-E``.
+
 * Added support for specifying options in ``.cramrc`` (configurable
   with the ``CRAMRC`` environment variable).
 
 * Added a ``--shell`` option to change the shell tests are run
   with. Contributed by `Kamil Kisiel`_.
 
-* Added the long option ``--preserve-env`` for ``-E``.
+* Added Arch Linux package metadata (in ``contrib/``). Contributed by
+  `Andrey Vlasovskikh`_.
+
+* Fixed shell commands unintentionally inheriting Python's ``SIGPIPE``
+  handler (causing commands that close pipes to print ``broken pipe``
+  messages).
+
+* Fixed ``EPIPE`` under PyPy when applying patches in
+  ``--interactive`` mode.
+
+* Added ``TESTFILE`` test environment variable (set to the name of the
+  current test).
+
+* Fixed GNU patch 2.7 compatibility by using relative paths instead of
+  absolute paths. Contributed by `Douglas Creager`_.
+
+* Fixed name clashes in temporary test directories (e.g., when running
+  two tests with the same name in different folders).
+
+* **Backwards compatibility:** Fixed improper usage of the subprocess
+  library under Python 3. This fixes Python 3.3 support, but breaks
+  support for Python 3.1-3.2.3 due to a bug in Python. If you're using
+  Python 3.0-3.2, you must upgrade to Python 3.2.4 or newer.
 
 .. _Kamil Kisiel: http://kamilkisiel.net/
+.. _Andrey Vlasovskikh: https://twitter.com/vlasovskikh
+.. _Douglas Creager: http://dcreager.net/
 
 Version 0.5 (Jan. 8, 2011)
 ``````````````````````````

@@ -94,12 +94,12 @@ You can use pip_ to install Cram::
 
     $ pip install cram
 
-Or you can install Cram the old fashioned way::
+Or you can install Cram using GNU make::
 
     $ wget http://bitheap.org/cram/cram-0.5.tar.gz
     $ tar zxvf cram-0.5.tar.gz
     $ cd cram-0.5
-    $ python setup.py install
+    $ make install
 
 .. _pip: http://pypi.python.org/pypi/pip
 

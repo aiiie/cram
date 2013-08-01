@@ -5,10 +5,10 @@ pkgver=0.5
 pkgrel=1
 pkgdesc="A simple testing framework for command line applications"
 arch=(any)
-url="http://bitheap.org/cram/"
+url="https://bitheap.org/cram/"
 license=('GPL')
 depends=('python2')
-source=("http://pypi.python.org/packages/source/c/cram/cram-$pkgver.tar.gz")
+source=("https://pypi.python.org/packages/source/c/cram/cram-$pkgver.tar.gz")
 md5sums=('3b484aa4569e479a267c45841a0d429d')
 
 build() {

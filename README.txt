@@ -15,11 +15,12 @@ Here's a snippet from `Cram's own test suite`_::
     from Python.
 
       $ [ -n "$PYTHON" ] || PYTHON="`which python`"
+      $ [ -n "$PYTHONPATH" ] || PYTHONPATH="$TESTDIR/.." && export PYTHONPATH
       $ if [ -n "$COVERAGE" ]; then
       >   coverage erase
-      >   alias cram="`which coverage` run --branch -a $TESTDIR/../cram.py"
+      >   alias cram="`which coverage` run --branch -a $TESTDIR/../scripts/cram"
       > else
-      >   alias cram="$PYTHON $TESTDIR/../cram.py"
+      >   alias cram="$PYTHON $TESTDIR/../scripts/cram"
       > fi
       $ command -v md5 > /dev/null || alias md5=md5sum
 

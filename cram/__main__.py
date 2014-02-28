@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+"""Main module (invoked by "python -m cram")"""
+
 import sys
 
 import cram

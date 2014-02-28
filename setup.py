@@ -5,6 +5,8 @@ import os
 import sys
 from distutils.core import setup, Command
 
+CRAM_DIR = os.path.dirname(__file__)
+
 class test(Command):
     """Runs doctests and Cram tests"""
     description = 'run test suite'
@@ -19,16 +21,51 @@ class test(Command):
     def run(self):
         import doctest
         import cram
-        failures, tests = doctest.testmod(cram)
+        import pkgutil
+
+        if getattr(pkgutil, 'walk_packages', None) is not None:
+            def getmodules():
+                yield cram
+                for loader, name, ispkg in pkgutil.walk_packages(cram.__path__):
+                    if name == '__main__':
+                        continue
+                    yield loader.find_module(name).load_module(name)
+        else:
+            def getmodules():
+                pkgdir = os.path.join(CRAM_DIR, 'cram')
+                for root, dirs, files in os.walk(pkgdir):
+                    if '__pycache__' in dirs:
+                        dirs.remove('__pycache__')
+                    for fn in files:
+                        if not fn.endswith('.py') or fn == '__main__.py':
+                            continue
+
+                        modname = fn.replace(os.sep, '.')[:-len('.py')]
+                        if modname.endswith('.__init__'):
+                            modname = modname[:-len('.__init__')]
+                        modname = '.'.join(['cram', modname])
+                        if '.' in modname:
+                            fromlist = [modname.rsplit('.', 1)[1]]
+                        else:
+                            fromlist = []
+
+                        yield __import__(modname, {}, {}, fromlist)
+
+        totalfailures = totaltests = 0
+        for module in getmodules():
+            failures, tests = doctest.testmod(module)
+            totalfailures += failures
+            totaltests += tests
         sys.stdout.write('doctests: %s/%s passed\n' %
-                         (tests - failures, tests))
+                         (totaltests - totalfailures, totaltests))
+
         os.environ['PYTHON'] = sys.executable
         if self.coverage:
             # Note that when coverage.py is run, it uses the version
             # of Python it was installed with, NOT the version
             # setup.py was run with.
             os.environ['COVERAGE'] = '1'
-            os.environ['COVERAGE_FILE'] = os.path.abspath('./.coverage')
+            os.environ['COVERAGE_FILE'] = os.path.join(CRAM_DIR, '.coverage')
         cram.main(['-v', 'tests'])
 
 def long_description():

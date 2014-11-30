@@ -72,11 +72,8 @@ class _OptionParser(optparse.OptionParser):
         except optparse.OptionValueError:
             self.error(str(sys.exc_info()[1]))
 
-def main(args):
-    """Main entry point.
-
-    args should not contain the script name.
-    """
+def _parseopts(args):
+    """Parse command line arguments"""
     p = _OptionParser(usage='cram [OPTIONS] TESTS...', prog='cram')
     p.add_option('-V', '--version', action='store_true',
                  help='show version information and exit')
@@ -99,7 +96,15 @@ def main(args):
     p.add_option('--indent', action='store', default=2, metavar='NUM',
                  type='int', help='number of spaces to use for indentation')
     opts, paths = p.parse_args(args)
+    getusage = lambda: p.get_usage()
+    return opts, paths, getusage
 
+def main(args):
+    """Main entry point.
+
+    args should not contain the script name.
+    """
+    opts, paths, getusage = _parseopts(args)
     if opts.version:
         sys.stdout.write("""Cram CLI testing framework (version 0.6)
 
@@ -125,7 +130,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
             return 2
 
     if not paths:
-        sys.stdout.write(p.get_usage())
+        sys.stdout.write(getusage())
         return 2
 
     badpaths = [path for path in paths if not os.path.exists(path)]

@@ -3,7 +3,7 @@
 import difflib
 import re
 
-__all__ = ['unified_diff']
+__all__ = ['glob', 'regex', 'unified_diff']
 
 def _regex(pattern, s):
     """Match a regular expression or return False if invalid.
@@ -41,18 +41,31 @@ def _glob(el, l):
             res += re.escape(c)
     return _regex(res, l)
 
-_annotations = {'glob': _glob, 're': _regex}
+def _matchannotation(keyword, matchfunc, el, l):
+    """Apply match function based on annotation keyword"""
+    ann = ' (%s)\n' % keyword
+    return el.endswith(ann) and matchfunc(el[:-len(ann)], l[:-1])
 
-def _match(el, l):
-    """Match patterns based on annotations"""
-    for k in _annotations:
-        ann = ' (%s)\n' % k
-        if el.endswith(ann) and _annotations[k](el[:-len(ann)], l[:-1]):
-            return True
-    return False
+def regex(el, l):
+    """Apply a regular expression match to a line annotated with '(re)'"""
+    return _matchannotation('re', _regex, el, l)
+
+def glob(el, l):
+    """Apply a glob match to a line annotated with '(glob)'"""
+    return _matchannotation('glob', _glob, el, l)
 
 class _SequenceMatcher(difflib.SequenceMatcher, object):
-    """Like difflib.SequenceMatcher, but matches globs and regexes"""
+    """Like difflib.SequenceMatcher, but supports custom match functions"""
+    def __init__(self, *args, **kwargs):
+        self._matchers = kwargs.pop('matchers', [])
+        super(_SequenceMatcher, self).__init__(*args, **kwargs)
+
+    def _match(self, el, l):
+        """Tests for matching lines using custom matchers"""
+        for matcher in self._matchers:
+            if matcher(el, l):
+                return True
+        return False
 
     def find_longest_match(self, alo, ahi, blo, bhi):
         """Find longest matching block in a[alo:ahi] and b[blo:bhi]"""
@@ -61,7 +74,7 @@ class _SequenceMatcher(difflib.SequenceMatcher, object):
         # Because of this, we can end up doing the same matches many times.
         matches = []
         for n, (el, line) in enumerate(zip(self.a[alo:ahi], self.b[blo:bhi])):
-            if el != line and _match(el, line):
+            if el != line and self._match(el, line):
                 # This fools the superclass's method into thinking that the
                 # regex/glob in a is identical to b by replacing a's line (the
                 # expected output) with b's line (the actual output).
@@ -76,13 +89,14 @@ class _SequenceMatcher(difflib.SequenceMatcher, object):
         return ret
 
 def unified_diff(a, b, fromfile='', tofile='', fromfiledate='',
-                 tofiledate='', n=3, lineterm='\n', matcher=_SequenceMatcher):
+                 tofiledate='', n=3, lineterm='\n', matchers=[]):
     """Compare two sequences of lines; generate the delta as a unified diff.
 
     This is like difflib.unified_diff(), but allows custom matchers.
     """
     started = False
-    for group in matcher(None, a, b).get_grouped_opcodes(n):
+    matcher = _SequenceMatcher(None, a, b, matchers=matchers)
+    for group in matcher.get_grouped_opcodes(n):
         if not started:
             fromdate = fromfiledate and '\t%s' % fromfiledate or ''
             todate = fromfiledate and '\t%s' % tofiledate or ''

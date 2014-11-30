@@ -5,7 +5,7 @@ import os
 import re
 import time
 
-from cram._diff import unified_diff
+from cram._diff import glob, regex, unified_diff
 from cram._process import PIPE, STDOUT, popen
 
 __all__ = ['test']
@@ -93,7 +93,8 @@ def test(path, shell, indent=2):
     postout += after.pop(pos, [])
 
     diffpath = os.path.basename(abspath)
-    diff = unified_diff(refout, postout, diffpath, diffpath + '.err')
+    diff = unified_diff(refout, postout, diffpath, diffpath + '.err',
+                        matchers=[glob, regex])
     for firstline in diff:
         return refout, postout, itertools.chain([firstline], diff)
     return refout, postout, []

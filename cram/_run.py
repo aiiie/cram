@@ -3,7 +3,7 @@
 import os
 import sys
 
-from cram._process import PIPE, popen
+from cram._process import execute
 from cram._test import test
 
 __all__ = ['log', 'run']
@@ -61,9 +61,8 @@ def log(msg=None, verbosemsg=None, verbose=False):
 
 def _patch(cmd, diff, path):
     """Run echo [lines from diff] | cmd -p0"""
-    p = popen([cmd, '-p0'], stdin=PIPE, cwd=path)
-    p.communicate(''.join(diff))
-    return p.returncode == 0
+    out, retcode = execute([cmd, '-p0'], stdin=''.join(diff), cwd=path)
+    return retcode == 0
 
 def run(paths, tmpdir, shell, quiet=False, verbose=False, patchcmd=None,
         answer=None, indent=2):

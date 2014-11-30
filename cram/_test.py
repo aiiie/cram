@@ -6,7 +6,7 @@ import re
 import time
 
 from cram._diff import glob, regex, unified_diff
-from cram._process import PIPE, STDOUT, popen
+from cram._process import PIPE, STDOUT, execute
 
 __all__ = ['test']
 
@@ -40,7 +40,6 @@ def test(path, shell, indent=2):
     env = os.environ.copy()
     env['TESTDIR'] = os.path.dirname(abspath)
     env['TESTFILE'] = os.path.basename(abspath)
-    p = popen([shell, '-'], stdin=PIPE, stdout=PIPE, stderr=STDOUT, env=env)
     salt = 'CRAM%s' % time.time()
 
     after = {}
@@ -62,8 +61,9 @@ def test(path, shell, indent=2):
             after.setdefault(pos, []).append(line)
     stdin.append('echo "\n%s %s $?"\n' % (salt, i + 1))
 
-    output = p.communicate(input=''.join(stdin))[0]
-    if p.returncode == 80:
+    output, retcode = execute([shell, '-'], stdin=''.join(stdin), stdout=PIPE,
+                              stderr=STDOUT, env=env)
+    if retcode == 80:
         return (refout, None, [])
 
     # Add a trailing newline to the input script if it's missing.

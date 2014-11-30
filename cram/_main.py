@@ -138,12 +138,6 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
         sys.stderr.write('no such file: %s\n' % badpaths[0])
         return 2
 
-    tmpdir = os.environ['CRAMTMP'] = tempfile.mkdtemp('', 'cramtests-')
-    proctmp = os.path.join(tmpdir, 'tmp')
-    os.mkdir(proctmp)
-    for s in ('TMPDIR', 'TEMP', 'TMP'):
-        os.environ[s] = proctmp
-
     if not opts.preserve_env:
         for s in ('LANG', 'LC_ALL', 'LANGUAGE'):
             os.environ[s] = 'C'
@@ -159,6 +153,12 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
     else:
         answer = None
 
+    tmpdir = os.environ['CRAMTMP'] = tempfile.mkdtemp('', 'cramtests-')
+    proctmp = os.path.join(tmpdir, 'tmp')
+    for s in ('TMPDIR', 'TEMP', 'TMP'):
+        os.environ[s] = proctmp
+
+    os.mkdir(proctmp)
     try:
         return run(paths, tmpdir, opts.shell, opts.quiet, opts.verbose,
                    patchcmd, answer, opts.indent)

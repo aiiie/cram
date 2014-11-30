@@ -19,7 +19,7 @@ def _escape(s):
     """Like the string-escape codec, but doesn't escape quotes"""
     return _escapesub(lambda m: _escapemap[m.group(0)], s[:-1]) + ' (esc)\n'
 
-def test(lines, shell, indent=2, testname=None, env=None):
+def test(lines, shell, indent=2, testname=None, env=None, cleanenv=True):
     """Run test lines and return input, output, and diff.
 
     This returns a 3-tuple containing the following:
@@ -39,6 +39,15 @@ def test(lines, shell, indent=2, testname=None, env=None):
     cmdline = '%s$ ' % indent
     conline = '%s> ' % indent
     salt = 'CRAM%s' % time.time()
+
+    env = env or os.environ.copy()
+    if cleanenv:
+        for s in ('LANG', 'LC_ALL', 'LANGUAGE'):
+            env[s] = 'C'
+        env['TZ'] = 'GMT'
+        env['CDPATH'] = ''
+        env['COLUMNS'] = '80'
+        env['GREP_OPTIONS'] = ''
 
     after = {}
     refout, postout = [], []
@@ -101,7 +110,7 @@ def test(lines, shell, indent=2, testname=None, env=None):
         return refout, postout, itertools.chain([firstline], diff)
     return refout, postout, []
 
-def testfile(path, shell, indent=2, env=None):
+def testfile(path, shell, indent=2, env=None, cleanenv=True):
     """Run test at path and return input, output, and diff.
 
     This returns a 3-tuple containing the following:
@@ -123,6 +132,7 @@ def testfile(path, shell, indent=2, env=None):
         env['TESTDIR'] = os.path.dirname(abspath)
         env['TESTFILE'] = os.path.basename(abspath)
         testname = os.path.basename(abspath)
-        return test(f, shell, indent=indent, testname=testname, env=env)
+        return test(f, shell, indent=indent, testname=testname, env=env,
+                    cleanenv=cleanenv)
     finally:
         f.close()

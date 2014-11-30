@@ -64,7 +64,7 @@ def _patch(cmd, diff, path):
     out, retcode = execute([cmd, '-p0'], stdin=''.join(diff), cwd=path)
     return retcode == 0
 
-def _runtests(paths, tmpdir, shell, indent=2):
+def _runtests(paths, tmpdir, shell, indent=2, cleanenv=True):
     """Run tests and yield results.
 
     This yields a sequence of 3-tuples containing the following:
@@ -100,14 +100,15 @@ def _runtests(paths, tmpdir, shell, indent=2):
             os.mkdir(testdir)
             try:
                 os.chdir(testdir)
-                return testfile(abspath, shell, indent)
+                return testfile(abspath, shell, indent=indent,
+                                cleanenv=cleanenv)
             finally:
                 os.chdir(cwd)
 
         yield (path, abspath, test)
 
 def run(paths, tmpdir, shell, quiet=False, verbose=False, patchcmd=None,
-        answer=None, indent=2):
+        answer=None, indent=2, cleanenv=True):
     """Run tests in paths in tmpdir.
 
     If quiet is True, diffs aren't printed. If verbose is True,
@@ -119,7 +120,8 @@ def run(paths, tmpdir, shell, quiet=False, verbose=False, patchcmd=None,
     based on the changed output.
     """
     total = skipped = failed = 0
-    for path, abspath, test in _runtests(paths, tmpdir, shell, indent=indent):
+    for path, abspath, test in _runtests(paths, tmpdir, shell, indent=indent,
+                                         cleanenv=cleanenv):
         total += 1
         log(None, '%s: ' % path, verbose)
         if test is None:

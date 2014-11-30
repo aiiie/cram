@@ -138,14 +138,6 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
         sys.stderr.write('no such file: %s\n' % badpaths[0])
         return 2
 
-    if not opts.preserve_env:
-        for s in ('LANG', 'LC_ALL', 'LANGUAGE'):
-            os.environ[s] = 'C'
-        os.environ['TZ'] = 'GMT'
-        os.environ['CDPATH'] = ''
-        os.environ['COLUMNS'] = '80'
-        os.environ['GREP_OPTIONS'] = ''
-
     if opts.yes:
         answer = 'y'
     elif opts.no:
@@ -161,7 +153,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
     os.mkdir(proctmp)
     try:
         return run(paths, tmpdir, opts.shell, opts.quiet, opts.verbose,
-                   patchcmd, answer, opts.indent)
+                   patchcmd, answer, opts.indent, not opts.preserve_env)
     finally:
         if opts.keep_tmpdir:
             log('# Kept temporary directory: %s\n' % tmpdir)

@@ -117,9 +117,12 @@ def testfile(path, shell, indent=2, env=None):
     available to use in the test.
     """
     f = open(path)
-    abspath = os.path.abspath(path)
-    env = env or os.environ.copy()
-    env['TESTDIR'] = os.path.dirname(abspath)
-    env['TESTFILE'] = os.path.basename(abspath)
-    testname = os.path.basename(abspath)
-    return test(f, shell, indent=indent, testname=testname, env=env)
+    try:
+        abspath = os.path.abspath(path)
+        env = env or os.environ.copy()
+        env['TESTDIR'] = os.path.dirname(abspath)
+        env['TESTFILE'] = os.path.basename(abspath)
+        testname = os.path.basename(abspath)
+        return test(f, shell, indent=indent, testname=testname, env=env)
+    finally:
+        f.close()

@@ -8,7 +8,7 @@ import time
 from cram._diff import glob, regex, unified_diff
 from cram._process import PIPE, STDOUT, execute
 
-__all__ = ['test']
+__all__ = ['test', 'testfile']
 
 _needescape = re.compile(r'[\x00-\x09\x0b-\x1f\x7f-\xff]').search
 _escapesub = re.compile(r'[\x00-\x09\x0b-\x1f\\\x7f-\xff]').sub
@@ -19,8 +19,8 @@ def _escape(s):
     """Like the string-escape codec, but doesn't escape quotes"""
     return _escapesub(lambda m: _escapemap[m.group(0)], s[:-1]) + ' (esc)\n'
 
-def test(path, shell, indent=2):
-    """Run test at path and return input, output, and diff.
+def test(lines, shell, indent=2, testname=None, env=None):
+    """Run test lines and return input, output, and diff.
 
     This returns a 3-tuple containing the following:
 
@@ -30,23 +30,21 @@ def test(path, shell, indent=2):
 
     If a test exits with return code 80, the actual output is set to
     None and diff is set to [].
+
+    Note that the TESTDIR and TESTFILE environment variables are not
+    available when running tests with this function. To run actual
+    test files, see testfile().
     """
     indent = ' ' * indent
     cmdline = '%s$ ' % indent
     conline = '%s> ' % indent
-
-    f = open(path)
-    abspath = os.path.abspath(path)
-    env = os.environ.copy()
-    env['TESTDIR'] = os.path.dirname(abspath)
-    env['TESTFILE'] = os.path.basename(abspath)
     salt = 'CRAM%s' % time.time()
 
     after = {}
     refout, postout = [], []
     i = pos = prepos = -1
     stdin = []
-    for i, line in enumerate(f):
+    for i, line in enumerate(lines):
         refout.append(line)
         if line.startswith(cmdline):
             after.setdefault(pos, []).append(line)
@@ -92,9 +90,36 @@ def test(path, shell, indent=2):
             postout.append(indent + line)
     postout += after.pop(pos, [])
 
-    diffpath = os.path.basename(abspath)
-    diff = unified_diff(refout, postout, diffpath, diffpath + '.err',
+    if testname:
+        diffpath = testname
+        errpath = diffpath + '.err'
+    else:
+        diffpath = errpath = ''
+    diff = unified_diff(refout, postout, diffpath, errpath,
                         matchers=[glob, regex])
     for firstline in diff:
         return refout, postout, itertools.chain([firstline], diff)
     return refout, postout, []
+
+def testfile(path, shell, indent=2, env=None):
+    """Run test at path and return input, output, and diff.
+
+    This returns a 3-tuple containing the following:
+
+        (list of lines in test, same list with actual output, diff)
+
+    diff is a generator that yields the diff between the two lists.
+
+    If a test exits with return code 80, the actual output is set to
+    None and diff is set to [].
+
+    Note that the TESTDIR and TESTFILE environment variables will be
+    available to use in the test.
+    """
+    f = open(path)
+    abspath = os.path.abspath(path)
+    env = env or os.environ.copy()
+    env['TESTDIR'] = os.path.dirname(abspath)
+    env['TESTFILE'] = os.path.basename(abspath)
+    testname = os.path.basename(abspath)
+    return test(f, shell, indent=indent, testname=testname, env=env)

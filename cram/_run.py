@@ -4,7 +4,7 @@ import os
 import sys
 
 from cram._process import execute
-from cram._test import test
+from cram._test import testfile
 
 __all__ = ['log', 'run']
 
@@ -100,7 +100,7 @@ def run(paths, tmpdir, shell, quiet=False, verbose=False, patchcmd=None,
             os.mkdir(testdir)
             try:
                 os.chdir(testdir)
-                refout, postout, diff = test(abspath, shell, indent)
+                refout, postout, diff = testfile(abspath, shell, indent)
             finally:
                 os.chdir(cwd)
 

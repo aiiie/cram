@@ -11,7 +11,7 @@ try:
 except ImportError:
     import ConfigParser as configparser
 
-from cram._run import log, run
+from cram._run import run
 
 def _which(cmd):
     """Return the patch to cmd or None if not found"""
@@ -156,7 +156,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
                    patchcmd, answer, opts.indent, not opts.preserve_env)
     finally:
         if opts.keep_tmpdir:
-            log('# Kept temporary directory: %s\n' % tmpdir)
+            sys.stdout.write('# Kept temporary directory: %s\n' % tmpdir)
         else:
             shutil.rmtree(tmpdir)
 

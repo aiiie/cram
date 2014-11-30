@@ -6,7 +6,7 @@ import sys
 from cram._process import execute
 from cram._test import testfile
 
-__all__ = ['log', 'run']
+__all__ = ['run']
 
 def _findtests(paths):
     """Yield tests in paths in sorted order"""
@@ -48,7 +48,7 @@ def _prompt(question, answers, auto=None):
         elif answer and answer in answers.lower():
             return answer
 
-def log(msg=None, verbosemsg=None, verbose=False):
+def _log(msg=None, verbosemsg=None, verbose=False):
     """Write msg to standard out and flush.
 
     If verbose is True, write verbosemsg instead.
@@ -123,10 +123,10 @@ def run(paths, tmpdir, shell, quiet=False, verbose=False, patchcmd=None,
     for path, abspath, test in _runtests(paths, tmpdir, shell, indent=indent,
                                          cleanenv=cleanenv):
         total += 1
-        log(None, '%s: ' % path, verbose)
+        _log(None, '%s: ' % path, verbose)
         if test is None:
             skipped += 1
-            log('s', 'empty\n', verbose)
+            _log('s', 'empty\n', verbose)
             continue
 
         refout, postout, diff = test()
@@ -134,16 +134,16 @@ def run(paths, tmpdir, shell, quiet=False, verbose=False, patchcmd=None,
 
         if postout is None:
             skipped += 1
-            log('s', 'skipped\n', verbose)
+            _log('s', 'skipped\n', verbose)
         elif not diff:
-            log('.', 'passed\n', verbose)
+            _log('.', 'passed\n', verbose)
             if os.path.exists(errpath):
                 os.remove(errpath)
         else:
             failed += 1
-            log('!', 'failed\n', verbose)
+            _log('!', 'failed\n', verbose)
             if not quiet:
-                log('\n', None, verbose)
+                _log('\n', None, verbose)
 
             errfile = open(errpath, 'w')
             try:
@@ -156,16 +156,16 @@ def run(paths, tmpdir, shell, quiet=False, verbose=False, patchcmd=None,
                 if patchcmd:
                     diff = list(diff)
                 for line in diff:
-                    log(line)
+                    _log(line)
 
                 if (patchcmd and
                     _prompt('Accept this change?', 'yN', answer) == 'y'):
                     if _patch(patchcmd, diff, os.path.dirname(abspath)):
-                        log(None, '%s: merged output\n' % path, verbose)
+                        _log(None, '%s: merged output\n' % path, verbose)
                         os.remove(errpath)
                     else:
-                        log('%s: merge failed\n' % path)
-    log('\n', None, verbose)
-    log('# Ran %s tests, %s skipped, %s failed.\n'
-        % (total, skipped, failed))
+                        _log('%s: merge failed\n' % path)
+    _log('\n', None, verbose)
+    _log('# Ran %s tests, %s skipped, %s failed.\n'
+         % (total, skipped, failed))
     return bool(failed)

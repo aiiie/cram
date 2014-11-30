@@ -64,6 +64,48 @@ def _patch(cmd, diff, path):
     out, retcode = execute([cmd, '-p0'], stdin=''.join(diff), cwd=path)
     return retcode == 0
 
+def _runtests(paths, tmpdir, shell, indent=2):
+    """Run tests and yield results.
+
+    This yields a sequence of 3-tuples containing the following:
+
+        (test path, absolute test path, test function)
+
+    The test function, when called, runs the test in a temporary directory
+    and returns a 3-tuple:
+
+        (list of lines in the test, same list with actual output, diff)
+    """
+    cwd = os.getcwd()
+    seen = set()
+    basenames = set()
+    for i, path in enumerate(_findtests(paths)):
+        abspath = os.path.abspath(path)
+        if abspath in seen:
+            continue
+        seen.add(abspath)
+
+        if not os.stat(abspath).st_size:
+            yield (path, abspath, None)
+            continue
+
+        basename = os.path.basename(path)
+        if basename in basenames:
+            basename = '%s-%s' % (basename, i)
+        else:
+            basenames.add(basename)
+
+        def test():
+            testdir = os.path.join(tmpdir, basename)
+            os.mkdir(testdir)
+            try:
+                os.chdir(testdir)
+                return testfile(abspath, shell, indent)
+            finally:
+                os.chdir(cwd)
+
+        yield (path, abspath, test)
+
 def run(paths, tmpdir, shell, quiet=False, verbose=False, patchcmd=None,
         answer=None, indent=2):
     """Run tests in paths in tmpdir.
@@ -76,66 +118,52 @@ def run(paths, tmpdir, shell, quiet=False, verbose=False, patchcmd=None,
     answer is read from stdin. If 'y', the test is patched using patch
     based on the changed output.
     """
-    cwd = os.getcwd()
-    seen = set()
-    basenames = set()
-    skipped = failed = 0
-    for i, path in enumerate(_findtests(paths)):
-        abspath = os.path.abspath(path)
-        if abspath in seen:
-            continue
-        seen.add(abspath)
-
+    total = skipped = failed = 0
+    for path, abspath, test in _runtests(paths, tmpdir, shell, indent=indent):
+        total += 1
         log(None, '%s: ' % path, verbose)
-        if not os.stat(abspath).st_size:
+        if test is None:
             skipped += 1
             log('s', 'empty\n', verbose)
-        else:
-            basename = os.path.basename(path)
-            if basename in basenames:
-                basename = '%s-%s' % (basename, i)
-            else:
-                basenames.add(basename)
-            testdir = os.path.join(tmpdir, basename)
-            os.mkdir(testdir)
-            try:
-                os.chdir(testdir)
-                refout, postout, diff = testfile(abspath, shell, indent)
-            finally:
-                os.chdir(cwd)
+            continue
 
-            errpath = abspath + '.err'
-            if postout is None:
-                skipped += 1
-                log('s', 'skipped\n', verbose)
-            elif not diff:
-                log('.', 'passed\n', verbose)
-                if os.path.exists(errpath):
-                    os.remove(errpath)
-            else:
-                failed += 1
-                log('!', 'failed\n', verbose)
-                if not quiet:
-                    log('\n', None, verbose)
-                errfile = open(errpath, 'w')
-                try:
-                    for line in postout:
-                        errfile.write(line)
-                finally:
-                    errfile.close()
-                if not quiet:
-                    if patchcmd:
-                        diff = list(diff)
-                    for line in diff:
-                        log(line)
-                    if (patchcmd and
-                        _prompt('Accept this change?', 'yN', answer) == 'y'):
-                        if _patch(patchcmd, diff, os.path.dirname(abspath)):
-                            log(None, '%s: merged output\n' % path, verbose)
-                            os.remove(errpath)
-                        else:
-                            log('%s: merge failed\n' % path)
+        refout, postout, diff = test()
+        errpath = abspath + '.err'
+
+        if postout is None:
+            skipped += 1
+            log('s', 'skipped\n', verbose)
+        elif not diff:
+            log('.', 'passed\n', verbose)
+            if os.path.exists(errpath):
+                os.remove(errpath)
+        else:
+            failed += 1
+            log('!', 'failed\n', verbose)
+            if not quiet:
+                log('\n', None, verbose)
+
+            errfile = open(errpath, 'w')
+            try:
+                for line in postout:
+                    errfile.write(line)
+            finally:
+                errfile.close()
+
+            if not quiet:
+                if patchcmd:
+                    diff = list(diff)
+                for line in diff:
+                    log(line)
+
+                if (patchcmd and
+                    _prompt('Accept this change?', 'yN', answer) == 'y'):
+                    if _patch(patchcmd, diff, os.path.dirname(abspath)):
+                        log(None, '%s: merged output\n' % path, verbose)
+                        os.remove(errpath)
+                    else:
+                        log('%s: merge failed\n' % path)
     log('\n', None, verbose)
     log('# Ran %s tests, %s skipped, %s failed.\n'
-        % (len(seen), skipped, failed))
+        % (total, skipped, failed))
     return bool(failed)

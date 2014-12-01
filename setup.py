@@ -5,7 +5,7 @@ import os
 import sys
 from distutils.core import setup, Command
 
-CRAM_DIR = os.path.dirname(__file__)
+CRAM_DIR = os.path.abspath(os.path.dirname(__file__))
 
 class test(Command):
     """Runs doctests and Cram tests"""

@@ -2,6 +2,7 @@
 
 import optparse
 import os
+import shlex
 import shutil
 import sys
 import tempfile
@@ -65,7 +66,6 @@ class _OptionParser(optparse.OptionParser):
 
         eargs = os.environ.get('CRAM', '').strip()
         if eargs:
-            import shlex
             args = args or []
             args += shlex.split(eargs)
 

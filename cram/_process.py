@@ -42,7 +42,6 @@ def execute(args, stdin=None, stdout=None, stderr=None, cwd=None, env=None):
     """
     p = subprocess.Popen(args, stdin=PIPE, stdout=stdout, stderr=stderr,
                          cwd=cwd, env=env, bufsize=-1,
-                         universal_newlines=True,
                          preexec_fn=_makeresetsigpipe(),
                          close_fds=os.name == 'posix')
     out, err = p.communicate(stdin)

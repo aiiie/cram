@@ -3,6 +3,7 @@
 import os
 import sys
 
+from cram._encoding import b, bytes_type, stdoutb
 from cram._process import execute
 from cram._test import testfile
 
@@ -13,10 +14,10 @@ def _findtests(paths):
     for p in paths:
         if os.path.isdir(p):
             for root, dirs, files in os.walk(p):
-                if os.path.basename(root).startswith('.'):
+                if os.path.basename(root).startswith(b('.')):
                     continue
                 for f in sorted(files):
-                    if not f.startswith('.') and f.endswith('.t'):
+                    if not f.startswith(b('.')) and f.endswith(b('.t')):
                         yield os.path.normpath(os.path.join(root, f))
         else:
             yield os.path.normpath(p)
@@ -56,12 +57,15 @@ def _log(msg=None, verbosemsg=None, verbose=False):
     if verbose:
         msg = verbosemsg
     if msg:
-        sys.stdout.write(msg)
+        if isinstance(msg, bytes_type):
+            stdoutb.write(msg)
+        else:
+            sys.stdout.write(msg)
         sys.stdout.flush()
 
 def _patch(cmd, diff, path):
     """Run echo [lines from diff] | cmd -p0"""
-    out, retcode = execute([cmd, '-p0'], stdin=''.join(diff), cwd=path)
+    out, retcode = execute([cmd, '-p0'], stdin=b('').join(diff), cwd=path)
     return retcode == 0
 
 def _runtests(paths, tmpdir, shell, indent=2, cleanenv=True):
@@ -91,7 +95,7 @@ def _runtests(paths, tmpdir, shell, indent=2, cleanenv=True):
 
         basename = os.path.basename(path)
         if basename in basenames:
-            basename = '%s-%s' % (basename, i)
+            basename = basename + b('-%s' % i)
         else:
             basenames.add(basename)
 
@@ -123,14 +127,14 @@ def run(paths, tmpdir, shell, quiet=False, verbose=False, patchcmd=None,
     for path, abspath, test in _runtests(paths, tmpdir, shell, indent=indent,
                                          cleanenv=cleanenv):
         total += 1
-        _log(None, '%s: ' % path, verbose)
+        _log(None, path + b(': '), verbose)
         if test is None:
             skipped += 1
             _log('s', 'empty\n', verbose)
             continue
 
         refout, postout, diff = test()
-        errpath = abspath + '.err'
+        errpath = abspath + b('.err')
 
         if postout is None:
             skipped += 1
@@ -145,7 +149,7 @@ def run(paths, tmpdir, shell, quiet=False, verbose=False, patchcmd=None,
             if not quiet:
                 _log('\n', None, verbose)
 
-            errfile = open(errpath, 'w')
+            errfile = open(errpath, 'wb')
             try:
                 for line in postout:
                     errfile.write(line)
@@ -156,15 +160,15 @@ def run(paths, tmpdir, shell, quiet=False, verbose=False, patchcmd=None,
                 if patchcmd:
                     diff = list(diff)
                 for line in diff:
-                    _log(line)
+                    stdoutb.write(line)
 
                 if (patchcmd and
                     _prompt('Accept this change?', 'yN', answer) == 'y'):
                     if _patch(patchcmd, diff, os.path.dirname(abspath)):
-                        _log(None, '%s: merged output\n' % path, verbose)
+                        _log(None, path + b(': merged output\n'), verbose)
                         os.remove(errpath)
                     else:
-                        _log('%s: merge failed\n' % path)
+                        _log(path + b(': merge failed\n'))
     _log('\n', None, verbose)
     _log('# Ran %s tests, %s skipped, %s failed.\n'
          % (total, skipped, failed))

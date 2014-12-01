@@ -3,16 +3,19 @@
 import difflib
 import re
 
+from cram._encoding import b
+
 __all__ = ['glob', 'regex', 'unified_diff']
 
 def _regex(pattern, s):
     """Match a regular expression or return False if invalid.
 
-    >>> [bool(_regex(r, 'foobar')) for r in ('foo.*', '***')]
+    >>> from cram._encoding import b
+    >>> [bool(_regex(r, b('foobar'))) for r in (b('foo.*'), b('***'))]
     [True, False]
     """
     try:
-        return re.match(pattern + r'\Z', s)
+        return re.match(pattern + b(r'\Z'), s)
     except re.error:
         return False
 
@@ -22,28 +25,29 @@ def _glob(el, l):
     The only supported special characters are * and ?. Escaping is
     supported.
 
-    >>> bool(_glob(r'\* \\ \? fo?b*', '* \\ ? foobar'))
+    >>> from cram._encoding import b
+    >>> bool(_glob(b(r'\* \\ \? fo?b*'), b('* \\ ? foobar')))
     True
     """
     i, n = 0, len(el)
-    res = ''
+    res = b('')
     while i < n:
-        c = el[i]
+        c = el[i:i + 1]
         i += 1
-        if c == '\\' and el[i] in '*?\\':
+        if c == b('\\') and el[i] in b('*?\\'):
             res += el[i - 1:i + 1]
             i += 1
-        elif c == '*':
-            res += '.*'
-        elif c == '?':
-            res += '.'
+        elif c == b('*'):
+            res += b('.*')
+        elif c == b('?'):
+            res += b('.')
         else:
             res += re.escape(c)
     return _regex(res, l)
 
 def _matchannotation(keyword, matchfunc, el, l):
     """Apply match function based on annotation keyword"""
-    ann = ' (%s)\n' % keyword
+    ann = b(' (%s)\n' % keyword)
     return el.endswith(ann) and matchfunc(el[:-len(ann)], l[:-1])
 
 def regex(el, l):
@@ -88,32 +92,38 @@ class _SequenceMatcher(difflib.SequenceMatcher, object):
             self.a[alo + n] = el
         return ret
 
-def unified_diff(a, b, fromfile='', tofile='', fromfiledate='',
-                 tofiledate='', n=3, lineterm='\n', matchers=[]):
+def unified_diff(l1, l2, fromfile=b(''), tofile=b(''), fromfiledate=b(''),
+                 tofiledate=b(''), n=3, lineterm=b('\n'), matchers=[]):
     """Compare two sequences of lines; generate the delta as a unified diff.
 
     This is like difflib.unified_diff(), but allows custom matchers.
     """
     started = False
-    matcher = _SequenceMatcher(None, a, b, matchers=matchers)
+    matcher = _SequenceMatcher(None, l1, l2, matchers=matchers)
     for group in matcher.get_grouped_opcodes(n):
         if not started:
-            fromdate = fromfiledate and '\t%s' % fromfiledate or ''
-            todate = fromfiledate and '\t%s' % tofiledate or ''
-            yield '--- %s%s%s' % (fromfile, fromdate, lineterm)
-            yield '+++ %s%s%s' % (tofile, todate, lineterm)
+            if fromfiledate:
+                fromdate = b('\t') + fromfiledate
+            else:
+                fromdate = b('')
+            if tofiledate:
+                todate = b('\t') + tofiledate
+            else:
+                todate = b('')
+            yield b('--- ') + fromfile + fromdate + lineterm
+            yield b('+++ ') + tofile + todate + lineterm
             started = True
         i1, i2, j1, j2 = group[0][1], group[-1][2], group[0][3], group[-1][4]
-        yield "@@ -%d,%d +%d,%d @@%s" % (i1 + 1, i2 - i1, j1 + 1, j2 - j1,
-                                         lineterm)
+        yield (b("@@ -%d,%d +%d,%d @@" % (i1 + 1, i2 - i1, j1 + 1, j2 - j1)) +
+               lineterm)
         for tag, i1, i2, j1, j2 in group:
             if tag == 'equal':
-                for line in a[i1:i2]:
-                    yield ' ' + line
+                for line in l1[i1:i2]:
+                    yield b(' ') + line
                 continue
             if tag == 'replace' or tag == 'delete':
-                for line in a[i1:i2]:
-                    yield '-' + line
+                for line in l1[i1:i2]:
+                    yield b('-') + line
             if tag == 'replace' or tag == 'insert':
-                for line in b[j1:j2]:
-                    yield '+' + line
+                for line in l2[j1:j2]:
+                    yield b('+') + line

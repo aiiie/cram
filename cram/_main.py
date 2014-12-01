@@ -11,6 +11,7 @@ try:
 except ImportError:
     import ConfigParser as configparser
 
+from cram._encoding import b, fsencode, stderrb, stdoutb
 from cram._run import run
 
 def _which(cmd):
@@ -96,6 +97,7 @@ def _parseopts(args):
     p.add_option('--indent', action='store', default=2, metavar='NUM',
                  type='int', help='number of spaces to use for indentation')
     opts, paths = p.parse_args(args)
+    paths = [fsencode(path) for path in paths]
     getusage = lambda: p.get_usage()
     return opts, paths, getusage
 
@@ -135,7 +137,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
     badpaths = [path for path in paths if not os.path.exists(path)]
     if badpaths:
-        sys.stderr.write('no such file: %s\n' % badpaths[0])
+        stderrb.write(b('no such file: ') + badpaths[0] + b('\n'))
         return 2
 
     if opts.yes:
@@ -146,17 +148,20 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
         answer = None
 
     tmpdir = os.environ['CRAMTMP'] = tempfile.mkdtemp('', 'cramtests-')
+    tmpdirb = fsencode(tmpdir)
     proctmp = os.path.join(tmpdir, 'tmp')
     for s in ('TMPDIR', 'TEMP', 'TMP'):
         os.environ[s] = proctmp
 
     os.mkdir(proctmp)
     try:
-        return run(paths, tmpdir, opts.shell, opts.quiet, opts.verbose,
-                   patchcmd, answer, opts.indent, not opts.preserve_env)
+        return run(paths, tmpdirb, opts.shell, opts.quiet,
+                   opts.verbose, patchcmd, answer, opts.indent,
+                   not opts.preserve_env)
     finally:
         if opts.keep_tmpdir:
-            sys.stdout.write('# Kept temporary directory: %s\n' % tmpdir)
+            stdoutb.write(b('# Kept temporary directory: ') + tmpdirb +
+                          b('\n'))
         else:
             shutil.rmtree(tmpdir)
 

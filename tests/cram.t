@@ -422,6 +422,12 @@ Test missing patch(1) and patch(1) error:
   .*\b7a23dfa85773c77648f619ad0f9df554\b.* (re)
   $ rm patch examples/fail.t.err
 
+Test an invalid shell:
+
+  $ cram --shell=./badsh
+  shell not found: ./badsh
+  [2]
+
 Test that a fixed .err file is deleted:
 
   $ echo "  $ echo 1" > fixed.t

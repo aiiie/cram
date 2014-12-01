@@ -15,9 +15,10 @@ from cram._encoding import b, fsencode, stderrb, stdoutb
 from cram._run import run
 
 def _which(cmd):
-    """Return the patch to cmd or None if not found"""
+    """Return the path to cmd or None if not found"""
+    cmd = fsencode(cmd)
     for p in os.environ['PATH'].split(os.pathsep):
-        path = os.path.join(p, cmd)
+        path = os.path.join(fsencode(p), cmd)
         if os.path.isfile(path) and os.access(path, os.X_OK):
             return os.path.abspath(path)
     return None
@@ -124,6 +125,11 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
                              % (s1, s2))
             return 2
 
+    shellcmd = _which(opts.shell)
+    if not shellcmd:
+        stderrb.write(b('shell not found: ') + fsencode(opts.shell) + b('\n'))
+        return 2
+
     patchcmd = None
     if opts.interactive:
         patchcmd = _which('patch')
@@ -155,7 +161,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
     os.mkdir(proctmp)
     try:
-        return run(paths, tmpdirb, opts.shell, opts.quiet,
+        return run(paths, tmpdirb, shellcmd, opts.quiet,
                    opts.verbose, patchcmd, answer, opts.indent,
                    not opts.preserve_env)
     finally:

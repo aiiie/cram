@@ -558,3 +558,22 @@ Test with UTF-8 encoding:
   
   # Ran 2 tests, 0 skipped, 1 failed.
   [1]
+
+Test file missing trailing newline:
+
+  $ printf '  $ true' > passing-with-no-newline.t
+  $ cram passing-with-no-newline.t
+  .
+  # Ran 1 tests, 0 skipped, 0 failed.
+
+  $ printf '  $ false' > failing-with-no-newline.t
+  $ cram failing-with-no-newline.t
+  !
+  --- failing-with-no-newline.t
+  +++ failing-with-no-newline.t.err
+  @@ -1,1 +1,2 @@
+     $ false
+  +  [1]
+  
+  # Ran 1 tests, 0 skipped, 1 failed.
+  [1]

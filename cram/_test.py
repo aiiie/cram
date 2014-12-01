@@ -57,6 +57,8 @@ def test(lines, shell, indent=2, testname=None, env=None, cleanenv=True):
     i = pos = prepos = -1
     stdin = []
     for i, line in enumerate(lines):
+        if not line.endswith(b('\n')):
+            line += b('\n')
         refout.append(line)
         if line.startswith(cmdline):
             after.setdefault(pos, []).append(line)

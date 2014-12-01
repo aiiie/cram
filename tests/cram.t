@@ -511,6 +511,13 @@ Custom indentation:
   .
   # Ran 1 tests, 0 skipped, 0 failed.
 
+Test with Windows newlines:
+
+  $ printf "  $ echo hi\r\n  hi\r\n" > windows-newlines.t
+  $ cram windows-newlines.t
+  .
+  # Ran 1 tests, 0 skipped, 0 failed.
+
 Test with Latin-1 encoding:
 
   $ cat > good-latin-1.t <<EOF

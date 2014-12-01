@@ -87,8 +87,7 @@ def test(lines, shell, indent=2, testname=None, env=None, cleanenv=True):
     # which has more line breaks than \n and \r.
     pos = -1
     ret = 0
-    for i, line in enumerate(output[:-1].split(b('\n'))):
-        line += b('\n')
+    for i, line in enumerate(output[:-1].splitlines(True)):
         out, cmd = line, None
         if salt in line:
             out, cmd = line.split(salt, 1)

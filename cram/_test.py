@@ -6,7 +6,7 @@ import re
 import time
 
 from cram._encoding import b, bchr, fsdecode
-from cram._diff import glob, regex, unified_diff
+from cram._diff import esc, glob, regex, unified_diff
 from cram._process import PIPE, STDOUT, execute
 
 __all__ = ['test', 'testfile']
@@ -110,7 +110,7 @@ def test(lines, shell, indent=2, testname=None, env=None, cleanenv=True):
     else:
         diffpath = errpath = b('')
     diff = unified_diff(refout, postout, diffpath, errpath,
-                        matchers=[glob, regex])
+                        matchers=[esc, glob, regex])
     for firstline in diff:
         return refout, postout, itertools.chain([firstline], diff)
     return refout, postout, []

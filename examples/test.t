@@ -64,6 +64,8 @@ Escaped output:
   \x00\x01\x02\x03\x04\x05\x06\x07\x08\t\x0b\x0c\x0e\x0f\x10\x11\x12 (esc)
   $ printf '\023\024\025\026\027\030\031\032\033\034\035\036\037\040\047\n'
   \x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f ' (esc)
+  $ echo hi
+  \x68\x69 (esc)
 
 Command that closes a pipe:
 

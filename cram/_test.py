@@ -64,14 +64,14 @@ def test(lines, shell, indent=2, testname=None, env=None, cleanenv=True):
             after.setdefault(pos, []).append(line)
             prepos = pos
             pos = i
-            stdin.append(b('echo "\n%s %s $?"\n' % (usalt, i)))
+            stdin.append(b('echo %s %s $?\n' % (usalt, i)))
             stdin.append(line[len(cmdline):])
         elif line.startswith(conline):
             after.setdefault(prepos, []).append(line)
             stdin.append(line[len(conline):])
         elif not line.startswith(indent):
             after.setdefault(pos, []).append(line)
-    stdin.append(b('echo "\n%s %s $?"\n' % (usalt, i + 1)))
+    stdin.append(b('echo %s %s $?\n' % (usalt, i + 1)))
 
     output, retcode = execute([shell, '-'], stdin=b('').join(stdin),
                               stdout=PIPE, stderr=STDOUT, env=env)
@@ -89,19 +89,25 @@ def test(lines, shell, indent=2, testname=None, env=None, cleanenv=True):
     ret = 0
     for i, line in enumerate(output[:-1].split(b('\n'))):
         line += b('\n')
-        if line.startswith(salt):
-            presalt = postout.pop()
-            if presalt != indent + b('\n'):
-                postout.append(presalt[:-1] + b(' (no-eol)\n'))
-            ret = int(line.split()[2])
+        out, cmd = line, None
+        if salt in line:
+            out, cmd = line.split(salt, 1)
+
+        if out:
+            if not out.endswith(b('\n')):
+                out += b(' (no-eol)\n')
+
+            if _needescape(out):
+                out = _escape(out)
+            postout.append(indent + out)
+
+        if cmd:
+            ret = int(cmd.split()[1])
             if ret != 0:
                 postout.append(indent + b('[%s]\n' % (ret)))
             postout += after.pop(pos, [])
-            pos = int(line.split()[1])
-        else:
-            if _needescape(line):
-                line = _escape(line)
-            postout.append(indent + line)
+            pos = int(cmd.split()[0])
+
     postout += after.pop(pos, [])
 
     if testname:

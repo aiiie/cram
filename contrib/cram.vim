@@ -15,7 +15,11 @@ if exists("b:current_syntax")
   finish
 endif
 
-syn include @Shell syntax/sh.vim
+if fnamemodify($SHELL, ':t') == 'zsh'
+  syn include @Shell syntax/zsh.vim
+else
+  syn include @Shell syntax/sh.vim
+endif
 
 syn match cramComment /^[^ ].*$/ contains=@Spell
 syn region cramOutput start=/^  [^$>]/ start=/^  $/ end=/\v.(\n\n*[^ ])\@=/me=s end=/^  [$>]/me=e-3 end=/^$/ fold containedin=cramBlock

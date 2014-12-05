@@ -94,9 +94,10 @@ def _parseopts(args):
     p.add_option('--keep-tmpdir', action='store_true',
                  help='keep temporary directories')
     p.add_option('--shell', action='store', default='/bin/sh', metavar='PATH',
-                 help='shell to use for running tests')
+                 help='shell to use for running tests (default: %default)')
     p.add_option('--indent', action='store', default=2, metavar='NUM',
-                 type='int', help='number of spaces to use for indentation')
+                 type='int', help=('number of spaces to use for indentation '
+                                   '(default: %default)'))
     opts, paths = p.parse_args(args)
     paths = [fsencode(path) for path in paths]
     getusage = lambda: p.get_usage()

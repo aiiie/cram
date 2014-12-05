@@ -39,8 +39,8 @@ Here's a snippet from `Cram's own test suite`_::
         -n, --no            answer no to all questions
         -E, --preserve-env  don't reset common environment variables
         --keep-tmpdir       keep temporary directories
-        --shell=PATH        shell to use for running tests
-        --indent=NUM        number of spaces to use for indentation
+        --shell=PATH        shell to use for running tests (default: /bin/sh)
+        --indent=NUM        number of spaces to use for indentation (default: 2)
 
 The format in a nutshell:
 

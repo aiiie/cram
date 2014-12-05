@@ -12,8 +12,9 @@ try:
 except ImportError:
     import ConfigParser as configparser
 
+from cram._cli import runcli
 from cram._encoding import b, fsencode, stderrb, stdoutb
-from cram._run import run
+from cram._run import runtests
 
 def _which(cmd):
     """Return the path to cmd or None if not found"""
@@ -162,9 +163,17 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
     os.mkdir(proctmp)
     try:
-        return run(paths, tmpdirb, shellcmd, opts.quiet,
-                   opts.verbose, patchcmd, answer, opts.indent,
-                   not opts.preserve_env)
+        tests = runtests(paths, tmpdirb, shellcmd, indent=opts.indent,
+                         cleanenv=not opts.preserve_env)
+        tests = runcli(tests, quiet=opts.quiet, verbose=opts.verbose,
+                       patchcmd=patchcmd, answer=answer)
+
+        failed = False
+        for path, abspath, test in tests:
+            refout, postout, diff = test()
+            if diff:
+                failed = True
+        return failed
     finally:
         if opts.keep_tmpdir:
             stdoutb.write(b('# Kept temporary directory: ') + tmpdirb +

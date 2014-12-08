@@ -108,10 +108,11 @@ def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None):
                     errfile.close()
 
                 if not quiet:
-                    if patchcmd:
-                        diff = list(diff)
-                    for line in diff:
+                    origdiff = diff
+                    diff = []
+                    for line in origdiff:
                         stdoutb.write(line)
+                        diff.append(line)
 
                     if (patchcmd and
                         _prompt('Accept this change?', 'yN', answer) == 'y'):

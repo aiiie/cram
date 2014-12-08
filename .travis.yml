@@ -10,7 +10,11 @@ python:
     - "3.2"
     - "3.3"
     - "3.4"
-    - "pypy"
-    - "pypy3"
+    - pypy
+    - pypy3
 
-script: make test
+install: pip install coveralls
+
+script: make coverage
+
+after_script: coveralls

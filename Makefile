@@ -40,9 +40,8 @@ endif
 tests: test
 
 coverage:
-	$(PYTHON) setup.py -q test --coverage && \
-	coverage report && \
-	coverage annotate
+	$(PYTHON) setup.py -q test --coverage
+	coverage report
 
 # E261: two spaces before inline comment
 # E301: expected blank line

@@ -34,7 +34,7 @@ ifeq ($(PYTHON),all)
 	python3.3 -tt -bb setup.py -q test $(TEST_ARGS)
 	python3.4 -tt -bb setup.py -q test $(TEST_ARGS)
 else
-	$(PYTHON) -tt setup.py -q test $(TEST_ARGS)
+	$(PYTHON) setup.py -q test $(TEST_ARGS)
 endif
 
 tests: test

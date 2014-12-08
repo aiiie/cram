@@ -5,7 +5,7 @@ import os
 import re
 import time
 
-from cram._encoding import b, bchr, fsdecode
+from cram._encoding import b, bchr, envencode
 from cram._diff import esc, glob, regex, unified_diff
 from cram._process import PIPE, STDOUT, execute
 
@@ -139,8 +139,8 @@ def testfile(path, shell, indent=2, env=None, cleanenv=True):
     try:
         abspath = os.path.abspath(path)
         env = env or os.environ.copy()
-        env['TESTDIR'] = fsdecode(os.path.dirname(abspath))
-        env['TESTFILE'] = fsdecode(os.path.basename(abspath))
+        env['TESTDIR'] = envencode(os.path.dirname(abspath))
+        env['TESTFILE'] = envencode(os.path.basename(abspath))
         testname = os.path.basename(abspath)
         return test(f, shell, indent=indent, testname=testname, env=env,
                     cleanenv=cleanenv)

@@ -4,8 +4,8 @@ import locale
 import os
 import sys
 
-__all__ = ['b', 'bchr', 'bytes_type', 'fsdecode', 'fsencode', 'stdoutb',
-           'stderrb']
+__all__ = ['b', 'bchr', 'bytes_type', 'envencode', 'fsdecode', 'fsencode',
+           'stdoutb', 'stderrb']
 
 try:
     bytes
@@ -30,6 +30,11 @@ elif bytes_type is not str:
 else:
     fsdecode = lambda s: s
     fsencode = lambda s: s
+
+if bytes_type is str:
+    envencode = lambda s: s
+else:
+    envencode = fsdecode
 
 if getattr(sys.stdout, 'buffer', None) is not None:
     stdoutb = sys.stdout.buffer

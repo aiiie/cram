@@ -1,4 +1,4 @@
-include .coveragerc .pylintrc Makefile *.txt contrib/* scripts/*
+include .coveragerc .pylintrc Makefile *.rst *.txt contrib/* scripts/*
 exclude contrib/PKGBUILD
 recursive-include examples *.t
 recursive-include tests *.t

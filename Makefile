@@ -57,7 +57,7 @@ pylint:
 	pylint --rcfile=.pylintrc cram setup.py
 
 markdown:
-	pandoc -f rst -t markdown README.txt > README.md
+	pandoc -f rst -t markdown README.rst > README.md
 
 .PHONY: all build clean install dist test tests coverage pep8 pyflakes \
 	pylint markdown

@@ -3,7 +3,7 @@
 import os
 import sys
 
-from cram._encoding import b, bytes_type, stdoutb
+from cram._encoding import b, bytestype, stdoutb
 from cram._process import execute
 
 __all__ = ['runcli']
@@ -43,7 +43,7 @@ def _log(msg=None, verbosemsg=None, verbose=False):
     if verbose:
         msg = verbosemsg
     if msg:
-        if isinstance(msg, bytes_type):
+        if isinstance(msg, bytestype):
             stdoutb.write(msg)
         else:
             sys.stdout.write(msg)

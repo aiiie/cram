@@ -347,7 +347,7 @@ Download the official development repository using Mercurial_::
 
 Test Cram using Cram::
 
-    make tests
+    make test
 
 Get a test coverage report using coverage.py_::
 

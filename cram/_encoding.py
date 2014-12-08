@@ -5,21 +5,23 @@ import os
 import sys
 
 __all__ = ['b', 'bchr', 'bytes_type', 'envencode', 'fsdecode', 'fsencode',
-           'stdoutb', 'stderrb']
+           'stdoutb', 'stderrb', 'unicode_type']
 
 try:
     bytes
 except NameError:
     bytes_type = str
+    unicode_type = unicode
 else:
     bytes_type = bytes
+    unicode_type = str
 
 if getattr(os, 'fsdecode', None) is not None:
     fsdecode = os.fsdecode
     fsencode = os.fsencode
 elif bytes_type is not str:
     def fsdecode(s):
-        if isinstance(s, str):
+        if isinstance(s, unicode_type):
             return s
         return s.decode(locale.getpreferredencoding(), 'surrogateescape')
 

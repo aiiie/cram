@@ -15,6 +15,7 @@ except ImportError:
 from cram._cli import runcli
 from cram._encoding import b, fsencode, stderrb, stdoutb
 from cram._run import runtests
+from cram._xunit import runxunit
 
 def _which(cmd):
     """Return the path to cmd or None if not found"""
@@ -99,6 +100,8 @@ def _parseopts(args):
     p.add_option('--indent', action='store', default=2, metavar='NUM',
                  type='int', help=('number of spaces to use for indentation '
                                    '(default: %default)'))
+    p.add_option('--xunit-file', action='store', metavar='PATH',
+                 help='path to write xUnit XML output')
     opts, paths = p.parse_args(args)
     paths = [fsencode(path) for path in paths]
     getusage = lambda: p.get_usage()
@@ -167,6 +170,8 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
                          cleanenv=not opts.preserve_env)
         tests = runcli(tests, quiet=opts.quiet, verbose=opts.verbose,
                        patchcmd=patchcmd, answer=answer)
+        if opts.xunit_file is not None:
+            tests = runxunit(tests, opts.xunit_file)
 
         failed = False
         for path, abspath, test in tests:

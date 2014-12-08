@@ -2,6 +2,7 @@
 """Installs cram"""
 
 import os
+import pipes
 import sys
 from distutils.core import setup, Command
 
@@ -10,10 +11,12 @@ CRAM_DIR = os.path.abspath(os.path.dirname(__file__))
 class test(Command):
     """Runs doctests and Cram tests"""
     description = 'run test suite'
-    user_options = [('coverage', None, 'run tests using coverage.py')]
+    user_options = [('coverage', None, 'run tests using coverage.py'),
+                    ('xunit-file=', None, 'path to write xUnit XML output')]
 
     def initialize_options(self):
         self.coverage = 0
+        self.xunit_file = None
 
     def finalize_options(self):
         pass
@@ -66,7 +69,13 @@ class test(Command):
             # setup.py was run with.
             os.environ['COVERAGE'] = '1'
             os.environ['COVERAGE_FILE'] = os.path.join(CRAM_DIR, '.coverage')
-        cram.main(['-v', 'tests'])
+
+        args = ['-v']
+        if self.xunit_file is not None:
+            xunit_file = os.path.abspath(self.xunit_file)
+            args.append('--xunit-file=%s' % pipes.quote(xunit_file))
+
+        cram.main(args + ['tests'])
 
 def long_description():
     """Get the long description from the README"""

@@ -15,7 +15,7 @@ clean:
 		-name '*,cover' -o -name __pycache__ \) -prune \
 		-exec rm -rf '{}' ';'
 	rm -rf dist build htmlcov
-	rm -f README.md MANIFEST .coverage
+	rm -f README.md MANIFEST .coverage cram.xml
 
 install: build
 	$(PYTHON) setup.py install $(PREFIX_ARG)
@@ -26,15 +26,15 @@ dist:
 
 test:
 ifeq ($(PYTHON),all)
-	python2.4 -tt setup.py -q test
-	python2.5 -tt setup.py -q test
-	python2.6 -tt -3 setup.py -q test
-	python2.7 -tt -3 setup.py -q test
-	python3.2 -tt -bb setup.py -q test
-	python3.3 -tt -bb setup.py -q test
-	python3.4 -tt -bb setup.py -q test
+	python2.4 -tt setup.py -q test $(TEST_ARGS)
+	python2.5 -tt setup.py -q test $(TEST_ARGS)
+	python2.6 -tt -3 setup.py -q test $(TEST_ARGS)
+	python2.7 -tt -3 setup.py -q test $(TEST_ARGS)
+	python3.2 -tt -bb setup.py -q test $(TEST_ARGS)
+	python3.3 -tt -bb setup.py -q test $(TEST_ARGS)
+	python3.4 -tt -bb setup.py -q test $(TEST_ARGS)
 else
-	$(PYTHON) -tt setup.py -q test
+	$(PYTHON) -tt setup.py -q test $(TEST_ARGS)
 endif
 
 tests: test

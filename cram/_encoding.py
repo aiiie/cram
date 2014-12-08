@@ -5,7 +5,7 @@ import os
 import sys
 
 __all__ = ['b', 'bchr', 'bytestype', 'envencode', 'fsdecode', 'fsencode',
-           'stdoutb', 'stderrb', 'unicodetype']
+           'stdoutb', 'stderrb', 'u', 'ul', 'unicodetype']
 
 try:
     bytes
@@ -48,6 +48,15 @@ else:
 if bytestype is str:
     b = lambda s: s
     bchr = chr
+    u = lambda s: s.decode('ascii')
 else:
     b = lambda s: s.encode('ascii')
     bchr = lambda i: bytestype([i])
+    u = lambda s: s
+
+try:
+    eval(r'u""')
+except SyntaxError:
+    ul = lambda e: eval(e)
+else:
+    ul = lambda e: eval('u' + e)

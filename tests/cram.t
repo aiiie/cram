@@ -693,11 +693,11 @@ Test using set -x in a test:
      $ echo 1
      1
      $ set -x
-  +  + echo  (no-eol)
+  \+  \+ ?echo  \(no-eol\) (re)
      $ echo 2
-  +  + echo 2
+  \+  \+ ?echo 2 (re)
   +  2
-  +  + echo  (no-eol)
+  \+  \+ ?echo  \(no-eol\) (re)
   
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]

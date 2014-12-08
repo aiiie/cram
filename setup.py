@@ -4,7 +4,7 @@
 import os
 import pipes
 import sys
-from distutils.core import setup, Command
+from distutils.core import setup, Command, DistutilsError
 
 CRAM_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -75,7 +75,9 @@ class test(Command):
             xunit_file = os.path.abspath(self.xunit_file)
             args.append('--xunit-file=%s' % pipes.quote(xunit_file))
 
-        cram.main(args + ['tests'])
+        ret = cram.main(args + ['tests'])
+        if ret or totalfailures:
+            raise DistutilsError('tests failed')
 
 def long_description():
     """Get the long description from the README"""

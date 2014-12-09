@@ -105,7 +105,7 @@ setup(
     license='GNU GPL',
     long_description=long_description(),
     name='cram',
-    py_modules=['cram'],
+    packages=['cram'],
     scripts=['scripts/cram'],
     url='https://bitheap.org/cram/',
     version='0.6',

@@ -77,7 +77,7 @@ The format in a nutshell:
 
 .. _Mercurial: http://mercurial.selenic.com/
 .. _unified test format: http://www.selenic.com/blog/?p=663
-.. _Cram's own test suite: https://bitbucket.org/brodie/cram/src/tip/tests/cram.t
+.. _Cram's own test suite: https://bitbucket.org/brodie/cram/src/default/tests/cram.t
 .. _Perl-compatible regular expressions: https://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions
 
 
@@ -193,7 +193,7 @@ Also note that care should be taken with commands that close the test shell's
 adding the ``-n`` option to prevent it from closing ``stdin``.
 
 .. _unified context diff: https://en.wikipedia.org/wiki/Diff#Unified_format
-.. _its own example tests: https://bitbucket.org/brodie/cram/src/tip/examples/
+.. _its own example tests: https://bitbucket.org/brodie/cram/src/default/examples/
 
 
 News
@@ -306,7 +306,7 @@ Version 0.4 (Sep. 28, 2010)
 * Added `contrib/cram.vim`_ syntax file for Vim. Contributed by `Steve
   Losh`_.
 
-.. _contrib/cram.vim: https://bitbucket.org/brodie/cram/src/tip/contrib/cram.vim
+.. _contrib/cram.vim: https://bitbucket.org/brodie/cram/src/default/contrib/cram.vim
 .. _Steve Losh: http://stevelosh.com/
 
 Version 0.3 (Sep. 20, 2010)

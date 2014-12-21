@@ -345,6 +345,10 @@ Download the official development repository using Mercurial_::
 
     hg clone https://bitbucket.org/brodie/cram
 
+Or Git_::
+
+    git clone https://github.com/brodie/cram.git
+
 Test Cram using Cram::
 
     make test
@@ -353,9 +357,11 @@ Get a test coverage report using coverage.py_::
 
     make coverage
 
-Visit Bitbucket_ if you'd like to fork the project, watch for new
-changes, or report issues.
+Visit Bitbucket_ or GitHub_ if you'd like to fork the project, watch
+for new changes, or report issues.
 
 .. _Mercurial: http://mercurial.selenic.com/
+.. _Git: http://git-scm.com/
 .. _coverage.py: http://nedbatchelder.com/code/coverage/
 .. _Bitbucket: https://bitbucket.org/brodie/cram
+.. _GitHub: https://github.com/brodie/cram

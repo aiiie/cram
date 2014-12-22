@@ -4,16 +4,22 @@ import locale
 import os
 import sys
 
+try:
+    import builtins
+except ImportError:
+    import __builtin__ as builtins
+
 __all__ = ['b', 'bchr', 'bytestype', 'envencode', 'fsdecode', 'fsencode',
            'stdoutb', 'stderrb', 'u', 'ul', 'unicodetype']
 
-try:
-    bytes
-except NameError:
-    bytestype = str
-    unicodetype = unicode
+if getattr(builtins, 'bytes', None) is not None:
+    bytestype = builtins.bytes
 else:
-    bytestype = bytes
+    bytestype = str
+
+if getattr(builtins, 'unicode', None) is not None:
+    unicodetype = builtins.unicode
+else:
     unicodetype = str
 
 if getattr(os, 'fsdecode', None) is not None:

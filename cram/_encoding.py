@@ -1,6 +1,5 @@
 """Encoding utilities"""
 
-import locale
 import os
 import sys
 

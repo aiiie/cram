@@ -5,7 +5,7 @@ import os
 import re
 import time
 
-from cram._encoding import b, bchr, envencode
+from cram._encoding import b, bchr, bytestype, envencode
 from cram._diff import esc, glob, regex, unified_diff
 from cram._process import PIPE, STDOUT, execute
 
@@ -21,8 +21,9 @@ def _escape(s):
     return (_escapesub(lambda m: _escapemap[m.group(0)], s[:-1]) +
             b(' (esc)\n'))
 
-def test(lines, shell, indent=2, testname=None, env=None, cleanenv=True):
-    """Run test lines and return input, output, and diff.
+def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
+         cleanenv=True):
+    r"""Run test lines and return input, output, and diff.
 
     This returns a 3-tuple containing the following:
 
@@ -36,6 +37,34 @@ def test(lines, shell, indent=2, testname=None, env=None, cleanenv=True):
     Note that the TESTDIR and TESTFILE environment variables are not
     available when running tests with this function. To run actual
     test files, see testfile().
+
+    Example usage:
+
+    >>> from cram._encoding import b
+    >>> refout, postout, diff = test([b('  $ echo hi\n'), b('  hi\n')])
+    >>> refout == [b('  $ echo hi\n'), b('  hi\n')]
+    True
+    >>> refout == postout
+    True
+    >>> bool(diff)
+    False
+
+    lines may also be a single bytes string:
+
+    >>> refout, postout, diff = test(b('  $ echo hi\n  bye\n'))
+    >>> refout == [b('  $ echo hi\n'), b('  bye\n')]
+    True
+    >>> postout == [b('  $ echo hi\n'), b('  hi\n')]
+    True
+    >>> bool(diff)
+    True
+    >>> (b('').join(diff) ==
+    ...  b('--- \n+++ \n@@ -1,2 +1,2 @@\n   $ echo hi\n-  bye\n+  hi\n'))
+    True
+
+    Note that the b() function is internal to Cram. If you're using Python 2,
+    use normal string literals instead. If you're using Python 3, use bytes
+    literals.
     """
     indent = b(' ') * indent
     cmdline = indent + b('$ ')
@@ -51,6 +80,9 @@ def test(lines, shell, indent=2, testname=None, env=None, cleanenv=True):
         env['CDPATH'] = ''
         env['COLUMNS'] = '80'
         env['GREP_OPTIONS'] = ''
+
+    if isinstance(lines, bytestype):
+        lines = lines.splitlines(True)
 
     after = {}
     refout, postout = [], []

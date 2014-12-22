@@ -19,15 +19,38 @@ if getattr(os, 'fsdecode', None) is not None:
     fsdecode = os.fsdecode
     fsencode = os.fsencode
 elif bytestype is not str:
-    def fsdecode(s):
-        if isinstance(s, unicodetype):
-            return s
-        return s.decode(locale.getpreferredencoding(), 'surrogateescape')
+    if sys.platform == 'win32':
+        def fsdecode(s):
+            """Decode a filename from the filesystem encoding"""
+            if isinstance(s, unicodetype):
+                return s
+            encoding = sys.getfilesystemencoding()
+            if encoding == 'mbcs':
+                return s.decode(encoding)
+            else:
+                return s.decode(encoding, 'surrogateescape')
 
-    def fsencode(s):
-        if isinstance(s, bytestype):
-            return s
-        return s.encode(locale.getpreferredencoding(), 'surrogateescape')
+        def fsencode(s):
+            """Encode a filename to the filesystem encoding"""
+            if isinstance(s, bytestype):
+                return s
+            encoding = sys.getfilesystemencoding()
+            if encoding == 'mbcs':
+                return s.encode(encoding)
+            else:
+                return s.encode(encoding, 'surrogateescape')
+    else:
+        def fsdecode(s):
+            """Decode a filename from the filesystem encoding"""
+            if isinstance(s, unicodetype):
+                return s
+            return s.decode(sys.getfilesystemencoding(), 'surrogateescape')
+
+        def fsencode(s):
+            """Encode a filename to the filesystem encoding"""
+            if isinstance(s, bytestype):
+                return s
+            return s.encode(sys.getfilesystemencoding(), 'surrogateescape')
 else:
     fsdecode = lambda s: s
     fsencode = lambda s: s

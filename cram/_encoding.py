@@ -78,6 +78,6 @@ else:
 try:
     eval(r'u""')
 except SyntaxError:
-    ul = lambda e: eval(e)
+    ul = eval
 else:
     ul = lambda e: eval('u' + e)

@@ -73,7 +73,9 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
     usalt = 'CRAM%s' % time.time()
     salt = b(usalt)
 
-    env = env or os.environ.copy()
+    if env is None:
+        env = os.environ.copy()
+
     if cleanenv:
         for s in ('LANG', 'LC_ALL', 'LANGUAGE'):
             env[s] = 'C'

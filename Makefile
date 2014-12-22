@@ -43,11 +43,12 @@ coverage:
 	$(PYTHON) setup.py -q test --coverage
 	coverage report
 
+# E129: indentation between lines in conditions
 # E261: two spaces before inline comment
 # E301: expected blank line
 # E302: two new lines between functions/etc.
 pep8:
-	pep8 --ignore=E125,E261,E301,E302 --repeat cram setup.py
+	pep8 --ignore=E129,E261,E301,E302 --repeat cram setup.py
 
 pyflakes:
 	pyflakes cram setup.py

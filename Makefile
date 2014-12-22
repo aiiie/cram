@@ -48,13 +48,13 @@ coverage:
 # E301: expected blank line
 # E302: two new lines between functions/etc.
 pep8:
-	pep8 --ignore=E129,E261,E301,E302 --repeat cram setup.py
+	pep8 --ignore=E129,E261,E301,E302 --repeat cram scripts/cram setup.py
 
 pyflakes:
-	pyflakes cram setup.py
+	pyflakes cram scripts/cram setup.py
 
 pylint:
-	pylint --rcfile=.pylintrc cram setup.py
+	pylint --rcfile=.pylintrc cram scripts/cram setup.py
 
 markdown:
 	pandoc -f rst -t markdown README.rst > README.md

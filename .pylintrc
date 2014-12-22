@@ -1,13 +1,15 @@
 [MESSAGES CONTROL]
+# C0330: bad continuation
 # The design check gives mostly useless advice.
 # R0201: method could be a function
+# W0123: eval used
 # W0141: used range
 # W0142: * or ** arguments
 # W0201: attribute defined outside of __init__
-disable=design,R0201,W0141,W0142,W0201
+# W0640: unreliable closure/loop variable checking
+disable=C0330,design,R0201,W0123,W0141,W0142,W0201,W0640
 
 [REPORTS]
-include-ids=yes
 reports=no
 
 [TYPECHECK]

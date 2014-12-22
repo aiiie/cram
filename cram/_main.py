@@ -104,8 +104,7 @@ def _parseopts(args):
                  help='path to write xUnit XML output')
     opts, paths = p.parse_args(args)
     paths = [fsencode(path) for path in paths]
-    getusage = lambda: p.get_usage()
-    return opts, paths, getusage
+    return opts, paths, p.get_usage
 
 def main(args):
     """Main entry point.

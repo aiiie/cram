@@ -12,15 +12,8 @@ except ImportError:
 __all__ = ['b', 'bchr', 'bytestype', 'envencode', 'fsdecode', 'fsencode',
            'stdoutb', 'stderrb', 'u', 'ul', 'unicodetype']
 
-if getattr(builtins, 'bytes', None) is not None:
-    bytestype = builtins.bytes
-else:
-    bytestype = str
-
-if getattr(builtins, 'unicode', None) is not None:
-    unicodetype = builtins.unicode
-else:
-    unicodetype = str
+bytestype = getattr(builtins, 'bytes', str)
+unicodetype = getattr(builtins, 'unicode', str)
 
 if getattr(os, 'fsdecode', None) is not None:
     fsdecode = os.fsdecode

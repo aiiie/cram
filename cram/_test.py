@@ -66,6 +66,21 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
     Note that the b() function is internal to Cram. If you're using Python 2,
     use normal string literals instead. If you're using Python 3, use bytes
     literals.
+
+    :param lines: Test input
+    :type lines: bytes or collections.Iterable[bytes]
+    :param shell: Shell to run test in
+    :type shell: bytes or str
+    :param indent: Amount of indentation to use for shell commands
+    :type indent: int
+    :param testname: Optional test file name (used in diff output)
+    :type testname: bytes or None
+    :param env: Optional environment variables for the test shell
+    :type env: dict or None
+    :param cleanenv: Whether or not to sanitize the environment
+    :type cleanenv: bool
+    :return: Input, output, and diff iterables
+    :rtype: (list[bytes], list[bytes], collections.Iterable[bytes])
     """
     indent = b(' ') * indent
     cmdline = indent + b('$ ')
@@ -164,8 +179,21 @@ def testfile(path, shell='/bin/sh', indent=2, env=None, cleanenv=True):
     If a test exits with return code 80, the actual output is set to
     None and diff is set to [].
 
-    Note that the TESTDIR and TESTFILE environment variables will be
+    Note that the TESTDIR and TESTFILE environment variables are
     available to use in the test.
+
+    :param path: Path to test file
+    :type path: bytes or str
+    :param shell: Shell to run test in
+    :type shell: bytes or str
+    :param indent: Amount of indentation to use for shell commands
+    :type indent: int
+    :param env: Optional environment variables for the test shell
+    :type env: dict or None
+    :param cleanenv: Whether or not to sanitize the environment
+    :type cleanenv: bool
+    :return: Input, output, and diff iterables
+    :rtype: (list[bytes], list[bytes], collections.Iterable[bytes])
     """
     f = open(path, 'rb')
     try:

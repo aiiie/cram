@@ -109,7 +109,13 @@ def _parseopts(args):
 def main(args):
     """Main entry point.
 
-    args should not contain the script name.
+    If you're thinking of using Cram in other Python code (e.g., unit tests),
+    consider using the test() or testfile() functions instead.
+
+    :param args: Script arguments (excluding script name)
+    :type args: str
+    :return: Exit code (non-zero or True on failure)
+    :rtype: int or bool
     """
     opts, paths, getusage = _parseopts(args)
     if opts.version:

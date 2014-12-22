@@ -98,6 +98,7 @@ def runxunit(tests, xmlpath):
 
     for path, abspath, test in tests:
         def testwrapper():
+            """Run test and collect XML output"""
             total[0] += 1
 
             start = time.time()

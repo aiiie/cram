@@ -76,6 +76,7 @@ def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None):
 
     for path, abspath, test in tests:
         def testwrapper():
+            """Test function that adds CLI output"""
             total[0] += 1
             _log(None, path + b(': '), verbose)
 

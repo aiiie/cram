@@ -52,6 +52,7 @@ def runtests(paths, tmpdir, shell, indent=2, cleanenv=True):
             basenames.add(basename)
 
         def test():
+            """Run test file"""
             testdir = os.path.join(tmpdir, basename)
             os.mkdir(testdir)
             try:

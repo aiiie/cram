@@ -28,6 +28,7 @@ class test(Command):
 
         if getattr(pkgutil, 'walk_packages', None) is not None:
             def getmodules():
+                """Yield all cram modules"""
                 yield cram
                 path = cram.__path__
                 for loader, name, ispkg in pkgutil.walk_packages(path):
@@ -36,6 +37,7 @@ class test(Command):
                     yield loader.find_module(name).load_module(name)
         else:
             def getmodules():
+                """Yield all cram modules"""
                 pkgdir = os.path.join(CRAM_DIR, 'cram')
                 for root, dirs, files in os.walk(pkgdir):
                     if '__pycache__' in dirs:

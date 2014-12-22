@@ -29,7 +29,8 @@ class test(Command):
         if getattr(pkgutil, 'walk_packages', None) is not None:
             def getmodules():
                 yield cram
-                for loader, name, ispkg in pkgutil.walk_packages(cram.__path__):
+                path = cram.__path__
+                for loader, name, ispkg in pkgutil.walk_packages(path):
                     if name == '__main__':
                         continue
                     yield loader.find_module(name).load_module(name)

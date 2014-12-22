@@ -103,11 +103,13 @@ class _SequenceMatcher(difflib.SequenceMatcher, object):
         return ret
 
 def unified_diff(l1, l2, fromfile=b(''), tofile=b(''), fromfiledate=b(''),
-                 tofiledate=b(''), n=3, lineterm=b('\n'), matchers=[]):
+                 tofiledate=b(''), n=3, lineterm=b('\n'), matchers=None):
     """Compare two sequences of lines; generate the delta as a unified diff.
 
     This is like difflib.unified_diff(), but allows custom matchers.
     """
+    if matchers is None:
+        matchers = []
     started = False
     matcher = _SequenceMatcher(None, l1, l2, matchers=matchers)
     for group in matcher.get_grouped_opcodes(n):

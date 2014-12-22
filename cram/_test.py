@@ -152,7 +152,7 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
         return refout, postout, itertools.chain([firstline], diff)
     return refout, postout, []
 
-def testfile(path, shell, indent=2, env=None, cleanenv=True):
+def testfile(path, shell='/bin/sh', indent=2, env=None, cleanenv=True):
     """Run test at path and return input, output, and diff.
 
     This returns a 3-tuple containing the following:

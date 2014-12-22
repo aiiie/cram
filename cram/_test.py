@@ -41,10 +41,11 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
     Example usage:
 
     >>> from cram._encoding import b
-    >>> refout, postout, diff = test([b('  $ echo hi\n'), b('  hi\n')])
-    >>> refout == [b('  $ echo hi\n'), b('  hi\n')]
+    >>> refout, postout, diff = test([b('  $ echo hi\n'),
+    ...                               b('  [a-z]{2} (re)\n')])
+    >>> refout == [b('  $ echo hi\n'), b('  [a-z]{2} (re)\n')]
     True
-    >>> refout == postout
+    >>> postout == [b('  $ echo hi\n'), b('  hi\n')]
     True
     >>> bool(diff)
     False

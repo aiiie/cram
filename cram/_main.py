@@ -114,8 +114,8 @@ def main(args):
 
     :param args: Script arguments (excluding script name)
     :type args: str
-    :return: Exit code (non-zero or True on failure)
-    :rtype: int or bool
+    :return: Exit code (non-zero on failure)
+    :rtype: int
     """
     opts, paths, getusage = _parseopts(args)
     if opts.version:
@@ -183,7 +183,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
             refout, postout, diff = test()
             if diff:
                 failed = True
-        return failed
+        return int(failed)
     finally:
         if opts.keep_tmpdir:
             stdoutb.write(b('# Kept temporary directory: ') + tmpdirb +

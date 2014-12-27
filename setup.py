@@ -6,7 +6,15 @@ import pipes
 import sys
 from distutils.core import setup, Command, DistutilsError
 
+COMMANDS = {}
 CRAM_DIR = os.path.abspath(os.path.dirname(__file__))
+
+try:
+    from wheel.bdist_wheel import bdist_wheel
+except ImportError:
+    pass
+else:
+    COMMANDS['bdist_wheel'] = bdist_wheel
 
 class test(Command):
     """Runs doctests and Cram tests"""
@@ -82,6 +90,8 @@ class test(Command):
         if ret or totalfailures:
             raise DistutilsError('tests failed')
 
+COMMANDS['test'] = test
+
 def long_description():
     """Get the long description from the README"""
     return open(os.path.join(sys.path[0], 'README.rst')).read()
@@ -101,7 +111,7 @@ setup(
         'Programming Language :: Unix Shell',
         'Topic :: Software Development :: Testing',
     ],
-    cmdclass={'test': test},
+    cmdclass=COMMANDS,
     description='A simple testing framework for command line applications',
     download_url='https://bitheap.org/cram/cram-0.6.tar.gz',
     keywords='automatic functional test framework',

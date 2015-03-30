@@ -42,7 +42,7 @@ tests: test
 coverage:
 	$(PYTHON) setup.py -q test --coverage --no-doctest
 	coverage run -a setup.py -q doctest
-	coverage report
+	coverage report --fail-under=100
 
 # E129: indentation between lines in conditions
 # E261: two spaces before inline comment

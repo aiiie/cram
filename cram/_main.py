@@ -190,9 +190,3 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
                           b('\n'))
         else:
             shutil.rmtree(tmpdir)
-
-if __name__ == '__main__':
-    try:
-        sys.exit(main(sys.argv[1:]))
-    except KeyboardInterrupt:
-        pass

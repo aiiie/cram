@@ -1,5 +1,4 @@
 [run]
-branch = True
 omit =
     cram/__main__.py
     cram/_encoding.py

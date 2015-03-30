@@ -40,7 +40,8 @@ endif
 tests: test
 
 coverage:
-	$(PYTHON) setup.py -q test --coverage
+	$(PYTHON) setup.py -q test --coverage --no-doctest
+	coverage run -a setup.py -q doctest
 	coverage report
 
 # E129: indentation between lines in conditions

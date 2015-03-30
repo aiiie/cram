@@ -6,7 +6,7 @@ from Python.
   $ [ -n "$PYTHONPATH" ] || PYTHONPATH="$TESTDIR/.." && export PYTHONPATH
   $ if [ -n "$COVERAGE" ]; then
   >   coverage erase
-  >   alias cram="`which coverage` run --branch -a $TESTDIR/../scripts/cram"
+  >   alias cram="`which coverage` run -a $TESTDIR/../scripts/cram"
   > else
   >   alias cram="$PYTHON $TESTDIR/../scripts/cram"
   > fi

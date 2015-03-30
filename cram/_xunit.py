@@ -69,7 +69,7 @@ def _quoteattr(s):
 def _timestamp():
     """Return the current time in ISO 8601 format"""
     tm = time.localtime()
-    if tm.tm_isdst == 1:
+    if tm.tm_isdst == 1: # pragma: nocover
         tz = time.altzone
     else:
         tz = time.timezone

@@ -22,10 +22,10 @@ _narrowquoteattrregex = ul(r"'[^\x20\x21\x23-\x25\x27-\x3b\x3d"
                            r"\x3f-\ud7ff\ue000-\ufffd]'")
 _replacementchar = ul(r"'\N{REPLACEMENT CHARACTER}'")
 
-if sys.maxunicode >= 0x10ffff:
+if sys.maxunicode >= 0x10ffff: # pragma: nocover
     _cdatasub = re.compile(_widecdataregex).sub
     _quoteattrsub = re.compile(_widequoteattrregex).sub
-else:
+else: # pragma: nocover
     _cdatasub = re.compile(_narrowcdataregex).sub
     _quoteattrsub = re.compile(_narrowquoteattrregex).sub
 

@@ -9,7 +9,7 @@ import tempfile
 
 try:
     import configparser
-except ImportError:
+except ImportError: # pragma: nocover
     import ConfigParser as configparser
 
 from cram._cli import runcli

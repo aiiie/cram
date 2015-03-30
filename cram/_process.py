@@ -17,7 +17,8 @@ def _makeresetsigpipe():
     Python's SIGPIPE handler (SIG_IGN) from being inherited by the
     child process.
     """
-    if sys.platform == 'win32' or getattr(signal, 'SIGPIPE', None) is None:
+    if (sys.platform == 'win32' or
+        getattr(signal, 'SIGPIPE', None) is None): # pragma: nocover
         return None
     return lambda: signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 

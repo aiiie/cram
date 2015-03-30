@@ -26,6 +26,7 @@ cram.egg-info
 .DS_Store
 tags
 cscope.*
+.idea
 
 syntax: regexp
 ^\.pc/

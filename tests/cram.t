@@ -733,3 +733,10 @@ Test running tests with the same filename in different directories:
   
   # Ran 2 tests, 0 skipped, 2 failed.
   [1]
+
+Test running an empty directory:
+
+  $ mkdir empty
+  $ cram empty
+  no tests found
+  [2]

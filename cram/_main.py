@@ -178,11 +178,18 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
         if opts.xunit_file is not None:
             tests = runxunit(tests, opts.xunit_file)
 
+        hastests = False
         failed = False
         for path, abspath, test in tests:
+            hastests = True
             refout, postout, diff = test()
             if diff:
                 failed = True
+
+        if not hastests:
+            sys.stderr.write('no tests found\n')
+            return 2
+
         return int(failed)
     finally:
         if opts.keep_tmpdir:

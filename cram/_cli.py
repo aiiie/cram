@@ -127,6 +127,7 @@ def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None):
 
         yield (path, abspath, testwrapper)
 
-    _log('\n', None, verbose)
-    _log('# Ran %s tests, %s skipped, %s failed.\n'
-         % (total[0], skipped[0], failed[0]))
+    if total[0] > 0:
+        _log('\n', None, verbose)
+        _log('# Ran %s tests, %s skipped, %s failed.\n'
+             % (total[0], skipped[0], failed[0]))

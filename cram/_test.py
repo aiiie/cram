@@ -128,10 +128,6 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
     if retcode == 80:
         return (refout, None, [])
 
-    # Add a trailing newline to the input script if it's missing.
-    if refout and not refout[-1].endswith(b('\n')):
-        refout[-1] += b('\n')
-
     pos = -1
     ret = 0
     for i, line in enumerate(output[:-1].splitlines(True)):

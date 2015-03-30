@@ -1,3 +1,4 @@
+COVERAGE=coverage
 PYTHON=python
 
 ifdef PREFIX
@@ -40,9 +41,9 @@ endif
 tests: test
 
 coverage:
-	$(PYTHON) setup.py -q test --coverage --no-doctest
-	coverage run -a setup.py -q doctest
-	coverage report --fail-under=100
+	$(PYTHON) setup.py -q test --coverage="$(COVERAGE)" --no-doctest
+	$(COVERAGE) run -a setup.py -q doctest
+	$(COVERAGE) report --fail-under=100
 
 # E129: indentation between lines in conditions
 # E261: two spaces before inline comment

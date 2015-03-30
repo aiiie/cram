@@ -82,7 +82,7 @@ COMMANDS['doctest'] = doctest
 class test(Command):
     """Runs doctests and Cram tests"""
     description = 'run test suite'
-    user_options = [('coverage', None, 'run tests using coverage.py'),
+    user_options = [('coverage=', None, 'run tests using coverage.py'),
                     ('no-doctest', None, 'skip doctests'),
                     ('xunit-file=', None, 'path to write xUnit XML output')]
 
@@ -102,7 +102,7 @@ class test(Command):
             # Note that when coverage.py is run, it uses the version
             # of Python it was installed with, NOT the version
             # setup.py was run with.
-            os.environ['COVERAGE'] = '1'
+            os.environ['COVERAGE'] = self.coverage
             os.environ['COVERAGE_FILE'] = os.path.join(CRAM_DIR, '.coverage')
 
         args = ['-v']

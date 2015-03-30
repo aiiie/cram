@@ -5,8 +5,8 @@ from Python.
   $ [ -n "$PYTHON" ] || PYTHON="`which python`"
   $ [ -n "$PYTHONPATH" ] || PYTHONPATH="$TESTDIR/.." && export PYTHONPATH
   $ if [ -n "$COVERAGE" ]; then
-  >   coverage erase
-  >   alias cram="`which coverage` run -a $TESTDIR/../scripts/cram"
+  >   "$COVERAGE" erase
+  >   alias cram="`which "$COVERAGE"` run -a $TESTDIR/../scripts/cram"
   > else
   >   alias cram="$PYTHON $TESTDIR/../scripts/cram"
   > fi

@@ -62,8 +62,12 @@ def glob(el, l):
 def esc(el, l):
     """Apply an escape match to a line annotated with '(esc)'"""
     ann = b(' (esc)\n')
+
     if el.endswith(ann):
         el = codecs.escape_decode(el[:-len(ann)])[0] + b('\n')
+    if el == l:
+        return True
+
     if l.endswith(ann):
         l = codecs.escape_decode(l[:-len(ann)])[0] + b('\n')
     return el == l

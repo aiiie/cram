@@ -66,6 +66,10 @@ Escaped output:
   \x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f ' (esc)
   $ echo hi
   \x68\x69 (esc)
+  $ echo '(esc) in output (esc)'
+  (esc) in output (esc)
+  $ echo '(esc) in output (esc)'
+  (esc) in output \x28esc\x29 (esc)
 
 Command that closes a pipe:
 

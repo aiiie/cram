@@ -108,9 +108,22 @@ class _SequenceMatcher(difflib.SequenceMatcher, object):
 
 def unified_diff(l1, l2, fromfile=b(''), tofile=b(''), fromfiledate=b(''),
                  tofiledate=b(''), n=3, lineterm=b('\n'), matchers=None):
-    """Compare two sequences of lines; generate the delta as a unified diff.
+    r"""Compare two sequences of lines; generate the delta as a unified diff.
 
     This is like difflib.unified_diff(), but allows custom matchers.
+
+    >>> from cram._encoding import b
+    >>> l1 = [b('a\n'), b('? (glob)\n')]
+    >>> l2 = [b('a\n'), b('b\n')]
+    >>> (list(unified_diff(l1, l2, b('f1'), b('f2'), b('1970-01-01'),
+    ...                    b('1970-01-02'))) ==
+    ...  [b('--- f1\t1970-01-01\n'), b('+++ f2\t1970-01-02\n'),
+    ...   b('@@ -1,2 +1,2 @@\n'), b(' a\n'), b('-? (glob)\n'), b('+b\n')])
+    True
+
+    >>> from cram._diff import glob
+    >>> list(unified_diff(l1, l2, matchers=[glob]))
+    []
     """
     if matchers is None:
         matchers = []

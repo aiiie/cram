@@ -707,3 +707,29 @@ that Cram inserts into the test in order to track output. It'd be nice if
 Cram could avoid removing salt/line number/return code information from those
 lines, but it isn't possible to distinguish between set -x output and normal
 output.
+
+Test running tests with the same filename in different directories:
+
+  $ mkdir subdir1 subdir2
+  $ cat > subdir1/test.t <<EOF
+  >   $ echo 1
+  > EOF
+  $ cat > subdir2/test.t <<EOF
+  >   $ echo 2
+  > EOF
+  $ cram subdir1 subdir2
+  !
+  --- test.t
+  +++ test.t.err
+  @@ -1,1 +1,2 @@
+     $ echo 1
+  +  1
+  !
+  --- test.t
+  +++ test.t.err
+  @@ -1,1 +1,2 @@
+     $ echo 2
+  +  2
+  
+  # Ran 2 tests, 0 skipped, 2 failed.
+  [1]

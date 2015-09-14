@@ -5,6 +5,8 @@ import signal
 import subprocess
 import sys
 
+from cram._encoding import fsdecode
+
 __all__ = ['PIPE', 'STDOUT', 'execute']
 
 PIPE = subprocess.PIPE
@@ -41,6 +43,9 @@ def execute(args, stdin=None, stdout=None, stderr=None, cwd=None, env=None):
 
     This function returns a 2-tuple of (output, returncode).
     """
+    if sys.platform == 'win32': # pragma: nocover
+        args = [fsdecode(arg) for arg in args]
+
     p = subprocess.Popen(args, stdin=PIPE, stdout=stdout, stderr=stderr,
                          cwd=cwd, env=env, bufsize=-1,
                          preexec_fn=_makeresetsigpipe(),

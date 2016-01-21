@@ -45,7 +45,7 @@ def _log(msg=None, verbosemsg=None, verbose=False):
     if msg:
         if isinstance(msg, bytestype):
             stdoutb.write(msg)
-        else:
+        else: # pragma: nocover
             sys.stdout.write(msg)
         sys.stdout.flush()
 

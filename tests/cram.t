@@ -6,9 +6,10 @@ from Python.
   $ [ -n "$PYTHONPATH" ] || PYTHONPATH="$TESTDIR/.." && export PYTHONPATH
   $ if [ -n "$COVERAGE" ]; then
   >   "$COVERAGE" erase
-  >   alias cram="`which "$COVERAGE"` run -a $TESTDIR/../scripts/cram"
+  >   alias cram="`which "$COVERAGE"` run -a $TESTDIR/../scripts/cram \
+  > --shell=$0"
   > else
-  >   alias cram="$PYTHON $TESTDIR/../scripts/cram"
+  >   alias cram="$PYTHON $TESTDIR/../scripts/cram --shell=$0"
   > fi
   $ command -v md5 > /dev/null || alias md5=md5sum
 

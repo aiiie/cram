@@ -41,7 +41,8 @@ endif
 tests: test
 
 coverage:
-	$(PYTHON) setup.py -q test --coverage="$(COVERAGE)" --no-doctest
+	$(PYTHON) setup.py -q test --coverage="$(COVERAGE)" --no-doctest \
+	$(TEST_ARGS)
 	$(COVERAGE) run -a setup.py -q doctest
 	$(COVERAGE) report --fail-under=100
 

@@ -84,12 +84,14 @@ class test(Command):
     description = 'run test suite'
     user_options = [('coverage=', None, 'run tests using coverage.py'),
                     ('no-doctest', None, 'skip doctests'),
+                    ('shell=', None, 'shell to run tests with'),
                     ('xunit-file=', None, 'path to write xUnit XML output')]
 
     def initialize_options(self):
         self.coverage = 0
         self.no_doctest = 0
         self.xunit_file = None
+        self.shell = None
 
     def finalize_options(self):
         pass
@@ -109,6 +111,9 @@ class test(Command):
         if self.xunit_file is not None:
             xunit_file = os.path.abspath(self.xunit_file)
             args.append('--xunit-file=%s' % pipes.quote(xunit_file))
+        if self.shell is not None:
+            shell = os.path.abspath(self.shell)
+            args.append('--shell=%s' % pipes.quote(shell))
 
         if not self.no_doctest:
             failures = _rundoctests()

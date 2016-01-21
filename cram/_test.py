@@ -22,7 +22,7 @@ def _escape(s):
             b(' (esc)\n'))
 
 def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
-         cleanenv=True):
+         cleanenv=True, debug=False):
     r"""Run test lines and return input, output, and diff.
 
     This returns a 3-tuple containing the following:
@@ -79,6 +79,8 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
     :type env: dict or None
     :param cleanenv: Whether or not to sanitize the environment
     :type cleanenv: bool
+    :param debug: Whether or not to run in debug mode (don't capture stdout)
+    :type debug: bool
     :return: Input, output, and diff iterables
     :rtype: (list[bytes], list[bytes], collections.Iterable[bytes])
     """
@@ -101,6 +103,19 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
 
     if isinstance(lines, bytestype):
         lines = lines.splitlines(True)
+
+    if debug:
+        stdin = []
+        for line in lines:
+            if not line.endswith(b('\n')):
+                line += b('\n')
+            if line.startswith(cmdline):
+                stdin.append(line[len(cmdline):])
+            elif line.startswith(conline):
+                stdin.append(line[len(conline):])
+
+        execute([shell, '-'], stdin=b('').join(stdin), env=env)
+        return ([], [], [])
 
     after = {}
     refout, postout = [], []
@@ -163,7 +178,8 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
         return refout, postout, itertools.chain([firstline], diff)
     return refout, postout, []
 
-def testfile(path, shell='/bin/sh', indent=2, env=None, cleanenv=True):
+def testfile(path, shell='/bin/sh', indent=2, env=None, cleanenv=True,
+             debug=False):
     """Run test at path and return input, output, and diff.
 
     This returns a 3-tuple containing the following:
@@ -188,6 +204,8 @@ def testfile(path, shell='/bin/sh', indent=2, env=None, cleanenv=True):
     :type env: dict or None
     :param cleanenv: Whether or not to sanitize the environment
     :type cleanenv: bool
+    :param debug: Whether or not to run in debug mode (don't capture stdout)
+    :type debug: bool
     :return: Input, output, and diff iterables
     :rtype: (list[bytes], list[bytes], collections.Iterable[bytes])
     """
@@ -199,6 +217,6 @@ def testfile(path, shell='/bin/sh', indent=2, env=None, cleanenv=True):
         env['TESTFILE'] = envencode(os.path.basename(abspath))
         testname = os.path.basename(abspath)
         return test(f, shell, indent=indent, testname=testname, env=env,
-                    cleanenv=cleanenv)
+                    cleanenv=cleanenv, debug=debug)
     finally:
         f.close()

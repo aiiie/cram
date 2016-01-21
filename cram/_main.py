@@ -87,6 +87,8 @@ def _parseopts(args):
                  help='show filenames and test status')
     p.add_option('-i', '--interactive', action='store_true',
                  help='interactively merge changed test output')
+    p.add_option('-d', '--debug', action='store_true',
+                 help='write script output directly to the terminal')
     p.add_option('-y', '--yes', action='store_true',
                  help='answer yes to all questions')
     p.add_option('-n', '--no', action='store_true',
@@ -128,7 +130,11 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
         return
 
     conflicts = [('-y', opts.yes, '-n', opts.no),
-                 ('-q', opts.quiet, '-i', opts.interactive)]
+                 ('-q', opts.quiet, '-i', opts.interactive),
+                 ('-d', opts.debug, '-q', opts.quiet),
+                 ('-d', opts.debug, '-i', opts.interactive),
+                 ('-d', opts.debug, '-v', opts.verbose),
+                 ('-d', opts.debug, '--xunit-file', opts.xunit_file)]
     for s1, o1, s2, o2 in conflicts:
         if o1 and o2:
             sys.stderr.write('options %s and %s are mutually exclusive\n'
@@ -172,11 +178,12 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
     os.mkdir(proctmp)
     try:
         tests = runtests(paths, tmpdirb, shellcmd, indent=opts.indent,
-                         cleanenv=not opts.preserve_env)
-        tests = runcli(tests, quiet=opts.quiet, verbose=opts.verbose,
-                       patchcmd=patchcmd, answer=answer)
-        if opts.xunit_file is not None:
-            tests = runxunit(tests, opts.xunit_file)
+                         cleanenv=not opts.preserve_env, debug=opts.debug)
+        if not opts.debug:
+            tests = runcli(tests, quiet=opts.quiet, verbose=opts.verbose,
+                           patchcmd=patchcmd, answer=answer)
+            if opts.xunit_file is not None:
+                tests = runxunit(tests, opts.xunit_file)
 
         hastests = False
         failed = False

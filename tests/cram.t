@@ -27,6 +27,7 @@ Usage:
     -q, --quiet         don't print diffs
     -v, --verbose       show filenames and test status
     -i, --interactive   interactively merge changed test output
+    -d, --debug         write script output directly to the terminal
     -y, --yes           answer yes to all questions
     -n, --no            answer no to all questions
     -E, --preserve-env  don't reset common environment variables
@@ -139,6 +140,26 @@ Verbose mode:
   .*\b0f598c2b7b8ca5bcb8880e492ff6b452\b.* (re)
   .*\b7a23dfa85773c77648f619ad0f9df554\b.* (re)
   $ rm examples/fail.t.err
+
+Debug mode:
+
+  $ printf '  $ echo hi\n  > echo bye' > debug.t
+  $ cram -d -v debug.t
+  options -d and -v are mutually exclusive
+  [2]
+  $ cram -d -q debug.t
+  options -d and -q are mutually exclusive
+  [2]
+  $ cram -d -i debug.t
+  options -d and -i are mutually exclusive
+  [2]
+  $ cram -d --xunit-file==cram.xml debug.t
+  options -d and --xunit-file are mutually exclusive
+  [2]
+  $ cram -d debug.t
+  hi
+  bye
+  $ cram -d examples/empty.t
 
 xUnit XML output:
 

@@ -20,7 +20,7 @@ def _findtests(paths):
         else:
             yield os.path.normpath(p)
 
-def runtests(paths, tmpdir, shell, indent=2, cleanenv=True):
+def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False):
     """Run tests and yield results.
 
     This yields a sequence of 3-tuples containing the following:
@@ -58,7 +58,7 @@ def runtests(paths, tmpdir, shell, indent=2, cleanenv=True):
             try:
                 os.chdir(testdir)
                 return testfile(abspath, shell, indent=indent,
-                                cleanenv=cleanenv)
+                                cleanenv=cleanenv, debug=debug)
             finally:
                 os.chdir(cwd)
 

@@ -99,6 +99,8 @@ def _parseopts(args):
                  help='keep temporary directories')
     p.add_option('--shell', action='store', default='/bin/sh', metavar='PATH',
                  help='shell to use for running tests (default: %default)')
+    p.add_option('--shell-opts', action='store', metavar='OPTS',
+                 help='arguments to invoke shell with')
     p.add_option('--indent', action='store', default=2, metavar='NUM',
                  type='int', help=('number of spaces to use for indentation '
                                    '(default: %default)'))
@@ -145,6 +147,9 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
     if not shellcmd:
         stderrb.write(b('shell not found: ') + fsencode(opts.shell) + b('\n'))
         return 2
+    shell = [shellcmd]
+    if opts.shell_opts:
+        shell += shlex.split(opts.shell_opts)
 
     patchcmd = None
     if opts.interactive:
@@ -177,7 +182,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
     os.mkdir(proctmp)
     try:
-        tests = runtests(paths, tmpdirb, shellcmd, indent=opts.indent,
+        tests = runtests(paths, tmpdirb, shell, indent=opts.indent,
                          cleanenv=not opts.preserve_env, debug=opts.debug)
         if not opts.debug:
             tests = runcli(tests, quiet=opts.quiet, verbose=opts.verbose,

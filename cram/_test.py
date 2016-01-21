@@ -5,7 +5,7 @@ import os
 import re
 import time
 
-from cram._encoding import b, bchr, bytestype, envencode
+from cram._encoding import b, bchr, bytestype, envencode, unicodetype
 from cram._diff import esc, glob, regex, unified_diff
 from cram._process import PIPE, STDOUT, execute
 
@@ -70,7 +70,7 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
     :param lines: Test input
     :type lines: bytes or collections.Iterable[bytes]
     :param shell: Shell to run test in
-    :type shell: bytes or str
+    :type shell: bytes or str or list[bytes] or list[str]
     :param indent: Amount of indentation to use for shell commands
     :type indent: int
     :param testname: Optional test file name (used in diff output)
@@ -104,6 +104,9 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
     if isinstance(lines, bytestype):
         lines = lines.splitlines(True)
 
+    if isinstance(shell, (bytestype, unicodetype)):
+        shell = [shell]
+
     if debug:
         stdin = []
         for line in lines:
@@ -114,7 +117,7 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
             elif line.startswith(conline):
                 stdin.append(line[len(conline):])
 
-        execute([shell, '-'], stdin=b('').join(stdin), env=env)
+        execute(shell + ['-'], stdin=b('').join(stdin), env=env)
         return ([], [], [])
 
     after = {}
@@ -138,7 +141,7 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
             after.setdefault(pos, []).append(line)
     stdin.append(b('echo %s %s $?\n' % (usalt, i + 1)))
 
-    output, retcode = execute([shell, '-'], stdin=b('').join(stdin),
+    output, retcode = execute(shell + ['-'], stdin=b('').join(stdin),
                               stdout=PIPE, stderr=STDOUT, env=env)
     if retcode == 80:
         return (refout, None, [])
@@ -197,7 +200,7 @@ def testfile(path, shell='/bin/sh', indent=2, env=None, cleanenv=True,
     :param path: Path to test file
     :type path: bytes or str
     :param shell: Shell to run test in
-    :type shell: bytes or str
+    :type shell: bytes or str or list[bytes] or list[str]
     :param indent: Amount of indentation to use for shell commands
     :type indent: int
     :param env: Optional environment variables for the test shell

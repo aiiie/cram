@@ -33,6 +33,7 @@ Usage:
     -E, --preserve-env  don't reset common environment variables
     --keep-tmpdir       keep temporary directories
     --shell=PATH        shell to use for running tests (default: /bin/sh)
+    --shell-opts=OPTS   arguments to invoke shell with
     --indent=NUM        number of spaces to use for indentation (default: 2)
     --xunit-file=PATH   path to write xUnit XML output
   $ cram -V
@@ -160,6 +161,14 @@ Debug mode:
   hi
   bye
   $ cram -d examples/empty.t
+
+Debug mode with extra shell arguments:
+
+  $ cram --shell-opts='-v' -d debug.t
+  echo hi
+  hi
+  echo bye
+  bye
 
 xUnit XML output:
 

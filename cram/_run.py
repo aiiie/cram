@@ -1,17 +1,28 @@
 """The test runner"""
 
 import os
+import sys
 
-from cram._encoding import b
+from cram._encoding import b, fsdecode, fsencode
 from cram._test import testfile
 
 __all__ = ['runtests']
+
+if sys.platform == 'win32': # pragma: nocover
+    def _walk(top):
+        top = fsdecode(top)
+        for root, dirs, files in os.walk(top):
+            yield (fsencode(root),
+                   [fsencode(p) for p in dirs],
+                   [fsencode(p) for p in files])
+else:
+    _walk = os.walk
 
 def _findtests(paths):
     """Yield tests in paths in sorted order"""
     for p in paths:
         if os.path.isdir(p):
-            for root, dirs, files in os.walk(p):
+            for root, dirs, files in _walk(p):
                 if os.path.basename(root).startswith(b('.')):
                     continue
                 for f in sorted(files):

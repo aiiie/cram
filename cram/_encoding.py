@@ -51,11 +51,18 @@ elif bytestype is not str:
                 return s
             return s.encode(sys.getfilesystemencoding(), 'surrogateescape')
 else:
-    fsdecode = lambda s: s
-    fsencode = lambda s: s
+    def fsdecode(s):
+        """Decode a filename from the filesystem encoding"""
+        return s
+
+    def fsencode(s):
+        """Encode a filename to the filesystem encoding"""
+        return s
 
 if bytestype is str:
-    envencode = lambda s: s
+    def envencode(s):
+        """Encode a byte string to the os.environ encoding"""
+        return s
 else:
     envencode = fsdecode
 
@@ -67,17 +74,33 @@ else:
     stderrb = sys.stderr
 
 if bytestype is str:
-    b = lambda s: s
+    def b(s):
+        """Convert an ASCII string literal into a bytes object"""
+        return s
+
     bchr = chr
-    u = lambda s: s.decode('ascii')
+
+    def u(s):
+        """Convert an ASCII string literal into a unicode object"""
+        return s.decode('ascii')
 else:
-    b = lambda s: s.encode('ascii')
-    bchr = lambda i: bytestype([i])
-    u = lambda s: s
+    def b(s):
+        """Convert an ASCII string literal into a bytes object"""
+        return s.encode('ascii')
+
+    def bchr(i):
+        """Return a bytes character for a given integer value"""
+        return bytestype([i])
+
+    def u(s):
+        """Convert an ASCII string literal into a unicode object"""
+        return s
 
 try:
     eval(r'u""')
 except SyntaxError:
     ul = eval
 else:
-    ul = lambda e: eval('u' + e)
+    def ul(e):
+        """Evaluate e as a unicode string literal"""
+        return eval('u' + e)

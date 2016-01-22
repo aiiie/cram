@@ -30,6 +30,14 @@ Debug mode with extra shell arguments:
   echo bye
   bye
 
+Test debug mode with -x:
+
+  $ cram --shell-opts='-x' -d debug.t
+  + echo hi
+  hi
+  + echo bye
+  bye
+
 Test using set -x in a test:
 
   $ cat > set-x.t <<EOF

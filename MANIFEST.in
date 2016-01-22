@@ -1,4 +1,4 @@
-include .coveragerc .pylintrc .travis.yml Makefile
+include .coveragerc .pylintrc .travis.yml Makefile MANIFEST.in
 include *.rst *.txt contrib/* scripts/*
 exclude contrib/PKGBUILD
 recursive-include examples *.t

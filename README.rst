@@ -142,7 +142,8 @@ For example, if we run Cram on `its own example tests`_::
     # Ran 6 tests, 2 skipped, 1 failed.
 
 Cram will also write the test with its actual output to
-``examples/fail.t.err``.
+``examples/fail.t.err``, allowing you to use other diff tools. This
+file is automatically removed the next time the test passes.
 
 When you're first writing a test, you might just write the commands
 and run the test to see what happens. If you run Cram with ``-i`` or

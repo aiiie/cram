@@ -33,9 +33,9 @@ Debug mode with extra shell arguments:
 Test debug mode with -x:
 
   $ cram --shell-opts='-x' -d debug.t
-  + echo hi
+  \+ ?echo hi (re)
   hi
-  + echo bye
+  \+ ?echo bye (re)
   bye
 
 Test using set -x in a test:

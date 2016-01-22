@@ -1,6 +1,6 @@
 Set up cram alias and example tests:
 
-  $ source "$TESTDIR"/setup.sh
+  $ . "$TESTDIR"/setup.sh
 
 Usage:
 

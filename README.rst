@@ -91,18 +91,12 @@ Download
 Installation
 ------------
 
-You can use pip_ to install Cram::
-
-    $ pip install cram
-
-Or you can install Cram using GNU make::
+Install Cram using make::
 
     $ wget https://bitheap.org/cram/cram-0.6.tar.gz
     $ tar zxvf cram-0.6.tar.gz
     $ cd cram-0.6
     $ make install
-
-.. _pip: https://pypi.python.org/pypi/pip
 
 
 Usage

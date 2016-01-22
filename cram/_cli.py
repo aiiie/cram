@@ -49,9 +49,9 @@ def _log(msg=None, verbosemsg=None, verbose=False):
             sys.stdout.write(msg)
         sys.stdout.flush()
 
-def _patch(cmd, diff, path):
+def _patch(cmd, diff):
     """Run echo [lines from diff] | cmd -p0"""
-    out, retcode = execute([cmd, '-p0'], stdin=b('').join(diff), cwd=path)
+    out, retcode = execute([cmd, '-p0'], stdin=b('').join(diff))
     return retcode == 0
 
 def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None):
@@ -118,7 +118,7 @@ def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None):
 
                     if (patchcmd and
                         _prompt('Accept this change?', 'yN', answer) == 'y'):
-                        if _patch(patchcmd, diff, os.path.dirname(abspath)):
+                        if _patch(patchcmd, diff):
                             _log(None, path + b(': merged output\n'), verbose)
                             os.remove(errpath)
                         else:

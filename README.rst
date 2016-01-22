@@ -119,8 +119,8 @@ with return code ``80``) are marked with ``s`` instead of a dot.
 For example, if we run Cram on `its own example tests`_::
 
     .s.!
-    --- /home/brodie/src/cram/examples/fail.t
-    +++ /home/brodie/src/cram/examples/fail.t.err
+    --- examples/fail.t
+    +++ examples/fail.t.err
     @@ -3,21 +3,22 @@
        $ echo 1
        1

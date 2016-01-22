@@ -69,7 +69,8 @@ def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False):
             try:
                 os.chdir(testdir)
                 return testfile(abspath, shell, indent=indent,
-                                cleanenv=cleanenv, debug=debug)
+                                cleanenv=cleanenv, debug=debug,
+                                testname=path)
             finally:
                 os.chdir(cwd)
 

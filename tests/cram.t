@@ -205,8 +205,8 @@ xUnit XML output:
     <testcase classname="examples/fail.t"
               name="fail.t"
               time="\d+\.\d{6}"> (re)
-      <failure><![CDATA[--- fail.t
-  +++ fail.t.err
+      <failure><![CDATA[--- examples/fail.t
+  +++ examples/fail.t.err
   @@ -1,18 +1,18 @@
    Output needing escaping:
    
@@ -259,8 +259,8 @@ Interactive mode (don't merge):
 
   $ cram -n -i examples/fail.t
   !
-  --- fail.t
-  +++ fail.t.err
+  --- examples/fail.t
+  +++ examples/fail.t.err
   @@ -1,18 +1,18 @@
    Output needing escaping:
    
@@ -306,8 +306,8 @@ Interactive mode (merge):
   $ cp examples/fail.t examples/fail.t.orig
   $ cram -y -i examples/fail.t
   !
-  --- fail.t
-  +++ fail.t.err
+  --- examples/fail.t
+  +++ examples/fail.t.err
   @@ -1,18 +1,18 @@
    Output needing escaping:
    
@@ -341,7 +341,7 @@ Interactive mode (merge):
      
      \d (re)
   Accept this change? [yN] y
-  patching file fail.t
+  patching file examples/fail.t
   
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
@@ -353,8 +353,8 @@ Verbose interactive mode (answer manually and don't merge):
 
   $ printf 'bad\nn\n' | cram -v -i examples/fail.t
   examples/fail.t: failed
-  --- fail.t
-  +++ fail.t.err
+  --- examples/fail.t
+  +++ examples/fail.t.err
   @@ -1,18 +1,18 @@
    Output needing escaping:
    
@@ -394,8 +394,8 @@ Verbose interactive mode (answer manually and don't merge):
   .*\b7a23dfa85773c77648f619ad0f9df554\b.* (re)
   $ printf 'bad\n\n' | cram -v -i examples/fail.t
   examples/fail.t: failed
-  --- fail.t
-  +++ fail.t.err
+  --- examples/fail.t
+  +++ examples/fail.t.err
   @@ -1,18 +1,18 @@
    Output needing escaping:
    
@@ -439,8 +439,8 @@ Verbose interactive mode (answer manually and merge):
   $ cp examples/fail.t examples/fail.t.orig
   $ printf 'bad\ny\n' | cram -v -i examples/fail.t
   examples/fail.t: failed
-  --- fail.t
-  +++ fail.t.err
+  --- examples/fail.t
+  +++ examples/fail.t.err
   @@ -1,18 +1,18 @@
    Output needing escaping:
    
@@ -473,7 +473,7 @@ Verbose interactive mode (answer manually and merge):
   +  foo
      
      \d (re)
-  Accept this change? [yN] Accept this change? [yN] patching file fail.t
+  Accept this change? [yN] Accept this change? [yN] patching file examples/fail.t
   examples/fail.t: merged output
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
@@ -494,8 +494,8 @@ Test missing patch(1) and patch(1) error:
   $ chmod +x patch
   $ PATH=. cram -y -i examples/fail.t
   !
-  --- fail.t
-  +++ fail.t.err
+  --- examples/fail.t
+  +++ examples/fail.t.err
   @@ -1,18 +1,18 @@
    Output needing escaping:
    
@@ -573,8 +573,8 @@ Don't sterilize environment:
   $ GREP_OPTIONS=foo; export GREP_OPTIONS
   $ cram -E examples/env.t
   !
-  \-\-\- env\.t\s* (re)
-  \+\+\+ env\.t\.err\s* (re)
+  \-\-\- examples/env\.t\s* (re)
+  \+\+\+ examples/env\.t\.err\s* (re)
   @@ -7,13 +7,13 @@
      $ echo "$LANGUAGE"
      C
@@ -750,14 +750,14 @@ Test running tests with the same filename in different directories:
   > EOF
   $ cram subdir1 subdir2
   !
-  --- test.t
-  +++ test.t.err
+  --- subdir1/test.t
+  +++ subdir1/test.t.err
   @@ -1,1 +1,2 @@
      $ echo 1
   +  1
   !
-  --- test.t
-  +++ test.t.err
+  --- subdir2/test.t
+  +++ subdir2/test.t.err
   @@ -1,1 +1,2 @@
      $ echo 2
   +  2

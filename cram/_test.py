@@ -182,7 +182,7 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
     return refout, postout, []
 
 def testfile(path, shell='/bin/sh', indent=2, env=None, cleanenv=True,
-             debug=False):
+             debug=False, testname=None):
     """Run test at path and return input, output, and diff.
 
     This returns a 3-tuple containing the following:
@@ -209,6 +209,8 @@ def testfile(path, shell='/bin/sh', indent=2, env=None, cleanenv=True,
     :type cleanenv: bool
     :param debug: Whether or not to run in debug mode (don't capture stdout)
     :type debug: bool
+    :param testname: Optional test file name (used in diff output)
+    :type testname: bytes or None
     :return: Input, output, and diff iterables
     :rtype: (list[bytes], list[bytes], collections.Iterable[bytes])
     """
@@ -218,7 +220,8 @@ def testfile(path, shell='/bin/sh', indent=2, env=None, cleanenv=True,
         env = env or os.environ.copy()
         env['TESTDIR'] = envencode(os.path.dirname(abspath))
         env['TESTFILE'] = envencode(os.path.basename(abspath))
-        testname = os.path.basename(abspath)
+        if testname is None: # pragma: nocover
+            testname = os.path.basename(abspath)
         return test(f, shell, indent=indent, testname=testname, env=env,
                     cleanenv=cleanenv, debug=debug)
     finally:

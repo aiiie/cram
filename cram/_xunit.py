@@ -83,9 +83,9 @@ def _timestamp():
 def runxunit(tests, xmlpath):
     """Run tests with xUnit XML output.
 
-    tests should be a sequence of 3-tuples containing the following:
+    tests should be a sequence of 2-tuples containing the following:
 
-        (test path, absolute test path, test function)
+        (test path, test function)
 
     This function yields a new sequence where each test function is wrapped
     with a function that writes test results to an xUnit XML file.
@@ -96,7 +96,7 @@ def runxunit(tests, xmlpath):
     total, skipped, failed = [0], [0], [0]
     testcases = []
 
-    for path, abspath, test in tests:
+    for path, test in tests:
         def testwrapper():
             """Run test and collect XML output"""
             total[0] += 1
@@ -144,7 +144,7 @@ def runxunit(tests, xmlpath):
 
             return refout, postout, diff
 
-        yield path, abspath, testwrapper
+        yield path, testwrapper
 
     suitetime = time.time() - suitestart
     header = (u('<?xml version="1.0" encoding="utf-8"?>\n'

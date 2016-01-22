@@ -34,9 +34,9 @@ def _findtests(paths):
 def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False):
     """Run tests and yield results.
 
-    This yields a sequence of 3-tuples containing the following:
+    This yields a sequence of 2-tuples containing the following:
 
-        (test path, absolute test path, test function)
+        (test path, test function)
 
     The test function, when called, runs the test in a temporary directory
     and returns a 3-tuple:
@@ -52,8 +52,8 @@ def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False):
             continue
         seen.add(abspath)
 
-        if not os.stat(abspath).st_size:
-            yield (path, abspath, lambda: (None, None, None))
+        if not os.stat(path).st_size:
+            yield (path, lambda: (None, None, None))
             continue
 
         basename = os.path.basename(path)
@@ -73,4 +73,4 @@ def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False):
             finally:
                 os.chdir(cwd)
 
-        yield (path, abspath, test)
+        yield (path, test)

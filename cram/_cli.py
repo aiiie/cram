@@ -57,9 +57,9 @@ def _patch(cmd, diff, path):
 def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None):
     """Run tests with command line interface input/output.
 
-    tests should be a sequence of 3-tuples containing the following:
+    tests should be a sequence of 2-tuples containing the following:
 
-        (test path, absolute test path, test function)
+        (test path, test function)
 
     This function yields a new sequence where each test function is wrapped
     with a function that handles CLI input/output.
@@ -74,7 +74,7 @@ def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None):
     """
     total, skipped, failed = [0], [0], [0]
 
-    for path, abspath, test in tests:
+    for path, test in tests:
         def testwrapper():
             """Test function that adds CLI output"""
             total[0] += 1
@@ -86,6 +86,7 @@ def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None):
                 _log('s', 'empty\n', verbose)
                 return refout, postout, diff
 
+            abspath = os.path.abspath(path)
             errpath = abspath + b('.err')
 
             if postout is None:
@@ -125,7 +126,7 @@ def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None):
 
             return refout, postout, diff
 
-        yield (path, abspath, testwrapper)
+        yield (path, testwrapper)
 
     if total[0] > 0:
         _log('\n', None, verbose)

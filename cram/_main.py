@@ -192,7 +192,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
         hastests = False
         failed = False
-        for path, abspath, test in tests:
+        for path, test in tests:
             hastests = True
             refout, postout, diff = test()
             if diff:

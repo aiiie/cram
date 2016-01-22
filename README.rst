@@ -191,9 +191,12 @@ Cram also provides the following environment variables to tests:
 
 * ``TESTDIR``, set to the directory containing the test file.
 
-Also note that care should be taken with commands that close the test shell's
-``stdin``. For example, if you're trying to invoke ``ssh`` in a test, try
-adding the ``-n`` option to prevent it from closing ``stdin``.
+Also note that care should be taken with commands that close the test
+shell's ``stdin``. For example, if you're trying to invoke ``ssh`` in
+a test, try adding the ``-n`` option to prevent it from closing
+``stdin``. Similarly, if you invoke a daemon process that inherits
+``stdout`` and fails to close it, it may cause Cram to hang while
+waiting for the test shell's ``stdout`` to be fully closed.
 
 .. _unified context diff: https://en.wikipedia.org/wiki/Diff#Unified_format
 .. _its own example tests: https://bitbucket.org/brodie/cram/src/default/examples/

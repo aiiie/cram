@@ -35,12 +35,15 @@ Here's a snippet from `Cram's own test suite`_::
         -q, --quiet         don't print diffs
         -v, --verbose       show filenames and test status
         -i, --interactive   interactively merge changed test output
+        -d, --debug         write script output directly to the terminal
         -y, --yes           answer yes to all questions
         -n, --no            answer no to all questions
         -E, --preserve-env  don't reset common environment variables
         --keep-tmpdir       keep temporary directories
         --shell=PATH        shell to use for running tests (default: /bin/sh)
+        --shell-opts=OPTS   arguments to invoke shell with
         --indent=NUM        number of spaces to use for indentation (default: 2)
+        --xunit-file=PATH   path to write xUnit XML output
 
 The format in a nutshell:
 

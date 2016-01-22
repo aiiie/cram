@@ -2,9 +2,7 @@
  Cram: It's test time
 ======================
 
-Cram is a functional testing framework for command line applications
-based on Mercurial_'s `unified test format`_.
-
+Cram is a functional testing framework for command line applications.
 Cram tests look like snippets of interactive shell sessions. Cram runs
 each command and compares the command output in the test with the
 command's actual output.
@@ -78,8 +76,6 @@ The format in a nutshell:
 
 * Anything else is a comment.
 
-.. _Mercurial: http://mercurial.selenic.com/
-.. _unified test format: http://www.selenic.com/blog/?p=663
 .. _Cram's own test suite: https://bitbucket.org/brodie/cram/src/default/tests/cram.t
 .. _Perl-compatible regular expressions: https://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions
 

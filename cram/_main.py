@@ -131,12 +131,12 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 """)
         return
 
-    conflicts = [('-y', opts.yes, '-n', opts.no),
-                 ('-q', opts.quiet, '-i', opts.interactive),
-                 ('-d', opts.debug, '-q', opts.quiet),
-                 ('-d', opts.debug, '-i', opts.interactive),
-                 ('-d', opts.debug, '-v', opts.verbose),
-                 ('-d', opts.debug, '--xunit-file', opts.xunit_file)]
+    conflicts = [('--yes', opts.yes, '--no', opts.no),
+                 ('--quiet', opts.quiet, '--interactive', opts.interactive),
+                 ('--debug', opts.debug, '--quiet', opts.quiet),
+                 ('--debug', opts.debug, '--interactive', opts.interactive),
+                 ('--debug', opts.debug, '--verbose', opts.verbose),
+                 ('--debug', opts.debug, '--xunit-file', opts.xunit_file)]
     for s1, o1, s2, o2 in conflicts:
         if o1 and o2:
             sys.stderr.write('options %s and %s are mutually exclusive\n'

@@ -46,7 +46,7 @@ Usage:
   [Uu]sage: cram \[OPTIONS\] TESTS\.\.\. (re)
   [2]
   $ cram -y -n
-  options -y and -n are mutually exclusive
+  options --yes and --no are mutually exclusive
   [2]
   $ cram non-existent also-not-here
   no such file: non-existent
@@ -61,11 +61,11 @@ Options in .cramrc:
   > indent = 4
   > EOF
   $ cram
-  options -y and -n are mutually exclusive
+  options --yes and --no are mutually exclusive
   [2]
   $ mv .cramrc config
   $ CRAMRC=config cram
-  options -y and -n are mutually exclusive
+  options --yes and --no are mutually exclusive
   [2]
   $ rm config
 
@@ -95,7 +95,7 @@ Invalid option in .cramrc:
 Options in an environment variable:
 
   $ CRAM='-y -n' cram
-  options -y and -n are mutually exclusive
+  options --yes and --no are mutually exclusive
   [2]
 
 Copy in example tests:
@@ -146,16 +146,16 @@ Debug mode:
 
   $ printf '  $ echo hi\n  > echo bye' > debug.t
   $ cram -d -v debug.t
-  options -d and -v are mutually exclusive
+  options --debug and --verbose are mutually exclusive
   [2]
   $ cram -d -q debug.t
-  options -d and -q are mutually exclusive
+  options --debug and --quiet are mutually exclusive
   [2]
   $ cram -d -i debug.t
-  options -d and -i are mutually exclusive
+  options --debug and --interactive are mutually exclusive
   [2]
   $ cram -d --xunit-file==cram.xml debug.t
-  options -d and --xunit-file are mutually exclusive
+  options --debug and --xunit-file are mutually exclusive
   [2]
   $ cram -d debug.t
   hi

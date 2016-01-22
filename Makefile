@@ -41,6 +41,7 @@ endif
 tests: test
 
 coverage:
+	$(COVERAGE) erase
 	$(PYTHON) setup.py -q test --coverage="$(COVERAGE)" --no-doctest \
 	$(TEST_ARGS)
 	$(COVERAGE) run -a setup.py -q doctest

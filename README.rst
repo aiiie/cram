@@ -83,7 +83,7 @@ The format in a nutshell:
 Download
 --------
 
-* cram-0.6.tar.gz_ (24 KB, requires Python 2.4-2.7 or Python 3.1-3.2)
+* cram-0.6.tar.gz_ (24 KB, requires Python 2.4-2.7 or Python 3.1 or newer)
 
 .. _cram-0.6.tar.gz: https://bitheap.org/cram/cram-0.6.tar.gz
 

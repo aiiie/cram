@@ -9,9 +9,19 @@
 [ -n "$PYTHON" ] || PYTHON="`which python`"
 [ -n "$PYTHONPATH" ] || PYTHONPATH="$TESTDIR/.." && export PYTHONPATH
 if [ -n "$COVERAGE" ]; then
-  alias cram="`which "$COVERAGE"` run -a $TESTDIR/../scripts/cram --shell=$0"
+  if [ -z "$COVERAGE_FILE" ]; then
+    COVERAGE_FILE="$TESTDIR/../.coverage"
+    export COVERAGE_FILE
+  fi
+
+  alias cram="`which "$COVERAGE"` run -a --rcfile=$TESTDIR/../.coveragerc \
+$TESTDIR/../scripts/cram --shell=$0"
+  alias doctest="`which "$COVERAGE"` run -a --rcfile=$TESTDIR/../.coveragerc \
+$TESTDIR/run-doctests.py"
 else
+  PYTHON="`command -v "$PYTHON" || echo "$PYTHON"`"
   alias cram="$PYTHON $TESTDIR/../scripts/cram --shell=$0"
+  alias doctest="$PYTHON $TESTDIR/run-doctests.py"
 fi
 command -v md5 > /dev/null || alias md5=md5sum
 

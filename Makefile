@@ -29,15 +29,14 @@ checkdist:
 	check-manifest
 
 test: pep8 pyflakes checkdist
-	$(PYTHON) setup.py -q test $(TEST_ARGS)
+	PYTHON=$(PYTHON) PYTHONPATH=`pwd` scripts/cram $(TEST_ARGS) tests
 
 tests: test
 
 coverage: pep8 pyflakes checkdist
 	$(COVERAGE) erase
-	$(PYTHON) setup.py -q test --coverage="$(COVERAGE)" --no-doctest \
-	$(TEST_ARGS)
-	$(COVERAGE) run -a setup.py -q doctest
+	COVERAGE=$(COVERAGE) PYTHON=$(PYTHON) PYTHONPATH=`pwd` scripts/cram \
+	$(TEST_ARGS) tests
 	$(COVERAGE) report --fail-under=100
 
 # E129: indentation between lines in conditions

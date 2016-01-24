@@ -17,7 +17,8 @@ checkdist:
 
 clean:
 	-$(PYTHON) setup.py clean --all
-	find . -not -path '*/.hg/*' \( -name '*.py[cdo]' -o -name '*.err' -o \
+	find . -not \( -path '*/.hg/*' -o -path '*/.git/*' \) \
+		\( -name '*.py[cdo]' -o -name '*.err' -o \
 		-name '*,cover' -o -name __pycache__ \) -prune \
 		-exec rm -rf '{}' ';'
 	rm -rf dist build htmlcov
@@ -28,7 +29,7 @@ install: build
 
 dist:
 	TAR_OPTIONS="--owner=root --group=root --mode=u+w,go-w,a+rX-s" \
-	$(PYTHON) setup.py -q sdist
+		$(PYTHON) setup.py -q sdist
 
 test:
 	PYTHON=$(PYTHON) PYTHONPATH=`pwd` scripts/cram $(TEST_ARGS) tests
@@ -38,7 +39,7 @@ tests: test
 coverage:
 	$(COVERAGE) erase
 	COVERAGE=$(COVERAGE) PYTHON=$(PYTHON) PYTHONPATH=`pwd` scripts/cram \
-	$(TEST_ARGS) tests
+		$(TEST_ARGS) tests
 	$(COVERAGE) report --fail-under=100
 
 markdown:

@@ -10,6 +10,11 @@ all: build
 build:
 	$(PYTHON) setup.py build
 
+check: test
+
+checkdist:
+	check-manifest
+
 clean:
 	-$(PYTHON) setup.py clean --all
 	find . -not -path '*/.hg/*' \( -name '*.py[cdo]' -o -name '*.err' -o \
@@ -24,9 +29,6 @@ install: build
 dist:
 	TAR_OPTIONS="--owner=root --group=root --mode=u+w,go-w,a+rX-s" \
 	$(PYTHON) setup.py -q sdist
-
-checkdist:
-	check-manifest
 
 test: pep8 pyflakes checkdist
 	PYTHON=$(PYTHON) PYTHONPATH=`pwd` scripts/cram $(TEST_ARGS) tests

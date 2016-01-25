@@ -183,6 +183,10 @@ Cram also provides the following environment variables to tests:
 
 * ``TESTDIR``, set to the directory containing the test file.
 
+* ``TESTFILE``, set to the basename of the current test file.
+
+* ``TESTSHELL``, set to the value specified by ``--shell``.
+
 Also note that care should be taken with commands that close the test
 shell's ``stdin``. For example, if you're trying to invoke ``ssh`` in
 a test, try adding the ``-n`` option to prevent it from closing

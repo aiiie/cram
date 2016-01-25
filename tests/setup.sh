@@ -2,7 +2,7 @@
 
 # Bash doesn't expand aliases by default in non-interactive mode, so
 # we enable it manually if the test is run with --shell=/bin/bash.
-[ "$0" != "/bin/bash" ] || shopt -s expand_aliases
+[ "$TESTSHELL" = "/bin/bash" ] && shopt -s expand_aliases
 
 # The $PYTHON environment variable should be set when running this test
 # from Python.
@@ -15,12 +15,12 @@ if [ -n "$COVERAGE" ]; then
   fi
 
   alias cram="`which "$COVERAGE"` run -a --rcfile=$TESTDIR/../.coveragerc \
-$TESTDIR/../scripts/cram --shell=$0"
+$TESTDIR/../scripts/cram --shell=$TESTSHELL"
   alias doctest="`which "$COVERAGE"` run -a --rcfile=$TESTDIR/../.coveragerc \
 $TESTDIR/run-doctests.py"
 else
   PYTHON="`command -v "$PYTHON" || echo "$PYTHON"`"
-  alias cram="$PYTHON $TESTDIR/../scripts/cram --shell=$0"
+  alias cram="$PYTHON $TESTDIR/../scripts/cram --shell=$TESTSHELL"
   alias doctest="$PYTHON $TESTDIR/run-doctests.py"
 fi
 command -v md5 > /dev/null || alias md5=md5sum

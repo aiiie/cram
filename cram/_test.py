@@ -34,8 +34,9 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
     If a test exits with return code 80, the actual output is set to
     None and diff is set to [].
 
-    Note that the TESTDIR and TESTFILE environment variables are not
-    available when running tests with this function. To run actual
+    Note that the TESTSHELL environment variable is available in the
+    test (set to the specified shell). However, the TESTDIR and
+    TESTFILE environment variables are not available. To run actual
     test files, see testfile().
 
     Example usage:
@@ -106,6 +107,7 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
 
     if isinstance(shell, (bytestype, unicodetype)):
         shell = [shell]
+    env['TESTSHELL'] = shell[0]
 
     if debug:
         stdin = []
@@ -194,8 +196,8 @@ def testfile(path, shell='/bin/sh', indent=2, env=None, cleanenv=True,
     If a test exits with return code 80, the actual output is set to
     None and diff is set to [].
 
-    Note that the TESTDIR and TESTFILE environment variables are
-    available to use in the test.
+    Note that the TESTDIR, TESTFILE, and TESTSHELL environment
+    variables are available to use in the test.
 
     :param path: Path to test file
     :type path: bytes or str

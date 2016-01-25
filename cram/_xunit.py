@@ -71,7 +71,7 @@ def _timestamp():
     tm = time.localtime()
     if tm.tm_isdst == 1: # pragma: nocover
         tz = time.altzone
-    else:
+    else: # pragma: nocover
         tz = time.timezone
 
     timestamp = time.strftime('%Y-%m-%dT%H:%M:%S', tm)

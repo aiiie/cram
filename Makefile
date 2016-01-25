@@ -1,9 +1,7 @@
 COVERAGE=coverage
+PREFIX=/usr/local
+export PREFIX
 PYTHON=python
-
-ifdef PREFIX
-PREFIX_ARG=--prefix=$(PREFIX)
-endif
 
 all: build
 
@@ -25,7 +23,7 @@ clean:
 	rm -f README.md MANIFEST .coverage cram.xml
 
 install: build
-	$(PYTHON) setup.py install $(PREFIX_ARG)
+	$(PYTHON) setup.py install --prefix="$(PREFIX)" --force
 
 dist:
 	TAR_OPTIONS="--owner=root --group=root --mode=u+w,go-w,a+rX-s" \

@@ -24,21 +24,11 @@ Debug mode:
 
 Debug mode with extra shell arguments:
 
-  $ cram --shell-opts='-v' -d debug.t
-  echo hi
+  $ cram --shell-opts='-s' -d debug.t
   hi
-  echo bye
   bye
 
-Test debug mode with -x:
-
-  $ cram --shell-opts='-x' -d debug.t
-  \+ ?echo hi (re)
-  hi
-  \+ ?echo bye (re)
-  bye
-
-Test using set -x in a test:
+Test debug mode with set -x:
 
   $ cat > set-x.t <<EOF
   >   $ echo 1
@@ -46,6 +36,13 @@ Test using set -x in a test:
   >   $ set -x
   >   $ echo 2
   > EOF
+  $ cram -d set-x.t
+  1
+  \+.*echo 2 (re)
+  2
+
+Test set -x without debug mode:
+
   $ cram set-x.t
   !
   --- set-x.t
@@ -54,11 +51,11 @@ Test using set -x in a test:
      $ echo 1
      1
      $ set -x
-  \+  \+ ?echo  \(no-eol\) (re)
+  \+  \+.*echo  \(no-eol\) (re)
      $ echo 2
-  \+  \+ ?echo 2 (re)
+  \+  \+.*echo 2 (re)
   +  2
-  \+  \+ ?echo  \(no-eol\) (re)
+  \+  \+.*echo  \(no-eol\) (re)
   
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]

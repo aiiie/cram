@@ -29,7 +29,7 @@ install: build
 test:
 	$(COVERAGE) erase
 	COVERAGE=$(COVERAGE) PYTHON=$(PYTHON) PYTHONPATH=`pwd` scripts/cram \
-		$(TEST_ARGS) tests
+		$(TESTOPTS) tests
 	$(COVERAGE) report --fail-under=100
 
 .PHONY: all build check clean install dist test

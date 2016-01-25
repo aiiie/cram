@@ -10,8 +10,6 @@ Check environment variables:
   GMT
   $ echo "$CDPATH"
   
-  $ echo "$COLUMNS"
-  80
   $ echo "$GREP_OPTIONS"
   
   $ echo "$CRAMTMP"

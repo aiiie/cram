@@ -65,13 +65,12 @@ Don't sterilize environment:
 
   $ TZ=foo; export TZ
   $ CDPATH=foo; export CDPATH
-  $ COLUMNS=42; export COLUMNS
   $ GREP_OPTIONS=foo; export GREP_OPTIONS
   $ cram -E examples/env.t
   !
   \-\-\- examples/env\.t\s* (re)
   \+\+\+ examples/env\.t\.err\s* (re)
-  @@ -7,13 +7,13 @@
+  @@ -7,11 +7,11 @@
      $ echo "$LANGUAGE"
      C
      $ echo "$TZ"
@@ -80,9 +79,6 @@ Don't sterilize environment:
      $ echo "$CDPATH"
   -  
   +  foo
-     $ echo "$COLUMNS"
-  -  80
-  +  42
      $ echo "$GREP_OPTIONS"
   -  
   +  foo

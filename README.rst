@@ -173,7 +173,8 @@ are run:
 
 * ``TZ`` is set to ``GMT``.
 
-* ``COLUMNS`` is set to ``80``.
+* ``COLUMNS`` is set to ``80``. (Note: When using ``--shell=zsh``,
+  this cannot be reset. It will reflect the actual terminal's width.)
 
 * ``CDPATH`` and ``GREP_OPTIONS`` are set to an empty string.
 

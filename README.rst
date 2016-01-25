@@ -212,11 +212,8 @@ Or Git_::
 
 Test Cram using Cram::
 
+    pip install -r requirements.txt
     make test
-
-Get a test coverage report using coverage.py_::
-
-    make coverage
 
 Visit Bitbucket_ or GitHub_ if you'd like to fork the project, watch
 for new changes, or report issues.

@@ -26,10 +26,13 @@ dist:
 install: build
 	$(PYTHON) setup.py install --prefix="$(PREFIX)" --force
 
+quicktest:
+	PYTHON=$(PYTHON) PYTHONPATH=`pwd` scripts/cram $(TESTOPTS) tests
+
 test:
 	$(COVERAGE) erase
 	COVERAGE=$(COVERAGE) PYTHON=$(PYTHON) PYTHONPATH=`pwd` scripts/cram \
 		$(TESTOPTS) tests
 	$(COVERAGE) report --fail-under=100
 
-.PHONY: all build check clean install dist test
+.PHONY: all build check clean install dist quicktest test

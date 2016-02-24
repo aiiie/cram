@@ -76,7 +76,7 @@ The format in a nutshell:
 
 * Anything else is a comment.
 
-.. _Cram's own test suite: https://bitbucket.org/brodie/cram/src/default/tests/cram.t
+.. _Cram's own test suite: https://bitbucket.org/brodie/cram/src/0.6/tests/cram.t
 .. _Perl-compatible regular expressions: https://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions
 
 

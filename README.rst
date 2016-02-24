@@ -83,9 +83,9 @@ The format in a nutshell:
 Download
 --------
 
-* cram-0.6.tar.gz_ (24 KB, requires Python 2.4-2.7 or Python 3.1 or newer)
+* cram-0.7.tar.gz_ (32 KB, requires Python 2.4-2.7 or Python 3.1 or newer)
 
-.. _cram-0.6.tar.gz: https://bitheap.org/cram/cram-0.6.tar.gz
+.. _cram-0.7.tar.gz: https://bitheap.org/cram/cram-0.7.tar.gz
 
 
 Installation
@@ -93,9 +93,9 @@ Installation
 
 Install Cram using make::
 
-    $ wget https://bitheap.org/cram/cram-0.6.tar.gz
-    $ tar zxvf cram-0.6.tar.gz
-    $ cd cram-0.6
+    $ wget https://bitheap.org/cram/cram-0.7.tar.gz
+    $ tar zxvf cram-0.7.tar.gz
+    $ cd cram-0.7
     $ make install
 
 

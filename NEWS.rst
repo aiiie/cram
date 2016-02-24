@@ -2,6 +2,44 @@
  News
 ======
 
+Version 0.7 (Feb. 24, 2016)
+---------------------------
+
+* Added the ``-d``/``--debug`` flag that disables diffing of
+  expected/actual output and instead passes through script output to
+  ``stdout``/``stderr``.
+
+* Added the ``--shell-opts`` flag for specifying flags to invoke the
+  shell with. By setting ``--shell-opts='-x'`` and ``--debug``
+  together, this can be used to see shell commands as they're run and
+  their output in real time which can be useful for debugging slow or
+  hanging tests.
+
+* Added xUnit XML output support (for better integration of test
+  results with Bamboo and other continuous integration tools).
+
+* Added support for using (esc) on expected out lines that aren't
+  automatically escaped in actual output.
+
+* Added the ``$TESTSHELL`` environment variable. This allows a test to
+  portably check what shell it was invoked with.
+
+* Added an error message for when no tests are found in a directory.
+
+* Changed ``Makefile`` to install into ``/usr/local`` by default.
+
+* Simplified the ``Makefile``'s targets. The targets available now are
+  ``all``, ``build``, ``check``/``test``, ``clean``, ``dist``,
+  ``install``, and ``quicktest`` (for running the test suite without
+  checking test coverage).
+
+* Fixed non-ASCII strings not being escaped with ``(esc)`` on Python 3.
+
+* Fixed a crash on tests that don't have a trailing newline.
+
+* Fixed a crash when using ``set -x`` with zsh.
+
+
 Version 0.6 (Aug. 1, 2013)
 --------------------------
 

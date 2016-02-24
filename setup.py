@@ -36,7 +36,7 @@ setup(
     ],
     cmdclass=COMMANDS,
     description='A simple testing framework for command line applications',
-    download_url='https://bitheap.org/cram/cram-0.6.tar.gz',
+    download_url='https://bitheap.org/cram/cram-0.7.tar.gz',
     keywords='automatic functional test framework',
     license='GNU GPL',
     long_description=long_description(),
@@ -44,5 +44,5 @@ setup(
     packages=['cram'],
     scripts=['scripts/cram'],
     url='https://bitheap.org/cram/',
-    version='0.6',
+    version='0.7',
 )

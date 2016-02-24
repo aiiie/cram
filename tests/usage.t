@@ -23,9 +23,9 @@ Usage:
     --indent=NUM        number of spaces to use for indentation (default: 2)
     --xunit-file=PATH   path to write xUnit XML output
   $ cram -V
-  Cram CLI testing framework (version 0.6)
+  Cram CLI testing framework (version 0.7)
   
-  Copyright (C) 2010-2015 Brodie Rao <brodie@bitheap.org> and others
+  Copyright (C) 2010-2016 Brodie Rao <brodie@bitheap.org> and others
   This is free software; see the source for copying conditions. There is NO
   warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
   $ cram

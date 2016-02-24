@@ -1,5 +1,7 @@
 * Add more comments explaining how different parts of the code work.
 
+* Add a man page.
+
 * Implement string substitutions (e.g., --substitute=FOOPORT=123).
 
 * Conditionals (e.g., --define=windows=1, #if windows ... #else ...

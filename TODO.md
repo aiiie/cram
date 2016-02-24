@@ -9,6 +9,10 @@
 
 * Support #!/usr/bin/env cram
 
+* Support .cramrc in test directories. Though, if I do this, what happens
+  when there are multiple .cramrc files? Does the deepest one completely
+  override the others? Do they merge together?
+
 * Homebrew formula.
 
 * Debian, Ubuntu, CentOS/RHEL repos.

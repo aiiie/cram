@@ -1,6 +1,6 @@
 * Add more comments explaining how different parts of the code work.
 
-* Implement string substitutions (e.g., --subsitute=FOOPORT=123).
+* Implement string substitutions (e.g., --substitute=FOOPORT=123).
 
 * Conditionals (e.g., --define=windows=1, #if windows ... #else ...
   #endif).

@@ -151,3 +151,25 @@ Test running tests with the same filename in different directories:
   
   # Ran 2 tests, 0 skipped, 2 failed.
   [1]
+
+Test failing a test in a read-only directory with the --no-err-files option:
+
+  $ mkdir subdir
+  $ cat > subdir/test.t <<EOF
+  >   $ echo 1
+  > EOF
+  $ chmod a-w subdir
+  $ cram subdir >/dev/null 2>&1
+  [1]
+  $ cram --no-err-files subdir
+  !
+  --- subdir/test.t
+  +++ subdir/test.t.err
+  @@ -1,1 +1,2 @@
+     $ echo 1
+  +  1
+  
+  # Ran 1 tests, 0 skipped, 1 failed.
+  [1]
+
+  $ chmod a+w subdir

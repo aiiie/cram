@@ -95,6 +95,8 @@ def _parseopts(args):
                  help='answer no to all questions')
     p.add_option('-E', '--preserve-env', action='store_true',
                  help="don't reset common environment variables")
+    p.add_option('-e', '--no-err-files', action='store_true',
+                 help="don't write .err files on test failures")
     p.add_option('--keep-tmpdir', action='store_true',
                  help='keep temporary directories')
     p.add_option('--shell', action='store', default='/bin/sh', metavar='PATH',
@@ -183,10 +185,12 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
     os.mkdir(proctmp)
     try:
         tests = runtests(paths, tmpdirb, shell, indent=opts.indent,
-                         cleanenv=not opts.preserve_env, debug=opts.debug)
+                         cleanenv=not opts.preserve_env, debug=opts.debug,
+                         noerrfiles=opts.no_err_files)
         if not opts.debug:
             tests = runcli(tests, quiet=opts.quiet, verbose=opts.verbose,
-                           patchcmd=patchcmd, answer=answer)
+                           patchcmd=patchcmd, answer=answer,
+                           noerrfiles=opts.no_err_files)
             if opts.xunit_file is not None:
                 tests = runxunit(tests, opts.xunit_file)
 

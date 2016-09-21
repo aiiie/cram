@@ -199,6 +199,15 @@ waiting for the test shell's ``stdout`` to be fully closed.
 .. _its own example tests: https://bitbucket.org/brodie/cram/src/default/examples/
 
 
+Editor Support
+--------------
+
+* A `TextMate`_ bundle providing syntax highlighting and other Cram
+  specific features is available `on GitHub`_.
+
+.. _TextMate: https://github.com/textmate/textmate
+.. _on GitHub: https://github.com/sanssecours/cram.tmbundle
+
 Development
 -----------
 

@@ -45,6 +45,9 @@ setup(
     name='cram',
     packages=['cram'],
     scripts=['scripts/cram'],
+    entry_points = {
+            'console_scripts': ['cram_ = cram:main']
+        },
     url='https://bitheap.org/cram/',
     version='0.7',
 )

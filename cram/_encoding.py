@@ -11,7 +11,11 @@ except ImportError:
 __all__ = ['b', 'bchr', 'bytestype', 'envencode', 'fsdecode', 'fsencode',
            'stdoutb', 'stderrb', 'u', 'ul', 'unicodetype']
 
-bytestype = getattr(builtins, 'bytes', str)
+# Python 2.* cannot use unicode into environment, but __future__ provides it
+if sys.platform == 'win32' and sys.version_info[0] < 3:
+    from __builtin__ import bytes as bytestype
+else:
+    bytestype = getattr(builtins, 'bytes', str)
 unicodetype = getattr(builtins, 'unicode', str)
 
 if getattr(os, 'fsdecode', None) is not None:

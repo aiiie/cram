@@ -128,7 +128,8 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
     i = pos = prepos = -1
     stdin = []
     echo_command = 'echo {} {} $?\n'
-    if sys.platform == 'win32' and (shell[0].endswith('cmd.exe') or shell[0].endswith('cmd')):
+    if sys.platform == 'win32' and \
+            (shell[0].endswith('cmd.exe') or shell[0].endswith('cmd')):
         # Windows cmd.exe returns returncode by other way
         echo_command = 'echo {} {} %errorlevel%\n'
     for i, line in enumerate(lines):
@@ -157,7 +158,7 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
     ret = 0
     for i, line in enumerate(output[:-1].splitlines(True)):
         # Windows returns original command and result
-        if sys.platform == 'win32' and  ">" in line:
+        if sys.platform == 'win32' and ">" in line:
             continue
         out, cmd = line, None
         if salt in line:

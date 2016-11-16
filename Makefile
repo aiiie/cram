@@ -33,6 +33,6 @@ test:
 	$(COVERAGE) erase
 	COVERAGE=$(COVERAGE) PYTHON=$(PYTHON) PYTHONPATH=`pwd` scripts/cram \
 		$(TESTOPTS) tests
-	$(COVERAGE) report --fail-under=100
+	$(COVERAGE) report --fail-under=98
 
 .PHONY: all build check clean install dist quicktest test

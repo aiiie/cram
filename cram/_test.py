@@ -3,6 +3,7 @@
 import itertools
 import os
 import re
+import sys
 import time
 
 from cram._encoding import b, bchr, bytestype, envencode, unicodetype
@@ -126,6 +127,11 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
     refout, postout = [], []
     i = pos = prepos = -1
     stdin = []
+    echo_command = 'echo %s %s $?\n'
+    if sys.platform == 'win32' and \
+            (shell[0].endswith('cmd.exe') or shell[0].endswith('cmd')):
+        # Windows cmd.exe returns returncode by other way
+        echo_command = 'echo %s %s %%errorlevel%%\n'
     for i, line in enumerate(lines):
         if not line.endswith(b('\n')):
             line += b('\n')
@@ -134,14 +140,14 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
             after.setdefault(pos, []).append(line)
             prepos = pos
             pos = i
-            stdin.append(b('echo %s %s $?\n' % (usalt, i)))
+            stdin.append(b(echo_command % (usalt, i)))
             stdin.append(line[len(cmdline):])
         elif line.startswith(conline):
             after.setdefault(prepos, []).append(line)
             stdin.append(line[len(conline):])
         elif not line.startswith(indent):
             after.setdefault(pos, []).append(line)
-    stdin.append(b('echo %s %s $?\n' % (usalt, i + 1)))
+    stdin.append(b(echo_command % (usalt, i)))
 
     output, retcode = execute(shell + ['-'], stdin=b('').join(stdin),
                               stdout=PIPE, stderr=STDOUT, env=env)
@@ -151,6 +157,9 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
     pos = -1
     ret = 0
     for i, line in enumerate(output[:-1].splitlines(True)):
+        # Windows returns original command and result
+        if sys.platform == 'win32' and ">" in line:
+            continue
         out, cmd = line, None
         if salt in line:
             out, cmd = line.split(salt, 1)

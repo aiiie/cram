@@ -218,7 +218,7 @@ Test Cram using Cram::
 Visit Bitbucket_ or GitHub_ if you'd like to fork the project, watch
 for new changes, or report issues.
 
-.. _Mercurial: http://mercurial.selenic.com/
+.. _Mercurial: https://www.mercurial-scm.org/
 .. _Git: http://git-scm.com/
 .. _coverage.py: http://nedbatchelder.com/code/coverage/
 .. _Bitbucket: https://bitbucket.org/brodie/cram

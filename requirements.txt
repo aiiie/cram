@@ -1,3 +1,2 @@
-check-manifest
 coverage
 pep8

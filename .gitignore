@@ -25,3 +25,4 @@ cram.egg-info
 tags
 cscope.*
 .idea
+.tox

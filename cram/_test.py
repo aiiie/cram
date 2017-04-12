@@ -107,7 +107,7 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
 
     if isinstance(shell, (bytestype, unicodetype)):
         shell = [shell]
-    env['TESTSHELL'] = shell[0]
+    env['TESTSHELL'] = envencode(shell[0])
 
     if debug:
         stdin = []

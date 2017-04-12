@@ -6,19 +6,38 @@ before_install:
 install:
   - pip install -r requirements-ci.txt -r requirements.txt
 
-env:
-  - TOXENV=py27 TESTOPTS=--shell=dash TOX_TESTENV_PASSENV="TESTOPTS"
-  - TOXENV=py34 TESTOPTS=--shell=dash TOX_TESTENV_PASSENV="TESTOPTS"
-  - TOXENV=py35 TESTOPTS=--shell=dash TOX_TESTENV_PASSENV="TESTOPTS"
-  - TOXENV=py35 TESTOPTS=--shell=bash TOX_TESTENV_PASSENV="TESTOPTS"
-  - TOXENV=py35 TESTOPTS=--shell=zsh TOX_TESTENV_PASSENV="TESTOPTS"
-  - TOXENV=py36 TESTOPTS=--shell=dash TOX_TESTENV_PASSENV="TESTOPTS"
-  - TOXENV=py36 TESTOPTS=--shell=bash TOX_TESTENV_PASSENV="TESTOPTS"
-  - TOXENV=py36 TESTOPTS=--shell=zsh TOX_TESTENV_PASSENV="TESTOPTS"
-  - TOXENV=pypy TESTOPTS=--shell=dash TOX_TESTENV_PASSENV="TESTOPTS"
-  - TOXENV=pypy3 TESTOPTS=--shell=dash TOX_TESTENV_PASSENV="TESTOPTS"
-  - TOXENV=flake8 TESTOPTS=--shell=dash TOX_TESTENV_PASSENV="TESTOPTS"
-  - TOXENV=manifest TESTOPTS=--shell=dash TOX_TESTENV_PASSENV="TESTOPTS"
+matrix:
+  allow_failures:
+    - python: pypy
+      env: TOXENV=pypy TESTOPTS=--shell=dash TOX_TESTENV_PASSENV="TESTOPTS"
+    - python: pypy3
+      env: TOXENV=pypy3 TESTOPTS=--shell=dash TOX_TESTENV_PASSENV="TESTOPTS"
+
+  include:
+    - python: "3.4"
+      env: TOXENV=flake8 TESTOPTS=--shell=dash TOX_TESTENV_PASSENV="TESTOPTS"
+    - python: "3.4"
+      env: TOXENV=manifest TESTOPTS=--shell=dash TOX_TESTENV_PASSENV="TESTOPTS"
+
+    - python: "2.7"
+      env: TOXENV=py27 TESTOPTS=--shell=dash TOX_TESTENV_PASSENV="TESTOPTS"
+
+    - python: "3.4"
+      env: TOXENV=py34 TESTOPTS=--shell=dash TOX_TESTENV_PASSENV="TESTOPTS"
+
+    - python: "3.5"
+      env: TOXENV=py35 TESTOPTS=--shell=dash TOX_TESTENV_PASSENV="TESTOPTS"
+    - python: "3.5"
+      env: TOXENV=py35 TESTOPTS=--shell=bash TOX_TESTENV_PASSENV="TESTOPTS"
+    - python: "3.5"
+      env: TOXENV=py35 TESTOPTS=--shell=zsh TOX_TESTENV_PASSENV="TESTOPTS"
+
+    - python: "3.6"
+      env: TOXENV=py36 TESTOPTS=--shell=dash TOX_TESTENV_PASSENV="TESTOPTS"
+    - python: "3.6"
+      env: TOXENV=py36 TESTOPTS=--shell=bash TOX_TESTENV_PASSENV="TESTOPTS"
+    - python: "3.6"
+      env: TOXENV=py36 TESTOPTS=--shell=zsh TOX_TESTENV_PASSENV="TESTOPTS"
 
 script:
   - tox

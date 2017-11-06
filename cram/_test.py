@@ -126,6 +126,7 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
     refout, postout = [], []
     i = pos = prepos = -1
     stdin = []
+    in_test = False
     for i, line in enumerate(lines):
         if not line.endswith(b('\n')):
             line += b('\n')
@@ -136,11 +137,14 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
             pos = i
             stdin.append(b('echo %s %s $?\n' % (usalt, i)))
             stdin.append(line[len(cmdline):])
+            in_test = True
         elif line.startswith(conline):
             after.setdefault(prepos, []).append(line)
             stdin.append(line[len(conline):])
-        elif not line.startswith(indent):
+            in_test = True
+        elif not line.startswith(indent) or not in_test:
             after.setdefault(pos, []).append(line)
+            in_test = False
     stdin.append(b('echo %s %s $?\n' % (usalt, i + 1)))
 
     output, retcode = execute(shell + ['-'], stdin=b('').join(stdin),

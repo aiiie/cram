@@ -1,4 +1,4 @@
 check-manifest
 coverage
-pep8
+pycodestyle
 pyflakes

@@ -33,6 +33,7 @@ def rundoctests(pkgdir):
         totaltests += tests
     return totalfailures != 0
 
+
 if __name__ == '__main__':
     try:
         sys.exit(rundoctests(sys.argv[1]))

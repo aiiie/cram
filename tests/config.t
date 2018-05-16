@@ -28,7 +28,7 @@ Invalid option in .cramrc:
   $ cram
   [Uu]sage: cram \[OPTIONS\] TESTS\.\.\. (re)
   
-  cram: error: option --indent: invalid integer value: 'hmm'
+  cram: error: option --indent: invalid integer value: u'hmm'
   [2]
   $ rm .cramrc
   $ cat > .cramrc <<EOF
@@ -38,7 +38,7 @@ Invalid option in .cramrc:
   $ cram
   [Uu]sage: cram \[OPTIONS\] TESTS\.\.\. (re)
   
-  cram: error: --verbose: invalid boolean value: 'hmm'
+  cram: error: --verbose: invalid boolean value: u'hmm'
   [2]
   $ rm .cramrc
 

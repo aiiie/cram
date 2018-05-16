@@ -59,18 +59,18 @@ def glob(el, l):
     """Apply a glob match to a line annotated with '(glob)'"""
     return _matchannotation('glob', _glob, el, l)
 
-def esc(el, l):
+def esc(el, line):
     """Apply an escape match to a line annotated with '(esc)'"""
     ann = b(' (esc)\n')
 
     if el.endswith(ann):
         el = codecs.escape_decode(el[:-len(ann)])[0] + b('\n')
-    if el == l:
+    if el == line:
         return True
 
-    if l.endswith(ann):
-        l = codecs.escape_decode(l[:-len(ann)])[0] + b('\n')
-    return el == l
+    if line.endswith(ann):
+        line = codecs.escape_decode(line[:-len(ann)])[0] + b('\n')
+    return el == line
 
 class _SequenceMatcher(difflib.SequenceMatcher, object):
     """Like difflib.SequenceMatcher, but supports custom match functions"""

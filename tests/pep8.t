@@ -1,4 +1,4 @@
-Skip this test if pep8 isn't available:
+Skip this test if pycodestyle isn't available:
 
   $ command -v pycodestyle > /dev/null || exit 80
 

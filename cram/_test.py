@@ -5,21 +5,20 @@ import os
 import re
 import time
 
-from cram._encoding import b, bchr, bytestype, envencode, unicodetype
 from cram._diff import esc, glob, regex, unified_diff
 from cram._process import PIPE, STDOUT, execute
 
 __all__ = ['test', 'testfile']
 
-_needescape = re.compile(b(r'[\x00-\x09\x0b-\x1f\x7f-\xff]')).search
-_escapesub = re.compile(b(r'[\x00-\x09\x0b-\x1f\\\x7f-\xff]')).sub
-_escapemap = dict((bchr(i), b(r'\x%02x' % i)) for i in range(256))
-_escapemap.update({b('\\'): b('\\\\'), b('\r'): b(r'\r'), b('\t'): b(r'\t')})
+_needescape = re.compile(br'[\x00-\x09\x0b-\x1f\x7f-\xff]').search
+_escapesub = re.compile(br'[\x00-\x09\x0b-\x1f\\\x7f-\xff]').sub
+_escapemap = dict((bytes([i]), br'\x%02x' % i) for i in range(256))
+_escapemap.update({b'\\': b'\\\\', b'\r': br'\r', b'\t': br'\t'})
 
 def _escape(s):
     """Like the string-escape codec, but doesn't escape quotes"""
     return (_escapesub(lambda m: _escapemap[m.group(0)], s[:-1]) +
-            b(' (esc)\n'))
+            b' (esc)\n')
 
 def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
          cleanenv=True, debug=False):
@@ -41,32 +40,27 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
 
     Example usage:
 
-    >>> from cram._encoding import b
-    >>> refout, postout, diff = test([b('  $ echo hi\n'),
-    ...                               b('  [a-z]{2} (re)\n')])
-    >>> refout == [b('  $ echo hi\n'), b('  [a-z]{2} (re)\n')]
+    >>> refout, postout, diff = test([b'  $ echo hi\n',
+    ...                               b'  [a-z]{2} (re)\n'])
+    >>> refout == [b'  $ echo hi\n', b'  [a-z]{2} (re)\n']
     True
-    >>> postout == [b('  $ echo hi\n'), b('  hi\n')]
+    >>> postout == [b'  $ echo hi\n', b'  hi\n']
     True
     >>> bool(diff)
     False
 
     lines may also be a single bytes string:
 
-    >>> refout, postout, diff = test(b('  $ echo hi\n  bye\n'))
-    >>> refout == [b('  $ echo hi\n'), b('  bye\n')]
+    >>> refout, postout, diff = test(b'  $ echo hi\n  bye\n')
+    >>> refout == [b'  $ echo hi\n', b'  bye\n']
     True
-    >>> postout == [b('  $ echo hi\n'), b('  hi\n')]
+    >>> postout == [b'  $ echo hi\n', b'  hi\n']
     True
     >>> bool(diff)
     True
-    >>> (b('').join(diff) ==
-    ...  b('--- \n+++ \n@@ -1,2 +1,2 @@\n   $ echo hi\n-  bye\n+  hi\n'))
+    >>> (b''.join(diff) ==
+    ...  b'--- \n+++ \n@@ -1,2 +1,2 @@\n   $ echo hi\n-  bye\n+  hi\n')
     True
-
-    Note that the b() function is internal to Cram. If you're using Python 2,
-    use normal string literals instead. If you're using Python 3, use bytes
-    literals.
 
     :param lines: Test input
     :type lines: bytes or collections.Iterable[bytes]
@@ -82,14 +76,13 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
     :type cleanenv: bool
     :param debug: Whether or not to run in debug mode (don't capture stdout)
     :type debug: bool
-    :return: Input, output, and diff iterables
+    return: Input, output, and diff iterables
     :rtype: (list[bytes], list[bytes], collections.Iterable[bytes])
     """
-    indent = b(' ') * indent
-    cmdline = indent + b('$ ')
-    conline = indent + b('> ')
-    usalt = 'CRAM%s' % time.time()
-    salt = b(usalt)
+    indent = b' ' * indent
+    cmdline = indent + b'$ '
+    conline = indent + b'> '
+    salt = b'CRAM%.5f' % time.time()
 
     if env is None:
         env = os.environ.copy()
@@ -102,24 +95,24 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
         env['COLUMNS'] = '80'
         env['GREP_OPTIONS'] = ''
 
-    if isinstance(lines, bytestype):
+    if isinstance(lines, bytes):
         lines = lines.splitlines(True)
 
-    if isinstance(shell, (bytestype, unicodetype)):
+    if isinstance(shell, (bytes, str)):
         shell = [shell]
     env['TESTSHELL'] = shell[0]
 
     if debug:
         stdin = []
         for line in lines:
-            if not line.endswith(b('\n')):
-                line += b('\n')
+            if not line.endswith(b'\n'):
+                line += b'\n'
             if line.startswith(cmdline):
                 stdin.append(line[len(cmdline):])
             elif line.startswith(conline):
                 stdin.append(line[len(conline):])
 
-        execute(shell + ['-'], stdin=b('').join(stdin), env=env)
+        execute(shell + ['-'], stdin=b''.join(stdin), env=env)
         return ([], [], [])
 
     after = {}
@@ -127,23 +120,23 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
     i = pos = prepos = -1
     stdin = []
     for i, line in enumerate(lines):
-        if not line.endswith(b('\n')):
-            line += b('\n')
+        if not line.endswith(b'\n'):
+            line += b'\n'
         refout.append(line)
         if line.startswith(cmdline):
             after.setdefault(pos, []).append(line)
             prepos = pos
             pos = i
-            stdin.append(b('echo %s %s $?\n' % (usalt, i)))
+            stdin.append(b'echo %s %d $?\n' % (salt, i))
             stdin.append(line[len(cmdline):])
         elif line.startswith(conline):
             after.setdefault(prepos, []).append(line)
             stdin.append(line[len(conline):])
         elif not line.startswith(indent):
             after.setdefault(pos, []).append(line)
-    stdin.append(b('echo %s %s $?\n' % (usalt, i + 1)))
+    stdin.append(b'echo %s %d $?\n' % (salt, i + 1))
 
-    output, retcode = execute(shell + ['-'], stdin=b('').join(stdin),
+    output, retcode = execute(shell + ['-'], stdin=b''.join(stdin),
                               stdout=PIPE, stderr=STDOUT, env=env)
     if retcode == 80:
         return (refout, None, [])
@@ -156,8 +149,8 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
             out, cmd = line.split(salt, 1)
 
         if out:
-            if not out.endswith(b('\n')):
-                out += b(' (no-eol)\n')
+            if not out.endswith(b'\n'):
+                out += b' (no-eol)\n'
 
             if _needescape(out):
                 out = _escape(out)
@@ -166,7 +159,7 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
         if cmd:
             ret = int(cmd.split()[1])
             if ret != 0:
-                postout.append(indent + b('[%s]\n' % (ret)))
+                postout.append(indent + b'[%d]\n' % ret)
             postout += after.pop(pos, [])
             pos = int(cmd.split()[0])
 
@@ -174,9 +167,9 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
 
     if testname:
         diffpath = testname
-        errpath = diffpath + b('.err')
+        errpath = diffpath + b'.err'
     else:
-        diffpath = errpath = b('')
+        diffpath = errpath = b''
     diff = unified_diff(refout, postout, diffpath, errpath,
                         matchers=[esc, glob, regex])
     for firstline in diff:
@@ -220,8 +213,8 @@ def testfile(path, shell='/bin/sh', indent=2, env=None, cleanenv=True,
     try:
         abspath = os.path.abspath(path)
         env = env or os.environ.copy()
-        env['TESTDIR'] = envencode(os.path.dirname(abspath))
-        env['TESTFILE'] = envencode(os.path.basename(abspath))
+        env['TESTDIR'] = os.fsdecode(os.path.dirname(abspath))
+        env['TESTFILE'] = os.fsdecode(os.path.basename(abspath))
         if testname is None: # pragma: nocover
             testname = os.path.basename(abspath)
         return test(f, shell, indent=indent, testname=testname, env=env,

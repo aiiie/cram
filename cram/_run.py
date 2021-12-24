@@ -3,18 +3,17 @@
 import os
 import sys
 
-from cram._encoding import b, fsdecode, fsencode
 from cram._test import testfile
 
 __all__ = ['runtests']
 
 if sys.platform == 'win32': # pragma: nocover
     def _walk(top):
-        top = fsdecode(top)
+        top = os.fsdecode(top)
         for root, dirs, files in os.walk(top):
-            yield (fsencode(root),
-                   [fsencode(p) for p in dirs],
-                   [fsencode(p) for p in files])
+            yield (os.fsencode(root),
+                   [os.fsencode(p) for p in dirs],
+                   [os.fsencode(p) for p in files])
 else:
     _walk = os.walk
 
@@ -23,10 +22,10 @@ def _findtests(paths):
     for p in paths:
         if os.path.isdir(p):
             for root, dirs, files in _walk(p):
-                if os.path.basename(root).startswith(b('.')):
+                if os.path.basename(root).startswith(b'.'):
                     continue
                 for f in sorted(files):
-                    if not f.startswith(b('.')) and f.endswith(b('.t')):
+                    if not f.startswith(b'.') and f.endswith(b'.t'):
                         yield os.path.normpath(os.path.join(root, f))
         else:
             yield os.path.normpath(p)
@@ -58,7 +57,7 @@ def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False):
 
         basename = os.path.basename(path)
         if basename in basenames:
-            basename = basename + b('-%s' % i)
+            basename = basename + b'-%d' % i
         else:
             basenames.add(basename)
 

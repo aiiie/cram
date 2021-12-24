@@ -1,4 +1,4 @@
-"""Main module (invoked by "python -m cram")"""
+"""Main module (invoked by "python3 -m cram")"""
 
 import sys
 

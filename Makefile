@@ -1,7 +1,7 @@
-COVERAGE=coverage
+COVERAGE?=coverage
 PREFIX=/usr/local
 export PREFIX
-PYTHON=python
+PYTHON?=python
 
 all: build
 

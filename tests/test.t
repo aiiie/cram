@@ -121,6 +121,8 @@ Custom indentation:
   > 
   >   $ echo foo
   >   bar
+  > 
+  >     Nor is this!
   > EOF
   $ cram --indent=4 indent.t
   .

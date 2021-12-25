@@ -6,7 +6,7 @@
 
 # The $PYTHON environment variable should be set when running this test
 # from Python.
-[ -n "$PYTHON" ] || PYTHON="`which python`"
+[ -n "$PYTHON" ] || PYTHON="`which python3`"
 [ -n "$PYTHONPATH" ] || PYTHONPATH="$TESTDIR/.." && export PYTHONPATH
 if [ -n "$COVERAGE" ]; then
   if [ -z "$COVERAGE_FILE" ]; then

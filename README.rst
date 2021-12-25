@@ -9,18 +9,9 @@ command's actual output.
 
 Here's a snippet from `Cram's own test suite`_::
 
-    The $PYTHON environment variable should be set when running this test
-    from Python.
+    Set up cram alias and example tests:
 
-      $ [ -n "$PYTHON" ] || PYTHON="`which python`"
-      $ [ -n "$PYTHONPATH" ] || PYTHONPATH="$TESTDIR/.." && export PYTHONPATH
-      $ if [ -n "$COVERAGE" ]; then
-      >   coverage erase
-      >   alias cram="`which coverage` run --branch -a $TESTDIR/../scripts/cram"
-      > else
-      >   alias cram="$PYTHON $TESTDIR/../scripts/cram"
-      > fi
-      $ command -v md5 > /dev/null || alias md5=md5sum
+      $ . "$TESTDIR"/setup.sh
 
     Usage:
 
@@ -76,16 +67,16 @@ The format in a nutshell:
 
 * Anything else is a comment.
 
-.. _Cram's own test suite: https://bitbucket.org/brodie/cram/src/0.6/tests/cram.t
+.. _Cram's own test suite: https://github.com/brodie/cram/blob/master/tests/usage.t
 .. _Perl-compatible regular expressions: https://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions
 
 
 Download
 --------
 
-* `cram-0.7.tar.gz`_ (32 KB, requires Python 2.4-2.7 or Python 3.1 or newer)
+* `cram-0.8.tar.gz`_ (32 KB, requires Python 3.3 or newer)
 
-.. _cram-0.7.tar.gz: https://bitheap.org/cram/cram-0.7.tar.gz
+.. _cram-0.8.tar.gz: https://bitheap.org/cram/cram-0.8.tar.gz
 
 
 Installation
@@ -93,9 +84,9 @@ Installation
 
 Install Cram using make::
 
-    $ wget https://bitheap.org/cram/cram-0.7.tar.gz
-    $ tar zxvf cram-0.7.tar.gz
-    $ cd cram-0.7
+    $ wget https://bitheap.org/cram/cram-0.8.tar.gz
+    $ tar zxvf cram-0.8.tar.gz
+    $ cd cram-0.8
     $ make install
 
 
@@ -196,17 +187,13 @@ a test, try adding the ``-n`` option to prevent it from closing
 waiting for the test shell's ``stdout`` to be fully closed.
 
 .. _unified context diff: https://en.wikipedia.org/wiki/Diff#Unified_format
-.. _its own example tests: https://bitbucket.org/brodie/cram/src/default/examples/
+.. _its own example tests: https://github.com/brodie/cram/tree/master/examples
 
 
 Development
 -----------
 
-Download the official development repository using Mercurial_::
-
-    hg clone https://bitbucket.org/brodie/cram
-
-Or Git_::
+Download the official development repository using Git_::
 
     git clone https://github.com/brodie/cram.git
 
@@ -215,11 +202,8 @@ Test Cram using Cram::
     pip install -r requirements.txt
     make test
 
-Visit Bitbucket_ or GitHub_ if you'd like to fork the project, watch
-for new changes, or report issues.
+Visit GitHub_ if you'd like to fork the project, watch for new changes, or
+report issues.
 
-.. _Mercurial: http://mercurial.selenic.com/
 .. _Git: http://git-scm.com/
-.. _coverage.py: http://nedbatchelder.com/code/coverage/
-.. _Bitbucket: https://bitbucket.org/brodie/cram
 .. _GitHub: https://github.com/brodie/cram

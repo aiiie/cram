@@ -152,7 +152,7 @@ Version 0.4 (Sep. 28, 2010)
 * Added `contrib/cram.vim`_ syntax file for Vim. Contributed by `Steve
   Losh`_.
 
-.. _contrib/cram.vim: https://bitbucket.org/brodie/cram/src/default/contrib/cram.vim
+.. _contrib/cram.vim: https://github.com/brodie/cram/blob/0.7/contrib/cram.vim
 .. _Steve Losh: http://stevelosh.com/
 
 

@@ -6,5 +6,5 @@ import cram
 
 try:
     sys.exit(cram.main(sys.argv[1:]))
-except KeyboardInterrupt:
+except (BrokenPipeError, KeyboardInterrupt):
     pass

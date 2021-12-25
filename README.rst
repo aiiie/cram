@@ -74,7 +74,7 @@ The format in a nutshell:
 Download
 --------
 
-* `cram-0.8.tar.gz`_ (32 KB, requires Python 3.1 or newer)
+* `cram-0.8.tar.gz`_ (32 KB, requires Python 3.3 or newer)
 
 .. _cram-0.8.tar.gz: https://bitheap.org/cram/cram-0.8.tar.gz
 

@@ -2,3 +2,4 @@ check-manifest
 coverage
 pycodestyle
 pyflakes
+tox

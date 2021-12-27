@@ -3,6 +3,8 @@
 import os
 import sys
 
+from contextlib import contextmanager
+
 from cram._test import testfile
 
 __all__ = ['runtests']
@@ -30,6 +32,20 @@ def _findtests(paths):
         else:
             yield os.path.normpath(p)
 
+@contextmanager
+def _cwd(path):
+    """Change the working directory
+
+    This context manager will change the working directory
+    and restore it afterwards.
+    """
+    cwd = os.getcwd()
+    os.chdir(path)
+    try:
+        yield path
+    finally:
+        os.chdir(cwd)
+
 def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False):
     """Run tests and yield results.
 
@@ -42,7 +58,6 @@ def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False):
 
         (list of lines in the test, same list with actual output, diff)
     """
-    cwd = os.getcwd()
     seen = set()
     basenames = set()
     for i, path in enumerate(_findtests(paths)):
@@ -65,12 +80,9 @@ def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False):
             """Run test file"""
             testdir = os.path.join(tmpdir, basename)
             os.mkdir(testdir)
-            try:
-                os.chdir(testdir)
+            with _cwd(testdir):
                 return testfile(abspath, shell, indent=indent,
                                 cleanenv=cleanenv, debug=debug,
                                 testname=path)
-            finally:
-                os.chdir(cwd)
 
         yield (path, test)

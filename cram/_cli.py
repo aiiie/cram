@@ -101,12 +101,9 @@ def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None):
                 if not quiet:
                     _log('\n', None, verbose)
 
-                errfile = open(errpath, 'wb')
-                try:
+                with open(errpath, 'wb') as errfile:
                     for line in postout:
                         errfile.write(line)
-                finally:
-                    errfile.close()
 
                 if not quiet:
                     origdiff = diff

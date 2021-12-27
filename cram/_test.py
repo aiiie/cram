@@ -209,8 +209,7 @@ def testfile(path, shell='/bin/sh', indent=2, env=None, cleanenv=True,
     :return: Input, output, and diff iterables
     :rtype: (list[bytes], list[bytes], collections.Iterable[bytes])
     """
-    f = open(path, 'rb')
-    try:
+    with open(path, 'rb') as f:
         abspath = os.path.abspath(path)
         env = env or os.environ.copy()
         env['TESTDIR'] = os.fsdecode(os.path.dirname(abspath))
@@ -219,5 +218,3 @@ def testfile(path, shell='/bin/sh', indent=2, env=None, cleanenv=True,
             testname = os.path.basename(abspath)
         return test(f, shell, indent=indent, testname=testname, env=env,
                     cleanenv=cleanenv, debug=debug)
-    finally:
-        f.close()

@@ -2,7 +2,7 @@
 
 # Bash doesn't expand aliases by default in non-interactive mode, so
 # we enable it manually if the test is run with --shell=/bin/bash.
-[ "$TESTSHELL" = "/bin/bash" ] && shopt -s expand_aliases
+[ -n "$BASH" ] && shopt -s expand_aliases
 
 # The $PYTHON environment variable should be set when running this test
 # from Python.

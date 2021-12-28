@@ -8,7 +8,7 @@ Run cram examples:
   .s.!.s.
   # Ran 7 tests, 2 skipped, 1 failed.
   [1]
-  $ md5sum examples/fail.t examples/fail.t.err
+  $ md5 examples/fail.t examples/fail.t.err
   .*\b0f598c2b7b8ca5bcb8880e492ff6b452\b.* (re)
   .*\b7a23dfa85773c77648f619ad0f9df554\b.* (re)
   $ rm examples/fail.t.err
@@ -19,7 +19,7 @@ Run examples with bash:
   .s.!.s.
   # Ran 7 tests, 2 skipped, 1 failed.
   [1]
-  $ md5sum examples/fail.t examples/fail.t.err
+  $ md5 examples/fail.t examples/fail.t.err
   .*\b0f598c2b7b8ca5bcb8880e492ff6b452\b.* (re)
   .*\b7a23dfa85773c77648f619ad0f9df554\b.* (re)
   $ rm examples/fail.t.err
@@ -36,7 +36,7 @@ Verbose mode:
   examples/test.t: passed
   # Ran 7 tests, 2 skipped, 1 failed.
   [1]
-  $ md5sum examples/fail.t examples/fail.t.err
+  $ md5 examples/fail.t examples/fail.t.err
   .*\b0f598c2b7b8ca5bcb8880e492ff6b452\b.* (re)
   .*\b7a23dfa85773c77648f619ad0f9df554\b.* (re)
   $ rm examples/fail.t.err

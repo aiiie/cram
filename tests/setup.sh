@@ -18,12 +18,14 @@ if [ -n "$COVERAGE" ]; then
 $TESTDIR/../scripts/cram --shell=$TESTSHELL"
   alias doctest="`which "$COVERAGE"` run -a --rcfile=$TESTDIR/../.coveragerc \
 $TESTDIR/run-doctests.py"
+  alias md5="`which "$COVERAGE"` run -a --rcfile=$TESTDIR/../.coveragerc \
+$TESTDIR/../scripts/md5.py"
 else
   PYTHON="`command -v "$PYTHON" || echo "$PYTHON"`"
   alias cram="$PYTHON $TESTDIR/../scripts/cram --shell=$TESTSHELL"
   alias doctest="$PYTHON $TESTDIR/run-doctests.py"
+  alias md5="$PYTHON $TESTDIR/../scripts/md5.py"
 fi
-command -v md5 > /dev/null || alias md5=md5sum
 
 # Copy in example tests
 cp -R "$TESTDIR"/../examples .

@@ -44,7 +44,7 @@ Interactive mode (don't merge):
   
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
-  $ md5 examples/fail.t examples/fail.t.err
+  $ md5sum examples/fail.t examples/fail.t.err
   .*\b0f598c2b7b8ca5bcb8880e492ff6b452\b.* (re)
   .*\b7a23dfa85773c77648f619ad0f9df554\b.* (re)
 
@@ -92,7 +92,7 @@ Interactive mode (merge):
   
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
-  $ md5 examples/fail.t
+  $ md5sum examples/fail.t
   .*\b1d9e5b527f01fbf2d9b1c121d005108c\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
 
@@ -136,7 +136,7 @@ Verbose interactive mode (answer manually and don't merge):
      \d (re)
   Accept this change? [yN] Accept this change? [yN] # Ran 1 tests, 0 skipped, 1 failed.
   [1]
-  $ md5 examples/fail.t examples/fail.t.err
+  $ md5sum examples/fail.t examples/fail.t.err
   .*\b0f598c2b7b8ca5bcb8880e492ff6b452\b.* (re)
   .*\b7a23dfa85773c77648f619ad0f9df554\b.* (re)
   $ printf 'bad\n\n' | cram -v -i examples/fail.t
@@ -177,7 +177,7 @@ Verbose interactive mode (answer manually and don't merge):
      \d (re)
   Accept this change? [yN] Accept this change? [yN] # Ran 1 tests, 0 skipped, 1 failed.
   [1]
-  $ md5 examples/fail.t examples/fail.t.err
+  $ md5sum examples/fail.t examples/fail.t.err
   .*\b0f598c2b7b8ca5bcb8880e492ff6b452\b.* (re)
   .*\b7a23dfa85773c77648f619ad0f9df554\b.* (re)
 
@@ -224,7 +224,7 @@ Verbose interactive mode (answer manually and merge):
   examples/fail.t: merged output
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
-  $ md5 examples/fail.t
+  $ md5sum examples/fail.t
   .*\b1d9e5b527f01fbf2d9b1c121d005108c\b.* (re)
   $ mv examples/fail.t.orig examples/fail.t
 
@@ -281,7 +281,7 @@ Test missing patch(1) and patch(1) error:
   
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
-  $ md5 examples/fail.t examples/fail.t.err
+  $ md5sum examples/fail.t examples/fail.t.err
   .*\b0f598c2b7b8ca5bcb8880e492ff6b452\b.* (re)
   .*\b7a23dfa85773c77648f619ad0f9df554\b.* (re)
   $ rm patch examples/fail.t.err

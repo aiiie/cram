@@ -24,8 +24,10 @@ Debug mode:
 
 Debug mode with extra shell arguments:
 
-  $ cram --shell-opts='-s' -d debug.t
+  $ cram --shell-opts='-v' -d debug.t
+  echo hi
   hi
+  echo bye
   bye
 
 Test debug mode with set -x:

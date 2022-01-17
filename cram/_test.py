@@ -1,6 +1,8 @@
 """Utilities for running individual tests"""
 
 import itertools
+import tempfile
+import contextlib
 import os
 import re
 import time
@@ -19,6 +21,14 @@ def _escape(s):
     """Like the string-escape codec, but doesn't escape quotes"""
     return (_escapesub(lambda m: _escapemap[m.group(0)], s[:-1]) +
             b' (esc)\n')
+
+@contextlib.contextmanager
+def _maketestfile(script):
+    """Write test to a temporary file and yield the path"""
+    with tempfile.NamedTemporaryFile() as f:
+        f.write(b''.join(script))
+        f.flush()
+        yield f.name
 
 def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
          cleanenv=True, debug=False):
@@ -103,22 +113,23 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
     env['TESTSHELL'] = shell[0]
 
     if debug:
-        stdin = []
+        script = []
         for line in lines:
             if not line.endswith(b'\n'):
                 line += b'\n'
             if line.startswith(cmdline):
-                stdin.append(line[len(cmdline):])
+                script.append(line[len(cmdline):])
             elif line.startswith(conline):
-                stdin.append(line[len(conline):])
+                script.append(line[len(conline):])
 
-        execute(shell + ['-'], stdin=b''.join(stdin), env=env)
+        with _maketestfile(script) as f:
+            execute(shell + [f], env=env)
         return ([], [], [])
 
     after = {}
     refout, postout = [], []
     i = pos = prepos = -1
-    stdin = []
+    script = []
     for i, line in enumerate(lines):
         if not line.endswith(b'\n'):
             line += b'\n'
@@ -127,17 +138,18 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
             after.setdefault(pos, []).append(line)
             prepos = pos
             pos = i
-            stdin.append(b'echo %s %d $?\n' % (salt, i))
-            stdin.append(line[len(cmdline):])
+            script.append(b'echo %s %d $?\n' % (salt, i))
+            script.append(line[len(cmdline):])
         elif line.startswith(conline):
             after.setdefault(prepos, []).append(line)
-            stdin.append(line[len(conline):])
+            script.append(line[len(conline):])
         elif not line.startswith(indent):
             after.setdefault(pos, []).append(line)
-    stdin.append(b'echo %s %d $?\n' % (salt, i + 1))
+    script.append(b'echo %s %d $?\n' % (salt, i + 1))
 
-    output, retcode = execute(shell + ['-'], stdin=b''.join(stdin),
-                              stdout=PIPE, stderr=STDOUT, env=env)
+    with _maketestfile(script) as f:
+        output, retcode = execute(shell + [f],
+                                  stdout=PIPE, stderr=STDOUT, env=env)
     if retcode == 80:
         return (refout, None, [])
 

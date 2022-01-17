@@ -23,6 +23,7 @@ Check environment variables:
   fail.t
   missingeol.t
   skip.t
+  stdin.t
   test.t
   $ echo "$TESTFILE"
   env.t

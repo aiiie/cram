@@ -5,8 +5,8 @@ Set up cram alias and example tests:
 Run cram examples:
 
   $ cram -q examples examples/fail.t
-  .s.!.s.
-  # Ran 7 tests, 2 skipped, 1 failed.
+  .s.!.s..
+  # Ran 8 tests, 2 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
   .*\b0f598c2b7b8ca5bcb8880e492ff6b452\b.* (re)
@@ -16,8 +16,8 @@ Run cram examples:
 Run examples with bash:
 
   $ cram --shell=/bin/bash -q examples examples/fail.t
-  .s.!.s.
-  # Ran 7 tests, 2 skipped, 1 failed.
+  .s.!.s..
+  # Ran 8 tests, 2 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
   .*\b0f598c2b7b8ca5bcb8880e492ff6b452\b.* (re)
@@ -33,8 +33,9 @@ Verbose mode:
   examples/fail.t: failed
   examples/missingeol.t: passed
   examples/skip.t: skipped
+  examples/stdin.t: passed
   examples/test.t: passed
-  # Ran 7 tests, 2 skipped, 1 failed.
+  # Ran 8 tests, 2 skipped, 1 failed.
   [1]
   $ md5 examples/fail.t examples/fail.t.err
   .*\b0f598c2b7b8ca5bcb8880e492ff6b452\b.* (re)

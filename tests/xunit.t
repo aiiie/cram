@@ -11,13 +11,14 @@ xUnit XML output:
   examples/fail.t: failed
   examples/missingeol.t: passed
   examples/skip.t: skipped
+  examples/stdin.t: passed
   examples/test.t: passed
-  # Ran 7 tests, 2 skipped, 1 failed.
+  # Ran 8 tests, 2 skipped, 1 failed.
   [1]
   $ cat cram.xml
   <?xml version="1.0" encoding="utf-8"?>
   <testsuite name="cram"
-             tests="7"
+             tests="8"
              failures="1"
              skipped="2"
              timestamp="\d+-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}" (re)
@@ -81,6 +82,9 @@ xUnit XML output:
               time="\d+\.\d{6}"> (re)
       <skipped/>
     </testcase>
+    <testcase classname="examples/stdin.t"
+              name="stdin.t"
+              time="\d+\.\d{6}"/> (re)
     <testcase classname="examples/test.t"
               name="test.t"
               time="\d+\.\d{6}"/> (re)

@@ -13,15 +13,14 @@ except ImportError: # pragma: nocover
     import ConfigParser as configparser
 
 from cram._cli import runcli
-from cram._encoding import b, fsencode, stderrb, stdoutb
 from cram._run import runtests
 from cram._xunit import runxunit
 
 def _which(cmd):
     """Return the path to cmd or None if not found"""
-    cmd = fsencode(cmd)
+    cmd = os.fsencode(cmd)
     for p in os.environ['PATH'].split(os.pathsep):
-        path = os.path.join(fsencode(p), cmd)
+        path = os.path.join(os.fsencode(p), cmd)
         if os.path.isfile(path) and os.access(path, os.X_OK):
             return os.path.abspath(path)
     return None
@@ -109,7 +108,7 @@ def _parseopts(args):
     p.add_option('--xunit-file', action='store', metavar='PATH',
                  help='path to write xUnit XML output')
     opts, paths = p.parse_args(args)
-    paths = [fsencode(path) for path in paths]
+    paths = [os.fsencode(path) for path in paths]
     return opts, paths, p.get_usage
 
 def main(args):
@@ -125,9 +124,9 @@ def main(args):
     """
     opts, paths, getusage = _parseopts(args)
     if opts.version:
-        sys.stdout.write("""Cram CLI testing framework (version 0.7)
+        sys.stdout.write("""Cram CLI testing framework (version 0.8)
 
-Copyright (C) 2010-2016 Brodie Rao <brodie@bitheap.org> and others
+Copyright (C) 2010-2021 Brodie Rao <brodie@bitheap.org> and others
 This is free software; see the source for copying conditions. There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 """)
@@ -147,7 +146,8 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
     shellcmd = _which(opts.shell)
     if not shellcmd:
-        stderrb.write(b('shell not found: ') + fsencode(opts.shell) + b('\n'))
+        sys.stderr.buffer.write(b'shell not found: %s\n' %
+                                os.fsencode(opts.shell))
         return 2
     shell = [shellcmd]
     if opts.shell_opts:
@@ -166,7 +166,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
     badpaths = [path for path in paths if not os.path.exists(path)]
     if badpaths:
-        stderrb.write(b('no such file: ') + badpaths[0] + b('\n'))
+        sys.stderr.buffer.write(b'no such file: %s\n' % badpaths[0])
         return 2
 
     if opts.yes:
@@ -177,7 +177,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
         answer = None
 
     tmpdir = os.environ['CRAMTMP'] = tempfile.mkdtemp('', 'cramtests-')
-    tmpdirb = fsencode(tmpdir)
+    tmpdirb = os.fsencode(tmpdir)
     proctmp = os.path.join(tmpdir, 'tmp')
     for s in ('TMPDIR', 'TEMP', 'TMP'):
         os.environ[s] = proctmp
@@ -209,7 +209,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
         return int(failed)
     finally:
         if opts.keep_tmpdir:
-            stdoutb.write(b('# Kept temporary directory: ') + tmpdirb +
-                          b('\n'))
+            sys.stdout.buffer.write(b'# Kept temporary directory: %s\n'
+                                    % tmpdirb)
         else:
             shutil.rmtree(tmpdir)

@@ -1,6 +1,4 @@
 [run]
 omit =
-    cram/__main__.py
-    cram/_encoding.py
-    scripts/cram
+    */cram/__main__.py
 source = cram

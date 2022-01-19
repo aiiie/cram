@@ -3,7 +3,6 @@
 import os
 import sys
 
-from cram._encoding import b, bytestype, stdoutb
 from cram._process import execute
 
 __all__ = ['runcli']
@@ -43,15 +42,15 @@ def _log(msg=None, verbosemsg=None, verbose=False):
     if verbose:
         msg = verbosemsg
     if msg:
-        if isinstance(msg, bytestype):
-            stdoutb.write(msg)
+        if isinstance(msg, bytes):
+            sys.stdout.buffer.write(msg)
         else: # pragma: nocover
             sys.stdout.write(msg)
         sys.stdout.flush()
 
 def _patch(cmd, diff):
     """Run echo [lines from diff] | cmd -p0"""
-    out, retcode = execute([cmd, '-p0'], stdin=b('').join(diff))
+    out, retcode = execute([cmd, '-p0'], stdin=b''.join(diff))
     return retcode == 0
 
 def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None,
@@ -79,7 +78,7 @@ def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None,
         def testwrapper():
             """Test function that adds CLI output"""
             total[0] += 1
-            _log(None, path + b(': '), verbose)
+            _log(None, path + b': ', verbose)
 
             refout, postout, diff = test()
             if refout is None:
@@ -88,7 +87,7 @@ def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None,
                 return refout, postout, diff
 
             abspath = os.path.abspath(path)
-            errpath = abspath + b('.err')
+            errpath = abspath + b'.err'
 
             if postout is None:
                 skipped[0] += 1
@@ -115,17 +114,17 @@ def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None,
                     origdiff = diff
                     diff = []
                     for line in origdiff:
-                        stdoutb.write(line)
+                        sys.stdout.buffer.write(line)
                         diff.append(line)
 
                     if (patchcmd and
                         _prompt('Accept this change?', 'yN', answer) == 'y'):
                         if _patch(patchcmd, diff):
-                            _log(None, path + b(': merged output\n'), verbose)
+                            _log(None, path + b': merged output\n', verbose)
                             if not noerrfiles:
                                 os.remove(errpath)
                         else:
-                            _log(path + b(': merge failed\n'))
+                            _log(path + b': merge failed\n')
 
             return refout, postout, diff
 

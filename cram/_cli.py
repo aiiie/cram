@@ -53,7 +53,8 @@ def _patch(cmd, diff):
     out, retcode = execute([cmd, '-p0'], stdin=b''.join(diff))
     return retcode == 0
 
-def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None):
+def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None,
+           noerrfiles=False):
     """Run tests with command line interface input/output.
 
     tests should be a sequence of 2-tuples containing the following:
@@ -101,12 +102,13 @@ def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None):
                 if not quiet:
                     _log('\n', None, verbose)
 
-                errfile = open(errpath, 'wb')
-                try:
-                    for line in postout:
-                        errfile.write(line)
-                finally:
-                    errfile.close()
+                if not noerrfiles:
+                    errfile = open(errpath, 'wb')
+                    try:
+                        for line in postout:
+                            errfile.write(line)
+                    finally:
+                        errfile.close()
 
                 if not quiet:
                     origdiff = diff
@@ -119,7 +121,8 @@ def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None):
                         _prompt('Accept this change?', 'yN', answer) == 'y'):
                         if _patch(patchcmd, diff):
                             _log(None, path + b': merged output\n', verbose)
-                            os.remove(errpath)
+                            if not noerrfiles:
+                                os.remove(errpath)
                         else:
                             _log(path + b': merge failed\n')
 

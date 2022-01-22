@@ -4,6 +4,7 @@ import doctest
 import os
 import sys
 
+
 def _getmodules(pkgdir):
     """Import and yield modules in pkgdir"""
     for root, dirs, files in os.walk(pkgdir):
@@ -16,13 +17,14 @@ def _getmodules(pkgdir):
             modname = fn.replace(os.sep, '.')[:-len('.py')]
             if modname.endswith('.__init__'):
                 modname = modname[:-len('.__init__')]
-            modname = '.'.join(['cram', modname])
+            modname = '.'.join(['prysk', modname])
             if '.' in modname:
                 fromlist = [modname.rsplit('.', 1)[1]]
             else:
                 fromlist = []
 
             yield __import__(modname, {}, {}, fromlist)
+
 
 def rundoctests(pkgdir):
     """Run doctests in the given package directory"""
@@ -32,6 +34,7 @@ def rundoctests(pkgdir):
         totalfailures += failures
         totaltests += tests
     return totalfailures != 0
+
 
 if __name__ == '__main__':
     try:

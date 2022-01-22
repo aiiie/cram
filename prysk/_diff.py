@@ -116,7 +116,7 @@ def unified_diff(l1, l2, fromfile=b'', tofile=b'', fromfiledate=b'',
     ...   b'@@ -1,2 +1,2 @@\n', b' a\n', b'-? (glob)\n', b'+b\n'])
     True
 
-    >>> from cram._diff import glob
+    >>> from prysk._diff import glob
     >>> list(unified_diff(l1, l2, matchers=[glob]))
     []
     """

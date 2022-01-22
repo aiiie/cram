@@ -1,10 +1,10 @@
-Set up cram alias and example tests:
+Set up prysk alias and example tests:
 
   $ . "$TESTDIR"/setup.sh
 
 Interactive mode (don't merge):
 
-  $ cram -n -i examples/fail.t
+  $ prysk -n -i examples/fail.t
   !
   --- examples/fail.t
   +++ examples/fail.t.err
@@ -51,7 +51,7 @@ Interactive mode (don't merge):
 Interactive mode (merge):
 
   $ cp examples/fail.t examples/fail.t.orig
-  $ cram -y -i examples/fail.t
+  $ prysk -y -i examples/fail.t
   !
   --- examples/fail.t
   +++ examples/fail.t.err
@@ -98,7 +98,7 @@ Interactive mode (merge):
 
 Verbose interactive mode (answer manually and don't merge):
 
-  $ printf 'bad\nn\n' | cram -v -i examples/fail.t
+  $ printf 'bad\nn\n' | prysk -v -i examples/fail.t
   examples/fail.t: failed
   --- examples/fail.t
   +++ examples/fail.t.err
@@ -139,7 +139,7 @@ Verbose interactive mode (answer manually and don't merge):
   $ md5 examples/fail.t examples/fail.t.err
   .*\b0f598c2b7b8ca5bcb8880e492ff6b452\b.* (re)
   .*\b7a23dfa85773c77648f619ad0f9df554\b.* (re)
-  $ printf 'bad\n\n' | cram -v -i examples/fail.t
+  $ printf 'bad\n\n' | prysk -v -i examples/fail.t
   examples/fail.t: failed
   --- examples/fail.t
   +++ examples/fail.t.err
@@ -184,7 +184,7 @@ Verbose interactive mode (answer manually and don't merge):
 Verbose interactive mode (answer manually and merge):
 
   $ cp examples/fail.t examples/fail.t.orig
-  $ printf 'bad\ny\n' | cram -v -i examples/fail.t
+  $ printf 'bad\ny\n' | prysk -v -i examples/fail.t
   examples/fail.t: failed
   --- examples/fail.t
   +++ examples/fail.t.err
@@ -230,7 +230,7 @@ Verbose interactive mode (answer manually and merge):
 
 Test missing patch(1) and patch(1) error:
 
-  $ PATH=. cram -i examples/fail.t
+  $ PATH=. prysk -i examples/fail.t
   patch(1) required for -i
   [2]
   $ cat > patch <<EOF
@@ -239,7 +239,7 @@ Test missing patch(1) and patch(1) error:
   > exit 1
   > EOF
   $ chmod +x patch
-  $ PATH=. cram -y -i examples/fail.t
+  $ PATH=. prysk -y -i examples/fail.t
   !
   --- examples/fail.t
   +++ examples/fail.t.err

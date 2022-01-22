@@ -1,4 +1,4 @@
 [run]
 omit =
-    */cram/__main__.py
-source = cram
+    */prysk/__main__.py
+source = prysk

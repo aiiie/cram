@@ -12,9 +12,9 @@ try:
 except ImportError: # pragma: nocover
     import ConfigParser as configparser
 
-from cram._cli import runcli
-from cram._run import runtests
-from cram._xunit import runxunit
+from prysk._cli import runcli
+from prysk._run import runtests
+from prysk._xunit import runxunit
 
 def _which(cmd):
     """Return the path to cmd or None if not found"""
@@ -31,7 +31,7 @@ def _expandpath(path):
 
 class _OptionParser(optparse.OptionParser):
     """Like optparse.OptionParser, but supports setting values through
-    CRAM= and .cramrc."""
+    PRYSK= and .pryskrc."""
 
     def __init__(self, *args, **kwargs):
         self._config_opts = {}
@@ -46,26 +46,26 @@ class _OptionParser(optparse.OptionParser):
 
     def parse_args(self, args=None, values=None):
         config = configparser.RawConfigParser()
-        config.read(_expandpath(os.environ.get('CRAMRC', '.cramrc')))
+        config.read(_expandpath(os.environ.get('PRYSKRC', '.pryskrc')))
         defaults = {}
         for key, isbool in self._config_opts.items():
             try:
                 if isbool:
                     try:
-                        value = config.getboolean('cram', key)
+                        value = config.getboolean('prysk', key)
                     except ValueError:
-                        value = config.get('cram', key)
+                        value = config.get('prysk', key)
                         self.error('--%s: invalid boolean value: %r'
                                    % (key, value))
                 else:
-                    value = config.get('cram', key)
+                    value = config.get('prysk', key)
             except (configparser.NoSectionError, configparser.NoOptionError):
                 pass
             else:
                 defaults[key] = value
         self.set_defaults(**defaults)
 
-        eargs = os.environ.get('CRAM', '').strip()
+        eargs = os.environ.get('PRYSK', '').strip()
         if eargs:
             args = args or []
             args += shlex.split(eargs)
@@ -77,7 +77,7 @@ class _OptionParser(optparse.OptionParser):
 
 def _parseopts(args):
     """Parse command line arguments"""
-    p = _OptionParser(usage='cram [OPTIONS] TESTS...', prog='cram')
+    p = _OptionParser(usage='prysk [OPTIONS] TESTS...', prog='prysk')
     p.add_option('-V', '--version', action='store_true',
                  help='show version information and exit')
     p.add_option('-q', '--quiet', action='store_true',
@@ -174,7 +174,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
     else:
         answer = None
 
-    tmpdir = os.environ['CRAMTMP'] = tempfile.mkdtemp('', 'cramtests-')
+    tmpdir = os.environ['PRYSK_TEMP'] = tempfile.mkdtemp('', 'prysk-tests-')
     tmpdirb = os.fsencode(tmpdir)
     proctmp = os.path.join(tmpdir, 'tmp')
     for s in ('TMPDIR', 'TEMP', 'TMP'):

@@ -3,7 +3,7 @@
 import os
 import sys
 
-from cram._process import execute
+from prysk._process import execute
 
 __all__ = ['runcli']
 

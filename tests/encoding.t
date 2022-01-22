@@ -1,11 +1,11 @@
-Set up cram alias and example tests:
+Set up prysk alias and example tests:
 
   $ . "$TESTDIR"/setup.sh
 
 Test with Windows newlines:
 
   $ printf "  $ echo hi\r\n  hi\r\n" > windows-newlines.t
-  $ cram windows-newlines.t
+  $ prysk windows-newlines.t
   .
   # Ran 1 tests, 0 skipped, 0 failed.
 
@@ -21,7 +21,7 @@ Test with Latin-1 encoding:
   >   hey
   > EOF
 
-  $ cram good-latin-1.t bad-latin-1.t
+  $ prysk good-latin-1.t bad-latin-1.t
   .!
   --- bad-latin-1.t
   +++ bad-latin-1.t.err
@@ -45,7 +45,7 @@ Test with UTF-8 encoding:
   >   hey
   > EOF
 
-  $ cram good-utf-8.t bad-utf-8.t
+  $ prysk good-utf-8.t bad-utf-8.t
   .!
   --- bad-utf-8.t
   +++ bad-utf-8.t.err
@@ -60,12 +60,12 @@ Test with UTF-8 encoding:
 Test file missing trailing newline:
 
   $ printf '  $ true' > passing-with-no-newline.t
-  $ cram passing-with-no-newline.t
+  $ prysk passing-with-no-newline.t
   .
   # Ran 1 tests, 0 skipped, 0 failed.
 
   $ printf '  $ false' > failing-with-no-newline.t
-  $ cram failing-with-no-newline.t
+  $ prysk failing-with-no-newline.t
   !
   --- failing-with-no-newline.t
   +++ failing-with-no-newline.t.err

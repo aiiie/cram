@@ -1,9 +1,0 @@
-#!/usr/bin/env python3
-import sys
-
-import cram
-
-try:
-    sys.exit(cram.main(sys.argv[1:]))
-except (BrokenPipeError, KeyboardInterrupt):
-    pass

@@ -1,49 +1,49 @@
-Set up cram alias and example tests:
+Set up prysk alias and example tests:
 
   $ . "$TESTDIR"/setup.sh
 
-Options in .cramrc:
+Options in .pryskrc:
 
-  $ cat > .cramrc <<EOF
-  > [cram]
+  $ cat > .pryskrc <<EOF
+  > [prysk]
   > yes = True
   > no = 1
   > indent = 4
   > EOF
-  $ cram
+  $ prysk
   options --yes and --no are mutually exclusive
   [2]
-  $ mv .cramrc config
-  $ CRAMRC=config cram
+  $ mv .pryskrc config
+  $ PRYSKRC=config prysk
   options --yes and --no are mutually exclusive
   [2]
   $ rm config
 
-Invalid option in .cramrc:
+Invalid option in .pryskrc:
 
-  $ cat > .cramrc <<EOF
-  > [cram]
+  $ cat > .pryskrc <<EOF
+  > [prysk]
   > indent = hmm
   > EOF
-  $ cram
-  [Uu]sage: cram \[OPTIONS\] TESTS\.\.\. (re)
+  $ prysk
+  [Uu]sage: prysk \[OPTIONS\] TESTS\.\.\. (re)
   
-  cram: error: option --indent: invalid integer value: 'hmm'
+  prysk: error: option --indent: invalid integer value: 'hmm'
   [2]
-  $ rm .cramrc
-  $ cat > .cramrc <<EOF
-  > [cram]
+  $ rm .pryskrc
+  $ cat > .pryskrc <<EOF
+  > [prysk]
   > verbose = hmm
   > EOF
-  $ cram
-  [Uu]sage: cram \[OPTIONS\] TESTS\.\.\. (re)
+  $ prysk
+  [Uu]sage: prysk \[OPTIONS\] TESTS\.\.\. (re)
   
-  cram: error: --verbose: invalid boolean value: 'hmm'
+  prysk: error: --verbose: invalid boolean value: 'hmm'
   [2]
-  $ rm .cramrc
+  $ rm .pryskrc
 
 Options in an environment variable:
 
-  $ CRAM='-y -n' cram
+  $ PRYSK='-y -n' prysk
   options --yes and --no are mutually exclusive
   [2]

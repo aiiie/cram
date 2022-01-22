@@ -5,7 +5,7 @@ import sys
 
 from contextlib import contextmanager
 
-from cram._test import testfile
+from prysk._test import testfile
 
 __all__ = ['runtests']
 

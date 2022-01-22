@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-"""Installs cram"""
-
+"""Installs prysk"""
 import os
 import sys
 from distutils.core import setup
@@ -19,9 +18,17 @@ def long_description():
     """Get the long description from the README"""
     return open(os.path.join(sys.path[0], 'README.rst')).read()
 
+# TODO:
+# Add:
+#  * url
+#  * download_url
+#  * keyword (snapshot test tool)
 setup(
-    author='Brodie Rao',
-    author_email='brodie@bitheap.org',
+    name='prysk',
+    author='Brodie Rao, Nicola Coretti',
+    author_email='brodie@bitheap.org, nico.coretti@gmail.com',
+    version='0.8',
+    packages=['prysk'],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
@@ -37,13 +44,12 @@ setup(
     ],
     cmdclass=COMMANDS,
     description='Functional tests for command line applications',
-    download_url='https://bitheap.org/cram/cram-0.8.tar.gz',
     keywords='automatic functional test framework',
     license='GNU GPLv2 or any later version',
     long_description=long_description(),
-    name='cram',
-    packages=['cram'],
-    scripts=['scripts/cram'],
-    url='https://bitheap.org/cram/',
-    version='0.8',
+    entry_points={
+        'console_scripts': [
+            'prysk=prysk:cli.main',
+        ],
+    },
 )

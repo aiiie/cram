@@ -4,4 +4,4 @@ Skip this test if pyflakes isn't available:
 
 Check that there are no obvious Python source code errors:
 
-  $ pyflakes "$TESTDIR/../cram"
+  $ pyflakes "$TESTDIR/../prysk"

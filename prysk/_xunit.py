@@ -144,7 +144,7 @@ def runxunit(tests, xmlpath):
 
     suitetime = time.time() - suitestart
     header = (('<?xml version="1.0" encoding="utf-8"?>\n'
-               '<testsuite name="cram"\n'
+               '<testsuite name="prysk"\n'
                '           tests="%(total)d"\n'
                '           failures="%(failed)d"\n'
                '           skipped="%(skipped)d"\n'

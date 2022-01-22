@@ -14,15 +14,15 @@ if [ -n "$COVERAGE" ]; then
     export COVERAGE_FILE
   fi
 
-  alias cram="`which "$COVERAGE"` run -a --rcfile=$TESTDIR/../.coveragerc \
-$TESTDIR/../scripts/cram --shell=$TESTSHELL"
+  alias prysk="`which "$COVERAGE"` run -a --rcfile=$TESTDIR/../.coveragerc \
+$TESTDIR/../scripts/prysk --shell=$TESTSHELL"
   alias doctest="`which "$COVERAGE"` run -a --rcfile=$TESTDIR/../.coveragerc \
 $TESTDIR/run-doctests.py"
   alias md5="`which "$COVERAGE"` run -a --rcfile=$TESTDIR/../.coveragerc \
 $TESTDIR/../scripts/md5.py"
 else
   PYTHON="`command -v "$PYTHON" || echo "$PYTHON"`"
-  alias cram="$PYTHON $TESTDIR/../scripts/cram --shell=$TESTSHELL"
+  alias prysk="$PYTHON -m prysk --shell=$TESTSHELL"
   alias doctest="$PYTHON $TESTDIR/run-doctests.py"
   alias md5="$PYTHON $TESTDIR/../scripts/md5.py"
 fi

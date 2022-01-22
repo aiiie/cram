@@ -1,30 +1,30 @@
-Set up cram alias and example tests:
+Set up prysk alias and example tests:
 
   $ . "$TESTDIR"/setup.sh
 
 Debug mode:
 
   $ printf '  $ echo hi\n  > echo bye' > debug.t
-  $ cram -d -v debug.t
+  $ prysk -d -v debug.t
   options --debug and --verbose are mutually exclusive
   [2]
-  $ cram -d -q debug.t
+  $ prysk -d -q debug.t
   options --debug and --quiet are mutually exclusive
   [2]
-  $ cram -d -i debug.t
+  $ prysk -d -i debug.t
   options --debug and --interactive are mutually exclusive
   [2]
-  $ cram -d --xunit-file==cram.xml debug.t
+  $ prysk -d --xunit-file==cram.xml debug.t
   options --debug and --xunit-file are mutually exclusive
   [2]
-  $ cram -d debug.t
+  $ prysk -d debug.t
   hi
   bye
-  $ cram -d examples/empty.t
+  $ prysk -d examples/empty.t
 
 Debug mode with extra shell arguments:
 
-  $ cram --shell-opts='-s' -d debug.t
+  $ prysk --shell-opts='-s' -d debug.t
   hi
   bye
 
@@ -36,14 +36,14 @@ Test debug mode with set -x:
   >   $ set -x
   >   $ echo 2
   > EOF
-  $ cram -d set-x.t
+  $ prysk -d set-x.t
   1
   \+.*echo 2 (re)
   2
 
 Test set -x without debug mode:
 
-  $ cram set-x.t
+  $ prysk set-x.t
   !
   --- set-x.t
   +++ set-x.t.err

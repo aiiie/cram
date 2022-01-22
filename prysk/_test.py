@@ -5,8 +5,8 @@ import os
 import re
 import time
 
-from cram._diff import esc, glob, regex, unified_diff
-from cram._process import PIPE, STDOUT, execute
+from prysk._diff import esc, glob, regex, unified_diff
+from prysk._process import PIPE, STDOUT, execute
 
 __all__ = ['test', 'testfile']
 

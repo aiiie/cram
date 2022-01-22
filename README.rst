@@ -1,22 +1,25 @@
+Prysk
 ======================
- Cram: It's test time
-======================
+Prysk is a fork of the popular snapshot testing tool Cram_.
+Even though Cram_ is pretty complete and mature for everyday use,
+Prysk want's to continue pushing it's development forward.
 
-Cram is a functional testing framework for command line applications.
-Cram tests look like snippets of interactive shell sessions. Cram runs
+.. _Cram: https://bitheap.org/cram
+
+Prysk tests look like snippets of interactive shell sessions. Prysk runs
 each command and compares the command output in the test with the
 command's actual output.
 
-Here's a snippet from `Cram's own test suite`_::
+Here's a snippet from `Prysk's own test suite`_::
 
-    Set up cram alias and example tests:
+    Set up prysk alias and example tests:
 
       $ . "$TESTDIR"/setup.sh
 
     Usage:
 
-      $ cram -h
-      [Uu]sage: cram \[OPTIONS\] TESTS\.\.\. (re)
+      $ prysk -h
+      [Uu]sage: prysk \[OPTIONS\] TESTS\.\.\. (re)
 
       [Oo]ptions: (re)
         -h, --help          show this help message and exit
@@ -36,7 +39,7 @@ Here's a snippet from `Cram's own test suite`_::
 
 The format in a nutshell:
 
-* Cram tests use the ``.t`` file extension.
+* Prysk tests use the ``.t`` file extension.
 
 * Lines beginning with two spaces, a dollar sign, and a space are run
   in the shell.
@@ -67,38 +70,23 @@ The format in a nutshell:
 
 * Anything else is a comment.
 
-.. _Cram's own test suite: https://github.com/brodie/cram/blob/master/tests/usage.t
+.. _Prysk's own test suite: https://github.com/nicoretti/prysk/blob/master/tests/usage.t
 .. _Perl-compatible regular expressions: https://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions
-
-
-Download
---------
-
-* `cram-0.8.tar.gz`_ (32 KB, requires Python 3.3 or newer)
-
-.. _cram-0.8.tar.gz: https://bitheap.org/cram/cram-0.8.tar.gz
 
 
 Installation
 ------------
-
-Install Cram using make::
-
-    $ wget https://bitheap.org/cram/cram-0.8.tar.gz
-    $ tar zxvf cram-0.8.tar.gz
-    $ cd cram-0.8
-    $ make install
-
+TBD
 
 Usage
 -----
 
-Cram will print a dot for each passing test. If a test fails, a
+Prysk will print a dot for each passing test. If a test fails, a
 `unified context diff`_ is printed showing the test's expected output
 and the actual output. Skipped tests (empty tests and tests that exit
 with return code ``80``) are marked with ``s`` instead of a dot.
 
-For example, if we run Cram on `its own example tests`_::
+For example, if we run Prysk on `its own example tests`_::
 
     .s.!
     --- examples/fail.t
@@ -132,27 +120,27 @@ For example, if we run Cram on `its own example tests`_::
     s.
     # Ran 6 tests, 2 skipped, 1 failed.
 
-Cram will also write the test with its actual output to
+Prysk will also write the test with its actual output to
 ``examples/fail.t.err``, allowing you to use other diff tools. This
 file is automatically removed the next time the test passes.
 
 When you're first writing a test, you might just write the commands
-and run the test to see what happens. If you run Cram with ``-i`` or
+and run the test to see what happens. If you run Prysk with ``-i`` or
 ``--interactive``, you'll be prompted to merge the actual output back
 into the test. This makes it easy to quickly prototype new tests.
 
-You can specify a default set of options by creating a ``.cramrc``
+You can specify a default set of options by creating a ``.prysk``
 file. For example::
 
-    [cram]
+    [prysk]
     verbose = True
     indent = 4
 
-Is the same as invoking Cram with ``--verbose`` and ``--indent=4``.
+Is the same as invoking Prysk with ``--verbose`` and ``--indent=4``.
 
-To change what configuration file Cram loads, you can set the
-``CRAMRC`` environment variable. You can also specify command line
-options in the ``CRAM`` environment variable.
+To change what configuration file Prysk loads, you can set the
+``PRYSKRC`` environment variable. You can also specify command line
+options in the ``PRYSK`` environment variable.
 
 Note that the following environment variables are reset before tests
 are run:
@@ -169,7 +157,7 @@ are run:
 
 * ``CDPATH`` and ``GREP_OPTIONS`` are set to an empty string.
 
-Cram also provides the following environment variables to tests:
+Prysk also provides the following environment variables to tests:
 
 * ``CRAMTMP``, set to the test runner's temporary directory.
 
@@ -183,11 +171,11 @@ Also note that care should be taken with commands that close the test
 shell's ``stdin``. For example, if you're trying to invoke ``ssh`` in
 a test, try adding the ``-n`` option to prevent it from closing
 ``stdin``. Similarly, if you invoke a daemon process that inherits
-``stdout`` and fails to close it, it may cause Cram to hang while
+``stdout`` and fails to close it, it may cause Prysk to hang while
 waiting for the test shell's ``stdout`` to be fully closed.
 
 .. _unified context diff: https://en.wikipedia.org/wiki/Diff#Unified_format
-.. _its own example tests: https://github.com/brodie/cram/tree/master/examples
+.. _its own example tests: https://github.com/nicoretti/prysk/tree/master/examples
 
 
 Development
@@ -195,15 +183,14 @@ Development
 
 Download the official development repository using Git_::
 
-    git clone https://github.com/brodie/cram.git
+    git clone https://github.com/nicoretti/prysk.git
 
-Test Cram using Cram::
+Test Prysk using Prysk::
 
-    pip install -r requirements.txt
-    make test
+    TBD
 
 Visit GitHub_ if you'd like to fork the project, watch for new changes, or
 report issues.
 
 .. _Git: http://git-scm.com/
-.. _GitHub: https://github.com/brodie/cram
+.. _GitHub: https://github.com/nicoretti/prysk

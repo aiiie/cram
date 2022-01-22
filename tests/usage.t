@@ -1,11 +1,11 @@
-Set up cram alias and example tests:
+Set up prysk alias and example tests:
 
   $ . "$TESTDIR"/setup.sh
 
 Usage:
 
-  $ cram -h
-  [Uu]sage: cram \[OPTIONS\] TESTS\.\.\. (re)
+  $ prysk -h
+  [Uu]sage: prysk \[OPTIONS\] TESTS\.\.\. (re)
   
   [Oo]ptions: (re)
     -h, --help          show this help message and exit
@@ -22,25 +22,25 @@ Usage:
     --shell-opts=OPTS   arguments to invoke shell with
     --indent=NUM        number of spaces to use for indentation (default: 2)
     --xunit-file=PATH   path to write xUnit XML output
-  $ cram -V
+  $ prysk -V
   Cram CLI testing framework (version 0.8)
   
   Copyright (C) 2010-2021 Brodie Rao <brodie@bitheap.org> and others
   This is free software; see the source for copying conditions. There is NO
   warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  $ cram
-  [Uu]sage: cram \[OPTIONS\] TESTS\.\.\. (re)
+  $ prysk
+  [Uu]sage: prysk \[OPTIONS\] TESTS\.\.\. (re)
   [2]
-  $ cram -y -n
+  $ prysk -y -n
   options --yes and --no are mutually exclusive
   [2]
-  $ cram non-existent also-not-here
+  $ prysk non-existent also-not-here
   no such file: non-existent
   [2]
   $ mkdir empty
-  $ cram empty
+  $ prysk empty
   no tests found
   [2]
-  $ cram --shell=./badsh
+  $ prysk --shell=./badsh
   shell not found: ./badsh
   [2]

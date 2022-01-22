@@ -12,7 +12,7 @@ Check environment variables:
   
   $ echo "$GREP_OPTIONS"
   
-  $ echo "$CRAMTMP"
+  $ echo "$PRYSK_TEMP"
   .+ (re)
   $ echo "$TESTDIR"
   */examples (glob)
@@ -27,4 +27,4 @@ Check environment variables:
   $ echo "$TESTFILE"
   env.t
   $ pwd
-  */cramtests*/env.t (glob)
+  */prysk-tests*/env.t (glob)

@@ -1,10 +1,10 @@
-Set up cram alias and example tests:
+Set up prysk alias and example tests:
 
   $ . "$TESTDIR"/setup.sh
 
-Run cram examples:
+Run prysk examples:
 
-  $ cram -q examples examples/fail.t
+  $ prysk -q examples examples/fail.t
   .s.!.s.
   # Ran 7 tests, 2 skipped, 1 failed.
   [1]
@@ -15,7 +15,7 @@ Run cram examples:
 
 Run examples with bash:
 
-  $ cram --shell=/bin/bash -q examples examples/fail.t
+  $ prysk --shell=/bin/bash -q examples examples/fail.t
   .s.!.s.
   # Ran 7 tests, 2 skipped, 1 failed.
   [1]
@@ -26,7 +26,7 @@ Run examples with bash:
 
 Verbose mode:
 
-  $ cram -q -v examples examples/fail.t
+  $ prysk -q -v examples examples/fail.t
   examples/bare.t: passed
   examples/empty.t: empty
   examples/env.t: passed
@@ -44,7 +44,7 @@ Verbose mode:
 Test that a fixed .err file is deleted:
 
   $ echo "  $ echo 1" > fixed.t
-  $ cram fixed.t
+  $ prysk fixed.t
   !
   --- fixed.t
   +++ fixed.t.err
@@ -55,7 +55,7 @@ Test that a fixed .err file is deleted:
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
   $ cp fixed.t.err fixed.t
-  $ cram fixed.t
+  $ prysk fixed.t
   .
   # Ran 1 tests, 0 skipped, 0 failed.
   $ test \! -f fixed.t.err
@@ -66,7 +66,7 @@ Don't sterilize environment:
   $ TZ=foo; export TZ
   $ CDPATH=foo; export CDPATH
   $ GREP_OPTIONS=foo; export GREP_OPTIONS
-  $ cram -E examples/env.t
+  $ prysk -E examples/env.t
   !
   \-\-\- examples/env\.t\s* (re)
   \+\+\+ examples/env\.t\.err\s* (re)
@@ -82,7 +82,7 @@ Don't sterilize environment:
      $ echo "$GREP_OPTIONS"
   -  
   +  foo
-     $ echo "$CRAMTMP"
+     $ echo "$PRYSK_TEMP"
      .+ (re)
      $ echo "$TESTDIR"
   
@@ -95,7 +95,7 @@ warnings for invalid locales.
 
 Test --keep-tmpdir:
 
-  $ cram -q --keep-tmpdir examples/test.t | while read line; do
+  $ prysk -q --keep-tmpdir examples/test.t | while read line; do
   >   echo "$line" 1>&2
   >   msg=`echo "$line" | cut -d ' ' -f 1-4`
   >   if [ "$msg" = '# Kept temporary directory:' ]; then
@@ -104,7 +104,7 @@ Test --keep-tmpdir:
   > done > keeptmp
   .
   # Ran 1 tests, 0 skipped, 0 failed.
-  # Kept temporary directory: */cramtests-* (glob)
+  # Kept temporary directory: */prysk-tests-* (glob)
   $ ls "`cat keeptmp`" | sort
   test.t
   tmp
@@ -122,7 +122,7 @@ Custom indentation:
   >   $ echo foo
   >   bar
   > EOF
-  $ cram --indent=4 indent.t
+  $ prysk --indent=4 indent.t
   .
   # Ran 1 tests, 0 skipped, 0 failed.
 
@@ -135,7 +135,7 @@ Test running tests with the same filename in different directories:
   $ cat > subdir2/test.t <<EOF
   >   $ echo 2
   > EOF
-  $ cram subdir1 subdir2
+  $ prysk subdir1 subdir2
   !
   --- subdir1/test.t
   +++ subdir1/test.t.err

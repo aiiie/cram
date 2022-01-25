@@ -1,4 +1,4 @@
-name: Cram Workspace Verfier
+name: Prysk Workspace Verfier
 
 on: [push, pull_request]
 

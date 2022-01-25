@@ -1,10 +1,10 @@
-Set up cram alias and example tests:
+Set up prysk alias and example tests:
 
   $ . "$TESTDIR"/setup.sh
 
 xUnit XML output:
 
-  $ cram -q -v --xunit-file=cram.xml examples
+  $ prysk -q -v --xunit-file=prysk.xml examples
   examples/bare.t: passed
   examples/empty.t: empty
   examples/env.t: passed
@@ -14,9 +14,9 @@ xUnit XML output:
   examples/test.t: passed
   # Ran 7 tests, 2 skipped, 1 failed.
   [1]
-  $ cat cram.xml
+  $ cat prysk.xml
   <?xml version="1.0" encoding="utf-8"?>
-  <testsuite name="cram"
+  <testsuite name="prysk"
              tests="7"
              failures="1"
              skipped="2"
@@ -85,4 +85,4 @@ xUnit XML output:
               name="test.t"
               time="\d+\.\d{6}"/> (re)
   </testsuite>
-  $ rm cram.xml examples/fail.t.err
+  $ rm prysk.xml examples/fail.t.err

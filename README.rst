@@ -76,7 +76,10 @@ The format in a nutshell:
 
 Installation
 ------------
-TBD
+
+Install using pip ::
+
+    pip install prysk
 
 Usage
 -----
@@ -159,7 +162,7 @@ are run:
 
 Prysk also provides the following environment variables to tests:
 
-* ``CRAMTMP``, set to the test runner's temporary directory.
+* ``PRYSK_TEMP``, set to the test runner's temporary directory.
 
 * ``TESTDIR``, set to the directory containing the test file.
 
@@ -184,10 +187,6 @@ Development
 Download the official development repository using Git_::
 
     git clone https://github.com/nicoretti/prysk.git
-
-Test Prysk using Prysk::
-
-    TBD
 
 Visit GitHub_ if you'd like to fork the project, watch for new changes, or
 report issues.

@@ -20,12 +20,13 @@ _narrowquoteattrregex = (r'[^\x20\x21\x23-\x25\x27-\x3b\x3d'
                          r'\x3f-\ud7ff\ue000-\ufffd]')
 _replacementchar = '\N{REPLACEMENT CHARACTER}'
 
-if sys.maxunicode >= 0x10ffff: # pragma: nocover
+if sys.maxunicode >= 0x10ffff:  # pragma: nocover
     _cdatasub = re.compile(_widecdataregex).sub
     _quoteattrsub = re.compile(_widequoteattrregex).sub
-else: # pragma: nocover
+else:  # pragma: nocover
     _cdatasub = re.compile(_narrowcdataregex).sub
     _quoteattrsub = re.compile(_narrowquoteattrregex).sub
+
 
 def _cdatareplace(m):
     """Replace _cdatasub() regex match"""
@@ -33,6 +34,7 @@ def _cdatareplace(m):
         return ']]>]]&gt;<![CDATA['
     else:
         return _replacementchar
+
 
 def _cdata(s):
     r"""Escape a string as an XML CDATA block.
@@ -42,6 +44,7 @@ def _cdata(s):
     True
     """
     return '<![CDATA[%s]]>' % _cdatasub(_cdatareplace, s)
+
 
 def _quoteattrreplace(m):
     """Replace _quoteattrsub() regex match"""
@@ -53,6 +56,7 @@ def _quoteattrreplace(m):
             '<': '&lt;',
             '>': '&gt;'}.get(m.group(0), _replacementchar)
 
+
 def _quoteattr(s):
     r"""Escape a string for use as an XML attribute value.
 
@@ -62,12 +66,13 @@ def _quoteattr(s):
     """
     return '"%s"' % _quoteattrsub(_quoteattrreplace, s)
 
+
 def _timestamp():
     """Return the current time in ISO 8601 format"""
     tm = time.localtime()
-    if tm.tm_isdst == 1: # pragma: nocover
+    if tm.tm_isdst == 1:  # pragma: nocover
         tz = time.altzone
-    else: # pragma: nocover
+    else:  # pragma: nocover
         tz = time.timezone
 
     timestamp = time.strftime('%Y-%m-%dT%H:%M:%S', tm)
@@ -75,6 +80,7 @@ def _timestamp():
     tzmins = int(abs(tz) / 60 % 60)
     timestamp += '%+03d:%02d' % (tzhours, tzmins)
     return timestamp
+
 
 def runxunit(tests, xmlpath):
     """Run tests with xUnit XML output.

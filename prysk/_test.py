@@ -15,10 +15,12 @@ _escapesub = re.compile(br'[\x00-\x09\x0b-\x1f\\\x7f-\xff]').sub
 _escapemap = dict((bytes([i]), br'\x%02x' % i) for i in range(256))
 _escapemap.update({b'\\': b'\\\\', b'\r': br'\r', b'\t': br'\t'})
 
+
 def _escape(s):
     """Like the string-escape codec, but doesn't escape quotes"""
     return (_escapesub(lambda m: _escapemap[m.group(0)], s[:-1]) +
             b' (esc)\n')
+
 
 def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
          cleanenv=True, debug=False):
@@ -176,6 +178,7 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
         return refout, postout, itertools.chain([firstline], diff)
     return refout, postout, []
 
+
 def testfile(path, shell='/bin/sh', indent=2, env=None, cleanenv=True,
              debug=False, testname=None):
     """Run test at path and return input, output, and diff.
@@ -214,7 +217,7 @@ def testfile(path, shell='/bin/sh', indent=2, env=None, cleanenv=True,
         env = env or os.environ.copy()
         env['TESTDIR'] = os.fsdecode(os.path.dirname(abspath))
         env['TESTFILE'] = os.fsdecode(os.path.basename(abspath))
-        if testname is None: # pragma: nocover
+        if testname is None:  # pragma: nocover
             testname = os.path.basename(abspath)
         return test(f, shell, indent=indent, testname=testname, env=env,
                     cleanenv=cleanenv, debug=debug)

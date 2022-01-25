@@ -7,6 +7,7 @@ from prysk._process import execute
 
 __all__ = ['runcli']
 
+
 def _prompt(question, answers, auto=None):
     """Write a prompt to stdout and ask for answer in stdin.
 
@@ -34,6 +35,7 @@ def _prompt(question, answers, auto=None):
         elif answer and answer in answers.lower():
             return answer
 
+
 def _log(msg=None, verbosemsg=None, verbose=False):
     """Write msg to standard out and flush.
 
@@ -44,14 +46,16 @@ def _log(msg=None, verbosemsg=None, verbose=False):
     if msg:
         if isinstance(msg, bytes):
             sys.stdout.buffer.write(msg)
-        else: # pragma: nocover
+        else:  # pragma: nocover
             sys.stdout.write(msg)
         sys.stdout.flush()
+
 
 def _patch(cmd, diff):
     """Run echo [lines from diff] | cmd -p0"""
     out, retcode = execute([cmd, '-p0'], stdin=b''.join(diff))
     return retcode == 0
+
 
 def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None):
     """Run tests with command line interface input/output.
@@ -113,7 +117,7 @@ def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None):
                         diff.append(line)
 
                     if (patchcmd and
-                        _prompt('Accept this change?', 'yN', answer) == 'y'):
+                            _prompt('Accept this change?', 'yN', answer) == 'y'):
                         if _patch(patchcmd, diff):
                             _log(None, path + b': merged output\n', verbose)
                             os.remove(errpath)

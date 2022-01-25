@@ -9,7 +9,7 @@ from prysk._test import testfile
 
 __all__ = ['runtests']
 
-if sys.platform == 'win32': # pragma: nocover
+if sys.platform == 'win32':  # pragma: nocover
     def _walk(top):
         top = os.fsdecode(top)
         for root, dirs, files in os.walk(top):
@@ -18,6 +18,7 @@ if sys.platform == 'win32': # pragma: nocover
                    [os.fsencode(p) for p in files])
 else:
     _walk = os.walk
+
 
 def _findtests(paths):
     """Yield tests in paths in sorted order"""
@@ -32,6 +33,7 @@ def _findtests(paths):
         else:
             yield os.path.normpath(p)
 
+
 @contextmanager
 def _cwd(path):
     """Change the working directory
@@ -45,6 +47,7 @@ def _cwd(path):
         yield path
     finally:
         os.chdir(cwd)
+
 
 def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False):
     """Run tests and yield results.

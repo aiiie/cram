@@ -9,12 +9,13 @@ import tempfile
 
 try:
     import configparser
-except ImportError: # pragma: nocover
+except ImportError:  # pragma: nocover
     import ConfigParser as configparser
 
 from prysk._cli import runcli
 from prysk._run import runtests
 from prysk._xunit import runxunit
+
 
 def _which(cmd):
     """Return the path to cmd or None if not found"""
@@ -25,9 +26,11 @@ def _which(cmd):
             return os.path.abspath(path)
     return None
 
+
 def _expandpath(path):
     """Expands ~ and environment variables in path"""
     return os.path.expanduser(os.path.expandvars(path))
+
 
 class _OptionParser(optparse.OptionParser):
     """Like optparse.OptionParser, but supports setting values through
@@ -75,6 +78,7 @@ class _OptionParser(optparse.OptionParser):
         except optparse.OptionValueError:
             self.error(str(sys.exc_info()[1]))
 
+
 def _parseopts(args):
     """Parse command line arguments"""
     p = _OptionParser(usage='prysk [OPTIONS] TESTS...', prog='prysk')
@@ -108,6 +112,7 @@ def _parseopts(args):
     opts, paths = p.parse_args(args)
     paths = [os.fsencode(path) for path in paths]
     return opts, paths, p.get_usage
+
 
 def main(args):
     """Main entry point.

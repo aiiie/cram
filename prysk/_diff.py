@@ -6,6 +6,7 @@ import re
 
 __all__ = ['esc', 'glob', 'regex', 'unified_diff']
 
+
 def _regex(pattern, s):
     """Match a regular expression or return False if invalid.
 
@@ -16,6 +17,7 @@ def _regex(pattern, s):
         return re.match(pattern + br'\Z', s)
     except re.error:
         return False
+
 
 def _glob(el, l):
     r"""Match a glob-like pattern.
@@ -42,18 +44,22 @@ def _glob(el, l):
             res += re.escape(c)
     return _regex(res, l)
 
+
 def _matchannotation(keyword, matchfunc, el, l):
     """Apply match function based on annotation keyword"""
     ann = b' (%s)\n' % keyword
     return el.endswith(ann) and matchfunc(el[:-len(ann)], l[:-1])
 
+
 def regex(el, l):
     """Apply a regular expression match to a line annotated with '(re)'"""
     return _matchannotation(b're', _regex, el, l)
 
+
 def glob(el, l):
     """Apply a glob match to a line annotated with '(glob)'"""
     return _matchannotation(b'glob', _glob, el, l)
+
 
 def esc(el, l):
     """Apply an escape match to a line annotated with '(esc)'"""
@@ -68,8 +74,10 @@ def esc(el, l):
         l = codecs.escape_decode(l[:-len(ann)])[0] + b'\n'
     return el == l
 
+
 class _SequenceMatcher(difflib.SequenceMatcher, object):
     """Like difflib.SequenceMatcher, but supports custom match functions"""
+
     def __init__(self, *args, **kwargs):
         self._matchers = kwargs.pop('matchers', [])
         super(_SequenceMatcher, self).__init__(*args, **kwargs)
@@ -101,6 +109,7 @@ class _SequenceMatcher(difflib.SequenceMatcher, object):
         for n, el in matches:
             self.a[alo + n] = el
         return ret
+
 
 def unified_diff(l1, l2, fromfile=b'', tofile=b'', fromfiledate=b'',
                  tofiledate=b'', n=3, lineterm=b'\n', matchers=None):

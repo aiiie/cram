@@ -117,7 +117,11 @@ def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None):
                         diff.append(line)
 
                     if (patchcmd and
-                            _prompt('Accept this change?', 'yN', answer) == 'y'):
+                            _prompt(
+                                'Accept this change?',
+                                'yN',
+                                answer
+                            ) == 'y'):
                         if _patch(patchcmd, diff):
                             _log(None, path + b': merged output\n', verbose)
                             os.remove(errpath)

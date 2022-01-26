@@ -15,11 +15,10 @@ if [ -n "$COVERAGE" ]; then
   fi
 
   alias prysk="`which "$COVERAGE"` run -a --rcfile=$TESTDIR/../.coveragerc \
-$TESTDIR/../scripts/prysk --shell=$TESTSHELL"
+$TESTDIR/../prysk --shell=$TESTSHELL"
   alias doctest="`which "$COVERAGE"` run -a --rcfile=$TESTDIR/../.coveragerc \
 $TESTDIR/run-doctests.py"
-  alias md5="`which "$COVERAGE"` run -a --rcfile=$TESTDIR/../.coveragerc \
-$TESTDIR/../scripts/md5.py"
+  alias md5="$PYTHON $TESTDIR/../scripts/md5.py"
 else
   PYTHON="`command -v "$PYTHON" || echo "$PYTHON"`"
   alias prysk="$PYTHON -m prysk --shell=$TESTSHELL"

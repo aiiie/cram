@@ -8,7 +8,7 @@ import prysk
 def main():
     try:
         sys.exit(prysk.main(sys.argv[1:]))
-    except (BrokenPipeError, KeyboardInterrupt):
+    except (BrokenPipeError, KeyboardInterrupt):  # pragma: nocover
         pass
 
 

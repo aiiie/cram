@@ -3,3 +3,5 @@ coverage
 pycodestyle
 pyflakes
 tox
+sphinx
+sphinx-rtd-theme

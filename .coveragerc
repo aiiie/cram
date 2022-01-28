@@ -1,4 +1,2 @@
 [run]
-omit =
-    */prysk/__main__.py
 source = prysk

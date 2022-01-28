@@ -9,7 +9,7 @@ from prysk._test import testfile
 
 __all__ = ['runtests']
 
-if sys.platform == 'win32':  # pragma: nocover
+if sys.platform == 'win32':
     def _walk(top):
         top = os.fsdecode(top)
         for root, dirs, files in os.walk(top):

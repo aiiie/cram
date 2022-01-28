@@ -19,7 +19,7 @@ def _makeresetsigpipe():
     child process.
     """
     if (sys.platform == 'win32' or
-            getattr(signal, 'SIGPIPE', None) is None):  # pragma: nocover
+            getattr(signal, 'SIGPIPE', None) is None):
         return None
     return lambda: signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 
@@ -43,7 +43,7 @@ def execute(args, stdin=None, stdout=None, stderr=None, cwd=None, env=None):
 
     This function returns a 2-tuple of (output, returncode).
     """
-    if sys.platform == 'win32':  # pragma: nocover
+    if sys.platform == 'win32':
         args = [os.fsdecode(arg) for arg in args]
 
     p = subprocess.Popen(args, stdin=PIPE, stdout=stdout, stderr=stderr,

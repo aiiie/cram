@@ -214,7 +214,7 @@ def testfile(path, shell='/bin/sh', indent=2, env=None, cleanenv=True,
         env = env or os.environ.copy()
         env['TESTDIR'] = os.fsdecode(os.path.dirname(abspath))
         env['TESTFILE'] = os.fsdecode(os.path.basename(abspath))
-        if testname is None:  # pragma: nocover
+        if testname is None:
             testname = os.path.basename(abspath)
         return test(f, shell, indent=indent, testname=testname, env=env,
                     cleanenv=cleanenv, debug=debug)

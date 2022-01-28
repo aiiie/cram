@@ -20,10 +20,10 @@ _narrowquoteattrregex = (r'[^\x20\x21\x23-\x25\x27-\x3b\x3d'
                          r'\x3f-\ud7ff\ue000-\ufffd]')
 _replacementchar = '\N{REPLACEMENT CHARACTER}'
 
-if sys.maxunicode >= 0x10ffff:  # pragma: nocover
+if sys.maxunicode >= 0x10ffff:
     _cdatasub = re.compile(_widecdataregex).sub
     _quoteattrsub = re.compile(_widequoteattrregex).sub
-else:  # pragma: nocover
+else:
     _cdatasub = re.compile(_narrowcdataregex).sub
     _quoteattrsub = re.compile(_narrowquoteattrregex).sub
 
@@ -70,9 +70,9 @@ def _quoteattr(s):
 def _timestamp():
     """Return the current time in ISO 8601 format"""
     tm = time.localtime()
-    if tm.tm_isdst == 1:  # pragma: nocover
+    if tm.tm_isdst == 1:
         tz = time.altzone
-    else:  # pragma: nocover
+    else:
         tz = time.timezone
 
     timestamp = time.strftime('%Y-%m-%dT%H:%M:%S', tm)

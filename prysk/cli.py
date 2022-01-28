@@ -46,7 +46,7 @@ def _log(msg=None, verbosemsg=None, verbose=False):
     if msg:
         if isinstance(msg, bytes):
             sys.stdout.buffer.write(msg)
-        else:  # pragma: nocover
+        else:
             sys.stdout.write(msg)
         sys.stdout.flush()
 
@@ -141,7 +141,7 @@ def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None):
 def main():
     try:
         sys.exit(prysk.main(sys.argv[1:]))
-    except (BrokenPipeError, KeyboardInterrupt):  # pragma: nocover
+    except (BrokenPipeError, KeyboardInterrupt):
         pass
 
 

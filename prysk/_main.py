@@ -6,11 +6,7 @@ import shlex
 import shutil
 import sys
 import tempfile
-
-try:
-    import configparser
-except ImportError:  # pragma: nocover
-    import ConfigParser as configparser
+import configparser
 
 from prysk._cli import runcli
 from prysk._run import runtests

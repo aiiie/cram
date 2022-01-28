@@ -86,23 +86,20 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
     conline = indent + b'> '
     salt = b'CRAM%.5f' % time.time()
 
-    if env is None:
-        env = os.environ.copy()
+    def create_environment(environment, shell, clean=False):
+        _env = os.environ.copy() if environment is None else environment
+        _env['TESTSHELL'] = shell
+        if clean:
+            _env.update({key: 'C' for key in ['LANG', 'LC_ALL', 'LANGUAGE']})
+            _env['TZ'] = 'GMT'
+            _env['CDPATH'] = ''
+            _env['COLUMNS'] = '80'
+            _env['GREP_OPTIONS'] = ''
+        return _env
 
-    if cleanenv:
-        for s in ('LANG', 'LC_ALL', 'LANGUAGE'):
-            env[s] = 'C'
-        env['TZ'] = 'GMT'
-        env['CDPATH'] = ''
-        env['COLUMNS'] = '80'
-        env['GREP_OPTIONS'] = ''
-
-    if isinstance(lines, bytes):
-        lines = lines.splitlines(True)
-
-    if isinstance(shell, (bytes, str)):
-        shell = [shell]
-    env['TESTSHELL'] = shell[0]
+    lines = lines.splitlines(True) if isinstance(lines, bytes) else lines
+    shell = [shell] if isinstance(shell, (bytes, str)) else shell
+    env = create_environment(env, shell[0], clean=cleanenv)
 
     if debug:
         stdin = []

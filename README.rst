@@ -6,7 +6,7 @@ Prysk
 .. image:: https://coveralls.io/repos/github/Nicoretti/prysk/badge.svg?branch=master
     :target: https://coveralls.io/github/Nicoretti/prysk?branch=master
 
-.. image:: https://img.shields.io/badge/pypi%20package-vailable-blue.svg
+.. image:: https://img.shields.io/badge/pypi%20package-available-blue.svg
     :target: https://pypi.org/project/prysk/
 
 Prysk is a fork of the popular snapshot testing tool Cram_.

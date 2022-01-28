@@ -82,14 +82,6 @@ The format in a nutshell:
 .. _Prysk's own test suite: https://github.com/nicoretti/prysk/blob/master/tests/usage.t
 .. _Perl-compatible regular expressions: https://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions
 
-
-Installation
-------------
-
-Install using pip ::
-
-    pip install prysk
-
 Usage
 -----
 
@@ -188,17 +180,3 @@ waiting for the test shell's ``stdout`` to be fully closed.
 
 .. _unified context diff: https://en.wikipedia.org/wiki/Diff#Unified_format
 .. _its own example tests: https://github.com/nicoretti/prysk/tree/master/examples
-
-
-Development
------------
-
-Download the official development repository using Git_::
-
-    git clone https://github.com/nicoretti/prysk.git
-
-Visit GitHub_ if you'd like to fork the project, watch for new changes, or
-report issues.
-
-.. _Git: http://git-scm.com/
-.. _GitHub: https://github.com/nicoretti/prysk

@@ -1,5 +1,5 @@
 include .coveragerc .pylintrc .travis.yml Makefile MANIFEST.in tox.ini
-include *.md *.rst *.txt contrib/* scripts/*
+include *.md *.rst *.txt docs/* contrib/* scripts/*
 exclude contrib/PKGBUILD
 recursive-include examples *.t
 recursive-include tests *.py *.sh *.t

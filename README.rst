@@ -1,5 +1,8 @@
 Prysk
 ======================
+.. image:: https://coveralls.io/repos/github/Nicoretti/prysk/badge.svg?branch=master
+    :target: https://coveralls.io/github/Nicoretti/prysk?branch=master
+
 Prysk is a fork of the popular snapshot testing tool Cram_.
 Even though Cram_ is pretty complete and mature for everyday use,
 Prysk want's to continue pushing it's development forward.

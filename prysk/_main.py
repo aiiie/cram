@@ -8,7 +8,7 @@ import sys
 import tempfile
 import configparser
 
-from prysk._cli import runcli
+from prysk.cli import runcli
 from prysk._run import runtests
 from prysk._xunit import runxunit
 

@@ -21,7 +21,7 @@ project = 'prysk'
 author = 'Brodie Rao, Nicola Coretti & Contributors'
 copyright = author
 # The full version, including alpha/beta/rc tags
-release = '0.8.0'
+release = '0.9.0'
 
 # -- General configuration ---------------------------------------------------
 

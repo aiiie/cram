@@ -19,12 +19,11 @@ def readme():
 
 
 if __name__ == '__main__':
-    # TODO: Add download_url,
     setup(
         name='prysk',
         author='Brodie Rao, Nicola Coretti',
         author_email='brodie@bitheap.org, nico.coretti@gmail.com',
-        version='0.8',
+        version='0.9',
         packages=['prysk'],
         classifiers=[
             'Development Status :: 5 - Production/Stable',

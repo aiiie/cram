@@ -4,9 +4,13 @@
 
 Prysk
 +++++
-Version 0.8 (TBD, 2022)
+Version 0.8 (Jan. 25, 2022)
 ---------------------------
-TBD
+* Rename cram to prysk
+
+    .. warning::
+        Also semantically relevant names have been renamed,
+        e.g. env var CRAMTMP is now PRYSK_TMP
 
 Cram
 ++++

@@ -22,7 +22,7 @@ def _prompt(question, answers, auto=None):
     """
     default = [c for c in answers if c.isupper()]
     while True:
-        sys.stdout.write("%s [%s] " % (question, answers))
+        sys.stdout.write(f"{question} [{answers}] ")
         sys.stdout.flush()
         if auto is not None:
             sys.stdout.write(auto + "\n")
@@ -53,7 +53,7 @@ def _log(msg=None, verbosemsg=None, verbose=False):
 
 def _patch(cmd, diff):
     """Run echo [lines from diff] | cmd -p0"""
-    out, retcode = execute([cmd, "-p0"], stdin=b"".join(diff))
+    _, retcode = execute([cmd, "-p0"], stdin=b"".join(diff))
     return retcode == 0
 
 
@@ -126,14 +126,11 @@ def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None):
 
             return refout, postout, diff
 
-        yield (path, testwrapper)
+        yield path, testwrapper
 
     if total[0] > 0:
         _log("\n", None, verbose)
-        _log(
-            "# Ran %s tests, %s skipped, %s failed.\n"
-            % (total[0], skipped[0], failed[0])
-        )
+        _log(f"# Ran {total[0]} tests, {skipped[0]} skipped, {failed[0]} failed.\n")
 
 
 def main():

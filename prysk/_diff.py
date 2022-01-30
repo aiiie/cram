@@ -75,7 +75,7 @@ def esc(el, l):
     return el == l
 
 
-class _SequenceMatcher(difflib.SequenceMatcher, object):
+class _SequenceMatcher(difflib.SequenceMatcher):
     """Like difflib.SequenceMatcher, but supports custom match functions"""
 
     def __init__(self, *args, **kwargs):
@@ -102,7 +102,7 @@ class _SequenceMatcher(difflib.SequenceMatcher, object):
                 # expected output) with b's line (the actual output).
                 self.a[alo + n] = line
                 matches.append((n, el))
-        ret = super(_SequenceMatcher, self).find_longest_match(alo, ahi, blo, bhi)
+        ret = super().find_longest_match(alo, ahi, blo, bhi)
         # Restore the lines replaced above. Otherwise, the diff output
         # would seem to imply that the tests never had any regexes/globs.
         for n, el in matches:
@@ -161,9 +161,9 @@ def unified_diff(
                 for line in l1[i1:i2]:
                     yield b" " + line
                 continue
-            if tag == "replace" or tag == "delete":
+            if tag in ("replace", "delete"):
                 for line in l1[i1:i2]:
                     yield b"-" + line
-            if tag == "replace" or tag == "insert":
+            if tag in ("replace", "insert"):
                 for line in l2[j1:j2]:
                     yield b"+" + line

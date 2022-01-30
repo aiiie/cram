@@ -172,7 +172,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
     ]
     for s1, o1, s2, o2 in conflicts:
         if o1 and o2:
-            sys.stderr.write("options %s and %s are mutually exclusive\n" % (s1, s2))
+            sys.stderr.write(f"options {s1} and {s2} are mutually exclusive\n")
             return 2
 
     shellcmd = _which(opts.shell)
@@ -237,7 +237,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
         failed = False
         for path, test in tests:
             hastests = True
-            refout, postout, diff = test()
+            _, _, diff = test()
             if diff:
                 failed = True
 

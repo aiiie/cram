@@ -27,7 +27,7 @@ def _findtests(paths):
     """Yield tests in paths in sorted order"""
     for p in paths:
         if os.path.isdir(p):
-            for root, dirs, files in _walk(p):
+            for root, _, files in _walk(p):
                 if os.path.basename(root).startswith(b"."):
                     continue
                 for f in sorted(files):
@@ -73,7 +73,7 @@ def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False):
         seen.add(abspath)
 
         if not os.stat(path).st_size:
-            yield (path, lambda: (None, None, None))
+            yield path, lambda: (None, None, None)
             continue
 
         basename = os.path.basename(path)
@@ -96,4 +96,4 @@ def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False):
                     testname=path,
                 )
 
-        yield (path, test)
+        yield path, test

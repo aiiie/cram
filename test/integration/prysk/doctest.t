@@ -4,4 +4,4 @@ Set up prysk alias and example tests:
 
 Run doctests:
 
-  $ doctest "$TESTDIR"/../prysk
+  $ doctest ${PROJECT_ROOT}/prysk

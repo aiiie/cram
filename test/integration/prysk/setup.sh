@@ -1,6 +1,6 @@
 #!/bin/sh
 
-PROJECT_ROOT="$TESTDIR"/..
+PROJECT_ROOT="$TESTDIR"/../../..
 # Bash doesn't expand aliases by default in non-interactive mode, so
 # we enable it manually if the test is run with --shell=/bin/bash.
 [ -n "$BASH" ] && shopt -s expand_aliases

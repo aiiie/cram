@@ -7,10 +7,7 @@ from hashlib import md5
 def _create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        'files',
-        metavar='FILE',
-        type=argparse.FileType('rb'),
-        nargs='+'
+        "files", metavar="FILE", type=argparse.FileType("rb"), nargs="+"
     )
     return parser
 
@@ -24,5 +21,5 @@ def main(argv=None):
         print(hasher.hexdigest())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())

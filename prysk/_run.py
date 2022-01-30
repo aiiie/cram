@@ -7,15 +7,19 @@ from contextlib import contextmanager
 
 from prysk._test import testfile
 
-__all__ = ['runtests']
+__all__ = ["runtests"]
 
-if sys.platform == 'win32':
+if sys.platform == "win32":
+
     def _walk(top):
         top = os.fsdecode(top)
         for root, dirs, files in os.walk(top):
-            yield (os.fsencode(root),
-                   [os.fsencode(p) for p in dirs],
-                   [os.fsencode(p) for p in files])
+            yield (
+                os.fsencode(root),
+                [os.fsencode(p) for p in dirs],
+                [os.fsencode(p) for p in files],
+            )
+
 else:
     _walk = os.walk
 
@@ -25,10 +29,10 @@ def _findtests(paths):
     for p in paths:
         if os.path.isdir(p):
             for root, dirs, files in _walk(p):
-                if os.path.basename(root).startswith(b'.'):
+                if os.path.basename(root).startswith(b"."):
                     continue
                 for f in sorted(files):
-                    if not f.startswith(b'.') and f.endswith(b'.t'):
+                    if not f.startswith(b".") and f.endswith(b".t"):
                         yield os.path.normpath(os.path.join(root, f))
         else:
             yield os.path.normpath(p)
@@ -75,7 +79,7 @@ def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False):
 
         basename = os.path.basename(path)
         if basename in basenames:
-            basename = basename + b'-%d' % i
+            basename = basename + b"-%d" % i
         else:
             basenames.add(basename)
 
@@ -84,8 +88,13 @@ def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False):
             testdir = os.path.join(tmpdir, basename)
             os.mkdir(testdir)
             with _cwd(testdir):
-                return testfile(abspath, shell, indent=indent,
-                                cleanenv=cleanenv, debug=debug,
-                                testname=path)
+                return testfile(
+                    abspath,
+                    shell,
+                    indent=indent,
+                    cleanenv=cleanenv,
+                    debug=debug,
+                    testname=path,
+                )
 
         yield (path, test)

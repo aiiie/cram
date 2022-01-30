@@ -5,7 +5,7 @@ import signal
 import subprocess
 import sys
 
-__all__ = ['PIPE', 'STDOUT', 'execute']
+__all__ = ["PIPE", "STDOUT", "execute"]
 
 PIPE = subprocess.PIPE
 STDOUT = subprocess.STDOUT
@@ -18,8 +18,7 @@ def _makeresetsigpipe():
     Python's SIGPIPE handler (SIG_IGN) from being inherited by the
     child process.
     """
-    if (sys.platform == 'win32' or
-            getattr(signal, 'SIGPIPE', None) is None):
+    if sys.platform == "win32" or getattr(signal, "SIGPIPE", None) is None:
         return None
     return lambda: signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 
@@ -43,12 +42,19 @@ def execute(args, stdin=None, stdout=None, stderr=None, cwd=None, env=None):
 
     This function returns a 2-tuple of (output, returncode).
     """
-    if sys.platform == 'win32':
+    if sys.platform == "win32":
         args = [os.fsdecode(arg) for arg in args]
 
-    p = subprocess.Popen(args, stdin=PIPE, stdout=stdout, stderr=stderr,
-                         cwd=cwd, env=env, bufsize=-1,
-                         preexec_fn=_makeresetsigpipe(),
-                         close_fds=os.name == 'posix')
+    p = subprocess.Popen(
+        args,
+        stdin=PIPE,
+        stdout=stdout,
+        stderr=stderr,
+        cwd=cwd,
+        env=env,
+        bufsize=-1,
+        preexec_fn=_makeresetsigpipe(),
+        close_fds=os.name == "posix",
+    )
     out, err = p.communicate(stdin)
     return out, p.returncode

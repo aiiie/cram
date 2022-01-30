@@ -5,7 +5,7 @@ import prysk
 
 from prysk._process import execute
 
-__all__ = ['runcli']
+__all__ = ["runcli"]
 
 
 def _prompt(question, answers, auto=None):
@@ -22,10 +22,10 @@ def _prompt(question, answers, auto=None):
     """
     default = [c for c in answers if c.isupper()]
     while True:
-        sys.stdout.write('%s [%s] ' % (question, answers))
+        sys.stdout.write("%s [%s] " % (question, answers))
         sys.stdout.flush()
         if auto is not None:
-            sys.stdout.write(auto + '\n')
+            sys.stdout.write(auto + "\n")
             sys.stdout.flush()
             return auto
 
@@ -53,7 +53,7 @@ def _log(msg=None, verbosemsg=None, verbose=False):
 
 def _patch(cmd, diff):
     """Run echo [lines from diff] | cmd -p0"""
-    out, retcode = execute([cmd, '-p0'], stdin=b''.join(diff))
+    out, retcode = execute([cmd, "-p0"], stdin=b"".join(diff))
     return retcode == 0
 
 
@@ -78,34 +78,35 @@ def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None):
     total, skipped, failed = [0], [0], [0]
 
     for path, test in tests:
+
         def testwrapper():
             """Test function that adds CLI output"""
             total[0] += 1
-            _log(None, path + b': ', verbose)
+            _log(None, path + b": ", verbose)
 
             refout, postout, diff = test()
             if refout is None:
                 skipped[0] += 1
-                _log('s', 'empty\n', verbose)
+                _log("s", "empty\n", verbose)
                 return refout, postout, diff
 
             abspath = os.path.abspath(path)
-            errpath = abspath + b'.err'
+            errpath = abspath + b".err"
 
             if postout is None:
                 skipped[0] += 1
-                _log('s', 'skipped\n', verbose)
+                _log("s", "skipped\n", verbose)
             elif not diff:
-                _log('.', 'passed\n', verbose)
+                _log(".", "passed\n", verbose)
                 if os.path.exists(errpath):
                     os.remove(errpath)
             else:
                 failed[0] += 1
-                _log('!', 'failed\n', verbose)
+                _log("!", "failed\n", verbose)
                 if not quiet:
-                    _log('\n', None, verbose)
+                    _log("\n", None, verbose)
 
-                with open(errpath, 'wb') as errfile:
+                with open(errpath, "wb") as errfile:
                     for line in postout:
                         errfile.write(line)
 
@@ -116,26 +117,23 @@ def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None):
                         sys.stdout.buffer.write(line)
                         diff.append(line)
 
-                    if (patchcmd and
-                            _prompt(
-                                'Accept this change?',
-                                'yN',
-                                answer
-                            ) == 'y'):
+                    if patchcmd and _prompt("Accept this change?", "yN", answer) == "y":
                         if _patch(patchcmd, diff):
-                            _log(None, path + b': merged output\n', verbose)
+                            _log(None, path + b": merged output\n", verbose)
                             os.remove(errpath)
                         else:
-                            _log(path + b': merge failed\n')
+                            _log(path + b": merge failed\n")
 
             return refout, postout, diff
 
         yield (path, testwrapper)
 
     if total[0] > 0:
-        _log('\n', None, verbose)
-        _log('# Ran %s tests, %s skipped, %s failed.\n'
-             % (total[0], skipped[0], failed[0]))
+        _log("\n", None, verbose)
+        _log(
+            "# Ran %s tests, %s skipped, %s failed.\n"
+            % (total[0], skipped[0], failed[0])
+        )
 
 
 def main():
@@ -145,5 +143,5 @@ def main():
         pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -5,4 +5,4 @@ isort
 black
 pylint
 sphinx
-sphinx-rtd-theme
+furo

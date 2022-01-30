@@ -43,8 +43,8 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "sphinx_rtd_theme"
-
+html_theme = "furo"
+html_title = f"Prysk {release}"
 html_context = {
     "display_github": True,
     "github_user": "Nicoretti",
@@ -52,20 +52,6 @@ html_context = {
     "github_version": "master",
     "conf_py_path": "/docs/",
     "source_suffix": "rst",
-}
-
-html_theme_options = {
-    "logo_only": False,
-    "display_version": True,
-    "prev_next_buttons_location": "bottom",
-    "style_external_links": False,
-    "vcs_pageview_mode": "",
-    # Toc options
-    "collapse_navigation": True,
-    "sticky_navigation": True,
-    "navigation_depth": 4,
-    "includehidden": True,
-    "titles_only": False,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,

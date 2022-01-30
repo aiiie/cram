@@ -6,6 +6,9 @@ Prysk
 .. image:: https://coveralls.io/repos/github/Nicoretti/prysk/badge.svg?branch=master
     :target: https://coveralls.io/github/Nicoretti/prysk?branch=master
 
+.. image:: https://img.shields.io/badge/imports-isort-ef8336.svg
+    :target: https://pycqa.github.io/isort/
+
 .. image:: https://img.shields.io/badge/code%20style-black-000000.svg
    :target: https://github.com/psf/black
 

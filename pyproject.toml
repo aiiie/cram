@@ -3,15 +3,15 @@ fail-under = 8
 
 [tool.pylint.format]
 max-line-length = 88
-max-module-lines=800
+max-module-lines = 800
 
 [tool.pylint.message_control]
 disable = "C0330, C0326"
 
+[too.isort]
+profile = "black"
+
 [tool.black]
 line-length = 88
 verbose = true
-extend-exclude = '''
-\.tox
-'''
 include = '\.pyi?$'

@@ -1,16 +1,16 @@
 """Main entry point"""
 
+import configparser
 import optparse
 import os
 import shlex
 import shutil
 import sys
 import tempfile
-import configparser
 
-from prysk.cli import runcli
 from prysk._run import runtests
 from prysk._xunit import runxunit
+from prysk.cli import runcli
 
 
 def _which(cmd):

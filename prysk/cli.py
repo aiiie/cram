@@ -1,8 +1,8 @@
 """The command line interface implementation"""
 import os
 import sys
-import prysk
 
+import prysk
 from prysk._process import execute
 
 __all__ = ["runcli"]

@@ -1,6 +1,7 @@
 check-manifest
 coverage
 tox
+isort
 black
 pylint
 sphinx

@@ -2,7 +2,6 @@
 
 import os
 import sys
-
 from contextlib import contextmanager
 
 from prysk._test import testfile

@@ -80,7 +80,7 @@ class _SequenceMatcher(difflib.SequenceMatcher, object):
 
     def __init__(self, *args, **kwargs):
         self._matchers = kwargs.pop("matchers", [])
-        super(_SequenceMatcher, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def _match(self, el, l):
         """Tests for matching lines using custom matchers"""
@@ -155,7 +155,7 @@ def unified_diff(
             yield b"+++ " + tofile + todate + lineterm
             started = True
         i1, i2, j1, j2 = group[0][1], group[-1][2], group[0][3], group[-1][4]
-        yield (b"@@ -%d,%d +%d,%d @@" % (i1 + 1, i2 - i1, j1 + 1, j2 - j1) + lineterm)
+        yield b"@@ -%d,%d +%d,%d @@" % (i1 + 1, i2 - i1, j1 + 1, j2 - j1) + lineterm
         for tag, i1, i2, j1, j2 in group:
             if tag == "equal":
                 for line in l1[i1:i2]:

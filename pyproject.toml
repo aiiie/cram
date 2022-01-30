@@ -1,3 +1,13 @@
+[tool.pylint.master]
+fail-under = 8
+
+[tool.pylint.format]
+max-line-length = 88
+max-module-lines=800
+
+[tool.pylint.message_control]
+disable = "C0330, C0326"
+
 [tool.black]
 line-length = 88
 verbose = true

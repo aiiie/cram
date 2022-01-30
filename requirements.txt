@@ -1,8 +1,7 @@
 check-manifest
 coverage
-pycodestyle
-pyflakes
 tox
 black
+pylint
 sphinx
 sphinx-rtd-theme

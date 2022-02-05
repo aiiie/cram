@@ -1,5 +1,4 @@
 check-manifest >= "^0.47"
-tox >= "^3.24.5"
 black >= "^22.1.0"
 coverage >= "^6.3.1"
 isort >= "^5.10.1"

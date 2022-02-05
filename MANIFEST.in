@@ -1,5 +1,5 @@
-include .coveragerc .travis.yml Makefile MANIFEST.in tox.ini
-include *.md *.rst *.txt *.toml docs/* contrib/* scripts/*
+include .coveragerc MANIFEST.in tox.ini
+include *.rst *.txt *.toml docs/* contrib/* scripts/*
 exclude contrib/PKGBUILD
 recursive-include examples *.t
 recursive-include test *.py *.sh *.t

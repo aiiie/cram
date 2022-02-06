@@ -63,6 +63,10 @@ Sphinx = "^4.4.0"
 furo = "^2022.1.2"
 nox = "^2022.1.7"
 
+[tool.coverage.run]
+source = [
+    "prysk"
+]
 
 [tool.pylint.master]
 fail-under = 8

@@ -15,9 +15,9 @@ if [ -n "$COVERAGE" ]; then
     export COVERAGE_FILE
   fi
 
-  alias prysk="`which "$COVERAGE"` run -a --rcfile=${PROJECT_ROOT}/.coveragerc \
+  alias prysk="`which "$COVERAGE"` run -a --rcfile=${PROJECT_ROOT}/pyproject.toml \
 ${PROJECT_ROOT}/prysk --shell=$TESTSHELL"
-  alias doctest="`which "$COVERAGE"` run -a --rcfile=${PROJECT_ROOT}/.coveragerc \
+  alias doctest="`which "$COVERAGE"` run -a --rcfile=${PROJECT_ROOT}/pyproject.toml \
 $TESTDIR/run-doctests.py"
   alias md5="$PYTHON ${PROJECT_ROOT}/scripts/md5.py"
 else

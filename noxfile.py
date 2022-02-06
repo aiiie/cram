@@ -66,7 +66,7 @@ def coverage(session):
         "coverage",
         "run",
         "-a",
-        f'--rcfile={BASEPATH / ".coveragerc"}',
+        f'--rcfile={BASEPATH / "pyproject.toml"}',
         "-m",
         "prysk.cli",
     ]

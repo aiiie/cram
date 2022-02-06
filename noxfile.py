@@ -1,4 +1,3 @@
-import tempfile
 from pathlib import Path
 
 import nox
@@ -15,28 +14,11 @@ nox.options.sessions = [
 ]
 
 
-def _prepare(session):
-    session.env["PYTHONPATH"] = f"{BASEPATH}"
-    with tempfile.TemporaryDirectory() as tmp:
-        requirements = Path(tmp) / "requirements.txt"
-        session.run_always(
-            "poetry",
-            "export",
-            "--dev",
-            "--without-hashes",
-            "-o",
-            f"{requirements}",
-            silent=True,
-            external=True,
-        )
-        session.install(f"-r{requirements}")
-    session.install(f"{BASEPATH}")
-
-
-@nox.session
+@nox.session(python=False)
 def code_format(session):
-    _prepare(session)
     session.run(
+        "poetry",
+        "run",
         "python",
         "-m",
         "black",
@@ -47,17 +29,17 @@ def code_format(session):
     )
 
 
-@nox.session
+@nox.session(python=False)
 def isort(session):
-    _prepare(session)
-    session.run("python", "-m", "isort", "-v", "--check", f"{BASEPATH}")
+    session.run(
+        "poetry", "run", "python", "-m", "isort", "-v", "--check", f"{BASEPATH}"
+    )
 
 
-@nox.session
+@nox.session(python=False)
 def pylint(session):
-    _prepare(session)
-    session.run("python", "-m", "pylint", f'{BASEPATH / "prysk"}')
-    session.run("python", "-m", "pylint", f'{BASEPATH / "scripts"}')
+    session.run("poetry", "run", "python", "-m", "pylint", f'{BASEPATH / "prysk"}')
+    session.run("poetry", "run", "python", "-m", "pylint", f'{BASEPATH / "scripts"}')
 
 
 @nox.session
@@ -66,16 +48,21 @@ def integration(session, shell):
     session.install(f"{BASEPATH}")
     session.env["TESTOPTS"] = f"--shell={shell}"
     session.run(
-        "prysk", f"--shell={shell}", f'{BASEPATH / "test" / "integration" / "prysk"}'
+        "poetry",
+        "run",
+        "prysk",
+        f"--shell={shell}",
+        f'{BASEPATH / "test" / "integration" / "prysk"}',
     )
 
 
-@nox.session
+@nox.session(python=False)
 def coverage(session):
-    _prepare(session)
     session.env["COVERAGE"] = "coverage"
     session.env["COVERAGE_FILE"] = f'{BASEPATH / ".coverage"}'
     command = [
+        "poetry",
+        "run",
         "coverage",
         "run",
         "-a",
@@ -96,7 +83,6 @@ def coverage(session):
     session.run("coverage", "lcov")
 
 
-@nox.session
+@nox.session(python=False)
 def docs(session):
-    _prepare(session)
     session.run("make", "-C", f'{BASEPATH / "docs"}', "html")

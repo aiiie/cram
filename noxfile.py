@@ -11,6 +11,7 @@ nox.options.sessions = [
     "pylint",
     "integration",
     "coverage",
+    "docs",
 ]
 
 

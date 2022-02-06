@@ -1,3 +1,69 @@
+[build-system]
+requires = ["poetry>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "prysk"
+version = "0.9.0"
+description = "Functional tests for command line applications"
+readme = "README.rst"
+license = "GNU GPLv2 or any later version"
+authors = [
+    "Nicola Coretti <nico.coretti@gmail.com>",
+    "Brodie Rao <brodie@bitheap.org>",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License (GPL)",
+    "License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Unix Shell",
+    "Topic :: Software Development :: Testing",
+]
+keywords = [
+    "test framework",
+    "snapshot testing",
+    "testing",
+    "cli",
+    "functional tests"
+]
+repository = "https://github.com/Nicoretti/prysk"
+homepage = "https://nicoretti.github.io/prysk/"
+include = [
+    ".coveragerc",
+    "noxfile.py",
+    "poetry.lock",
+    "*.rst",
+    "*.txt",
+    "*.toml",
+    "docs/*",
+    "contrib/*",
+    "scripts/*",
+    "examples/*"
+]
+exclude = ["contrib/PKGBUILD"]
+
+[tool.poetry.scripts]
+prysk = "prysk:cli.main"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[tool.poetry.dev-dependencies]
+check-manifest = "^0.47"
+black = "^22.1.0"
+coverage = "^6.3.1"
+isort = "^5.10.1"
+pylint = "^2.12.2"
+Sphinx = "^4.4.0"
+furo = "^2022.1.2"
+nox = "^2022.1.7"
+
+
 [tool.pylint.master]
 fail-under = 8
 

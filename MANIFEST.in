@@ -1,5 +1,0 @@
-include .coveragerc MANIFEST.in tox.ini noxfile.py
-include *.rst *.txt *.toml docs/* contrib/* scripts/*
-exclude contrib/PKGBUILD
-recursive-include examples *.t
-recursive-include test *.py *.sh *.t

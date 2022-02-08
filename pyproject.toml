@@ -1,5 +1,7 @@
 [build-system]
-requires = ["poetry>=1.0.0"]
+requires = [
+    "poetry>=1.0.0",
+]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
@@ -29,7 +31,7 @@ keywords = [
     "snapshot testing",
     "testing",
     "cli",
-    "functional tests"
+    "functional tests",
 ]
 repository = "https://github.com/Nicoretti/prysk"
 homepage = "https://nicoretti.github.io/prysk/"
@@ -43,15 +45,19 @@ include = [
     "docs/*",
     "contrib/*",
     "scripts/*",
-    "examples/*"
+    "examples/*",
 ]
-exclude = ["contrib/PKGBUILD"]
+exclude = [
+    "contrib/PKGBUILD",
+]
 
 [tool.poetry.scripts]
 prysk = "prysk:cli.main"
 
 [tool.poetry.dependencies]
 python = "^3.7"
+tomli = "^2.0.1"
+tomli-w = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
 check-manifest = "^0.47"
@@ -65,7 +71,7 @@ nox = "^2022.1.7"
 
 [tool.coverage.run]
 source = [
-    "prysk"
+    "prysk",
 ]
 
 [tool.pylint.master]
@@ -78,10 +84,10 @@ max-module-lines = 800
 [tool.pylint.message_control]
 disable = "C0330, C0326"
 
-[too.isort]
-profile = "black"
-
 [tool.black]
 line-length = 88
 verbose = true
-include = '\.pyi?$'
+include = "\\.pyi?$"
+
+[too.isort]
+profile = "black"

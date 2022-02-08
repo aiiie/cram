@@ -10,10 +10,13 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+import sys
+from pathlib import Path
 
+CURRENT_DIR = Path(__file__).parent.resolve()
+sys.path.insert(0, f"{CURRENT_DIR.parent}")
+
+from version import current_version
 
 # -- Project information -----------------------------------------------------
 
@@ -21,7 +24,7 @@ project = "prysk"
 author = "Brodie Rao, Nicola Coretti & Contributors"
 copyright = author
 # The full version, including alpha/beta/rc tags
-release = "0.9.0"
+release = "{}.{}.{}".format(*current_version())
 
 # -- General configuration ---------------------------------------------------
 

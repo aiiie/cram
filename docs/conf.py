@@ -16,7 +16,7 @@ from pathlib import Path
 CURRENT_DIR = Path(__file__).parent.resolve()
 sys.path.insert(0, f"{CURRENT_DIR.parent}")
 
-from version import current_version
+from release import current_version
 
 # -- Project information -----------------------------------------------------
 
@@ -24,7 +24,7 @@ project = "prysk"
 author = "Brodie Rao, Nicola Coretti & Contributors"
 copyright = author
 # The full version, including alpha/beta/rc tags
-release = "{}.{}.{}".format(*current_version())
+release = f"{current_version()}"
 
 # -- General configuration ---------------------------------------------------
 

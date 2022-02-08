@@ -8,6 +8,7 @@ nox.options.sessions = [
     "isort",
     "code_format",
     "pylint",
+    "unit",
     "integration",
     "coverage",
     "docs",
@@ -40,6 +41,19 @@ def isort(session):
 def pylint(session):
     session.run("poetry", "run", "python", "-m", "pylint", f'{BASEPATH / "prysk"}')
     session.run("poetry", "run", "python", "-m", "pylint", f'{BASEPATH / "scripts"}')
+
+
+@nox.session(python=False)
+def unit(session):
+    session.run(
+        "poetry",
+        "run",
+        "python",
+        "-m",
+        "pytest",
+        "--ignore-glob=prysk/*.py",
+        f"{BASEPATH}",
+    )
 
 
 @nox.session

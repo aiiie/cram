@@ -1,3 +1,8 @@
+Version 0.9.0 (February. 11, 2022)
+-----------------------------------------------------
+* Add support for automated releases
+* Add support for retrieving project version from pyproject.toml
+
 Version 0.9 (Jan. 29, 2022)
 ---------------------------
 * Add basic documentation

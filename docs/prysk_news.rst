@@ -1,3 +1,8 @@
+Version 0.11.0 (February. 11, 2022)
+-----------------------------------------------------
+* Reorder publishing steps
+* Fix release notes of 0.10.0 release
+
 Version 0.10.0 (February. 11, 2022)
 -----------------------------------------------------
 * Add version sanity check

@@ -1,7 +1,6 @@
 Version 0.10.0 (February. 11, 2022)
 -----------------------------------------------------
 * Add version sanity check
-* Release 0.9.0
 * Add support for automated releases
 * Add support for retrieving project version from pyproject.toml
 

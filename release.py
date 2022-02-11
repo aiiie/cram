@@ -145,8 +145,8 @@ def _build():
 
 
 def _publish(version):
-    run(["poetry", "publish"], check=True)
     run(["git", "push", "origin", f"{version}"], check=True)
+    run(["poetry", "publish"], check=True)
 
 
 def main(argv=None):

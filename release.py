@@ -88,6 +88,8 @@ def _change_log(version):
 
 
 def _update_version(version, inc_major, inc_minor, inc_patch):
+    if not any((inc_major, inc_minor, inc_patch)):
+        raise ValueError("At least one version component needs to be bumped")
     major, minor, patch = version.major, version.minor, version.patch
     major += 1 if inc_major else 0
     minor += 1 if inc_minor else 0
@@ -163,7 +165,7 @@ def main(argv=None):
         _publish(new_version)
         return 0
     except Exception as ex:
-        print(f"{ex}")
+        print(f"Aborted, details: {ex}")
         return 1
 
 

@@ -4,7 +4,7 @@ on:
     branches:
       - master
     tags:
-      - *
+      - "*"
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest

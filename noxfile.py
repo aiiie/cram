@@ -67,6 +67,7 @@ def integration(session, shell):
         "prysk",
         f"--shell={shell}",
         f'{BASEPATH / "test" / "integration" / "prysk"}',
+        external=True,
     )
 
 

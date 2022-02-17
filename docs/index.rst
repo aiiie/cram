@@ -3,23 +3,15 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Prysk's documentation!
-=================================
+.. include:: ../README.rst
 
 .. toctree::
-   :maxdepth: 1
-   :caption: Contents:
+   :maxdepth: 2
+   :caption: Contents
+   :hidden:
 
    readme
-   installation
-   format
-   examples
+   getting_started
    development
+   contributors
    news
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

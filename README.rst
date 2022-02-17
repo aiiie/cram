@@ -28,7 +28,9 @@ Prysk tests look like snippets of interactive shell sessions. Prysk runs
 each command and compares the command output in the test with the
 command's actual output.
 
-Here's a snippet from `Prysk's own test suite`_::
+Here's a snippet from `Prysk's own test suite`_:
+
+.. code-block:: console
 
     Set up prysk alias and example tests:
 
@@ -99,7 +101,9 @@ Prysk will print a dot for each passing test. If a test fails, a
 and the actual output. Skipped tests (empty tests and tests that exit
 with return code ``80``) are marked with ``s`` instead of a dot.
 
-For example, if we run Prysk on `its own example tests`_::
+For example, if we run Prysk on `its own example tests`_:
+
+.. code-block:: diff
 
     .s.!
     --- examples/fail.t
@@ -143,7 +147,9 @@ and run the test to see what happens. If you run Prysk with ``-i`` or
 into the test. This makes it easy to quickly prototype new tests.
 
 You can specify a default set of options by creating a ``.prysk``
-file. For example::
+file. For example:
+
+.. code-block:: cfg
 
     [prysk]
     verbose = True

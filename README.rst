@@ -88,7 +88,7 @@ The format in a nutshell:
 
 * Anything else is a comment.
 
-.. _Prysk's own test suite: https://github.com/nicoretti/prysk/blob/master/tests/usage.t
+.. _Prysk's own test suite: https://github.com/Nicoretti/prysk/blob/master/test/integration/prysk/usage.t
 .. _Perl-compatible regular expressions: https://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions
 
 Usage

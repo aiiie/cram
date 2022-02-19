@@ -16,6 +16,12 @@ nox.options.sessions = [
 
 
 @nox.session(python=False)
+def fix(session):
+    session.run("poetry", "run", "python", "-m", "isort", "-v", f"{BASEPATH}")
+    session.run("poetry", "run", "python", "-m", "black", f"{BASEPATH}")
+
+
+@nox.session(python=False)
 def code_format(session):
     session.run(
         "poetry",

@@ -59,6 +59,7 @@ python = "^3.7"
 tomli = "^2.0.1"
 tomli-w = "^1.0.0"
 pytest = "^7.0.1"
+sphinx-copybutton = "^0.5.0"
 
 [tool.poetry.dev-dependencies]
 check-manifest = "^0.47"

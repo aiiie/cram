@@ -64,7 +64,7 @@ sphinx-copybutton = "^0.5.0"
 [tool.poetry.dev-dependencies]
 check-manifest = "^0.47"
 black = "^22.1.0"
-coverage = "^6.3.1"
+coverage = "^6.3.2"
 isort = "^5.10.1"
 pylint = "^2.12.2"
 Sphinx = "^4.4.0"

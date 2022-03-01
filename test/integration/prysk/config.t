@@ -4,38 +4,46 @@ Set up prysk alias and example tests:
 
 Options in .pryskrc:
 
+  $ cat > test.t <<EOF
+  >  $ echo
+  > EOF
+
   $ cat > .pryskrc <<EOF
   > [prysk]
   > yes = True
   > no = 1
   > indent = 4
   > EOF
-  $ prysk
+  $ prysk test.t
   options --yes and --no are mutually exclusive
   [2]
   $ mv .pryskrc config
-  $ PRYSKRC=config prysk
+  $ PRYSKRC=config prysk test.t
   options --yes and --no are mutually exclusive
   [2]
   $ rm config
 
 Invalid option in .pryskrc:
 
+  $ cat > test.t <<EOF
+  >  $ echo
+  > EOF
+
   $ cat > .pryskrc <<EOF
   > [prysk]
   > indent = hmm
   > EOF
-  $ prysk
+  $ prysk test.t
   [Uu]sage: prysk \[OPTIONS\] TESTS\.\.\. (re)
   
-  prysk: error: option --indent: invalid integer value: 'hmm'
+  prysk: error: --indent: invalid integer value: 'hmm'
   [2]
   $ rm .pryskrc
   $ cat > .pryskrc <<EOF
   > [prysk]
   > verbose = hmm
   > EOF
-  $ prysk
+  $ prysk test.t
   [Uu]sage: prysk \[OPTIONS\] TESTS\.\.\. (re)
   
   prysk: error: --verbose: invalid boolean value: 'hmm'
@@ -44,6 +52,10 @@ Invalid option in .pryskrc:
 
 Options in an environment variable:
 
-  $ PRYSK='-y -n' prysk
+  $ cat > test.t <<EOF
+  >  $ echo
+  > EOF
+
+  $ PRYSK='-y -n' prysk test.t
   options --yes and --no are mutually exclusive
   [2]

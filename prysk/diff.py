@@ -133,7 +133,7 @@ def unified_diff(
     ...   b'@@ -1,2 +1,2 @@\n', b' a\n', b'-? (glob)\n', b'+b\n'])
     True
 
-    >>> from prysk._diff import glob
+    >>> from prysk.diff import glob
     >>> list(unified_diff(l1, l2, matchers=[glob]))
     []
     """

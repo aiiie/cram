@@ -1,7 +1,6 @@
 """xUnit XML output"""
 
 import locale
-import os
 import re
 import socket
 import sys
@@ -111,8 +110,8 @@ def runxunit(tests, xmlpath):
             refout, postout, diff = test()
             testtime = time.time() - start
 
-            classname = path.decode(locale.getpreferredencoding(), "replace")
-            name = os.path.basename(classname)
+            classname = f"{path}"
+            name = path.name
 
             if postout is None:
                 skipped[0] += 1

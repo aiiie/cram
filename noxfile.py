@@ -62,10 +62,9 @@ def unit(session):
     )
 
 
-@nox.session
+@nox.session(python=False)
 @nox.parametrize("shell", ["dash", "bash", "zsh"])
 def integration(session, shell):
-    session.install(f"{BASEPATH}")
     session.env["TESTOPTS"] = f"--shell={shell}"
     session.run(
         "poetry",
@@ -89,7 +88,7 @@ def coverage(session):
         "-a",
         f'--rcfile={BASEPATH / "pyproject.toml"}',
         "-m",
-        "prysk.cli",
+        "prysk",
     ]
     session.run(
         *(command + ["--shell=bash", f'{BASEPATH / "test" / "integration" / "prysk"}'])

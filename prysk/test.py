@@ -4,9 +4,10 @@ import itertools
 import os
 import re
 import time
+from pathlib import Path
 
-from prysk._diff import esc, glob, regex, unified_diff
-from prysk._process import PIPE, STDOUT, execute
+from prysk.diff import esc, glob, regex, unified_diff
+from prysk.process import PIPE, STDOUT, execute
 
 __all__ = ["test", "testfile"]
 
@@ -172,8 +173,8 @@ def test(
     postout += after.pop(pos, [])
 
     if testname:
-        diffpath = testname
-        errpath = diffpath + b".err"
+        diffpath = bytes(testname)
+        errpath = bytes(Path(testname.parent, f"{testname.name}.err"))
     else:
         diffpath = errpath = b""
     diff = unified_diff(refout, postout, diffpath, errpath, matchers=[esc, glob, regex])
@@ -217,12 +218,12 @@ def testfile(
     :rtype: (list[bytes], list[bytes], collections.Iterable[bytes])
     """
     with open(path, "rb") as f:
-        abspath = os.path.abspath(path)
+        abspath = path.resolve()
         env = env or os.environ.copy()
-        env["TESTDIR"] = os.fsdecode(os.path.dirname(abspath))
-        env["TESTFILE"] = os.fsdecode(os.path.basename(abspath))
+        env["TESTDIR"] = f"{abspath.parent}"
+        env["TESTFILE"] = f"{abspath.name}"
         if testname is None:
-            testname = os.path.basename(abspath)
+            testname = path
         return test(
             f,
             shell,

@@ -1,6 +1,15 @@
 """Functional testing framework for command line applications"""
+import sys
 
-from prysk._test import test, testfile
-from prysk.application import main
+import prysk.cli
 
-__all__ = ["main", "test", "testfile"]
+
+def main():
+    try:
+        sys.exit(prysk.cli.main())
+    except (BrokenPipeError, KeyboardInterrupt):
+        sys.exit(2)
+
+
+if __name__ == "__main__":
+    main()

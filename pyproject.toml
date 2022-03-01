@@ -52,7 +52,7 @@ exclude = [
 ]
 
 [tool.poetry.scripts]
-prysk = "prysk:cli.main"
+prysk = "prysk:main"
 
 [tool.poetry.dependencies]
 python = "^3.7"

@@ -146,20 +146,7 @@ and run the test to see what happens. If you run Prysk with ``-i`` or
 ``--interactive``, you'll be prompted to merge the actual output back
 into the test. This makes it easy to quickly prototype new tests.
 
-You can specify a default set of options by creating a ``.prysk``
-file. For example:
-
-.. code-block:: cfg
-
-    [prysk]
-    verbose = True
-    indent = 4
-
 Is the same as invoking Prysk with ``--verbose`` and ``--indent=4``.
-
-To change what configuration file Prysk loads, you can set the
-``PRYSKRC`` environment variable. You can also specify command line
-options in the ``PRYSK`` environment variable.
 
 Note that the following environment variables are reset before tests
 are run:

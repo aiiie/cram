@@ -68,7 +68,7 @@ coverage = "^6.3.2"
 isort = "^5.10.1"
 pylint = "^2.12.2"
 Sphinx = "^4.4.0"
-furo = "^2022.2.23"
+furo = "^2022.3.4"
 nox = "^2022.1.7"
 
 [tool.coverage.run]

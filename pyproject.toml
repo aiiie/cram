@@ -91,5 +91,5 @@ line-length = 88
 verbose = true
 include = "\\.pyi?$"
 
-[too.isort]
+[tool.isort]
 profile = "black"

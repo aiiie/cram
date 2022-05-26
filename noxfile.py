@@ -57,7 +57,7 @@ def unit(session):
         "python",
         "-m",
         "pytest",
-        "--ignore-glob=prysk/*.py",
+        "--doctest-modules",
         f"{BASEPATH}",
     )
 
@@ -80,6 +80,18 @@ def integration(session, shell):
 def coverage(session):
     session.env["COVERAGE"] = "coverage"
     session.env["COVERAGE_FILE"] = f'{BASEPATH / ".coverage"}'
+    session.run(
+        "poetry",
+        "run",
+        "coverage",
+        "run",
+        "-a",
+        f'--rcfile={BASEPATH / "pyproject.toml"}',
+        "-m",
+        "pytest",
+        "--doctest-modules",
+        f"{BASEPATH}",
+    )
     command = [
         "poetry",
         "run",

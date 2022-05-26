@@ -102,15 +102,9 @@ def coverage(session):
         "-m",
         "prysk",
     ]
-    session.run(
-        *(command + ["--shell=bash", f'{BASEPATH / "test" / "integration" }'])
-    )
-    session.run(
-        *(command + ["--shell=dash", f'{BASEPATH / "test" / "integration" }'])
-    )
-    session.run(
-        *(command + ["--shell=zsh", f'{BASEPATH / "test" / "integration" }'])
-    )
+    session.run(*(command + ["--shell=bash", f'{BASEPATH / "test" / "integration" }']))
+    session.run(*(command + ["--shell=dash", f'{BASEPATH / "test" / "integration" }']))
+    session.run(*(command + ["--shell=zsh", f'{BASEPATH / "test" / "integration" }']))
     session.run("coverage", "report", "--fail-under=97")
     session.run("coverage", "lcov")
 

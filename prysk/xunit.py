@@ -5,6 +5,7 @@ import re
 import socket
 import sys
 import time
+from inspect import cleandoc
 
 __all__ = ["runxunit"]
 
@@ -43,7 +44,7 @@ def _cdata(s):
     ...  '<![CDATA[1<\'2\'>&\"3\ufffd]]>]]&gt;<![CDATA[\t\r\n]]>')
     True
     """
-    return "<![CDATA[%s]]>" % _cdatasub(_cdatareplace, s)
+    return f"<![CDATA[{_cdatasub(_cdatareplace, s)}]]>"
 
 
 def _quoteattrreplace(m):
@@ -66,7 +67,7 @@ def _quoteattr(s):
     ...  '"1&lt;\'2\'&gt;&amp;&quot;3\ufffd]]&gt;&#9;&#13;&#10;"')
     True
     """
-    return '"%s"' % _quoteattrsub(_quoteattrreplace, s)
+    return f'"{_quoteattrsub(_quoteattrreplace, s)}"'
 
 
 def _timestamp():
@@ -78,9 +79,9 @@ def _timestamp():
         tz = time.timezone
 
     timestamp = time.strftime("%Y-%m-%dT%H:%M:%S", tm)
-    tzhours = int(-tz / 60 / 60)
-    tzmins = int(abs(tz) / 60 % 60)
-    timestamp += "%+03d:%02d" % (tzhours, tzmins)
+    hours = int(-tz / 60 / 60)
+    minutes = int(abs(tz) / 60 % 60)
+    timestamp += "%+03d:%02d" % (hours, minutes)
     return timestamp
 
 
@@ -115,76 +116,64 @@ def runxunit(tests, xmlpath):
 
             if postout is None:
                 skipped[0] += 1
-                testcase = (
-                    "  <testcase classname=%(classname)s\n"
-                    "            name=%(name)s\n"
-                    '            time="%(time).6f">\n'
-                    "    <skipped/>\n"
-                    "  </testcase>\n"
-                ) % {
-                    "classname": _quoteattr(classname),
-                    "name": _quoteattr(name),
-                    "time": testtime,
-                }
+                testcase = "\n".join(
+                    [
+                        f"  <testcase classname={_quoteattr(classname)}",
+                        f"            name={_quoteattr(name)}",
+                        f'            time="{testtime:6f}">',
+                        "    <skipped/>",
+                        "  </testcase>",
+                        "",
+                    ]
+                )
             elif diff:
                 failed[0] += 1
                 diff = list(diff)
                 diffu = "".join(
                     l.decode(locale.getpreferredencoding(), "replace") for l in diff
                 )
-                testcase = (
-                    "  <testcase classname=%(classname)s\n"
-                    "            name=%(name)s\n"
-                    '            time="%(time).6f">\n'
-                    "    <failure>%(diff)s</failure>\n"
-                    "  </testcase>\n"
-                ) % {
-                    "classname": _quoteattr(classname),
-                    "name": _quoteattr(name),
-                    "time": testtime,
-                    "diff": _cdata(diffu),
-                }
+                testcase = "\n".join(
+                    [
+                        f"  <testcase classname={_quoteattr(classname)}",
+                        f"            name={_quoteattr(name)}",
+                        f'            time="{testtime:6f}">',
+                        f"    <failure>{_cdata(diffu)}</failure>",
+                        "  </testcase>",
+                        "",
+                    ]
+                )
             else:
-                testcase = (
-                    "  <testcase classname=%(classname)s\n"
-                    "            name=%(name)s\n"
-                    '            time="%(time).6f"/>\n'
-                ) % {
-                    "classname": _quoteattr(classname),
-                    "name": _quoteattr(name),
-                    "time": testtime,
-                }
-            testcases.append(testcase)
+                testcase = "\n".join(
+                    [
+                        f"  <testcase classname={_quoteattr(classname)}",
+                        f"            name={_quoteattr(name)}",
+                        f'            time="{testtime:6f}"/>',
+                        "",
+                    ]
+                )
 
+            testcases.append(testcase)
             return refout, postout, diff
 
         yield path, testwrapper
 
     suitetime = time.time() - suitestart
-    header = (
-        '<?xml version="1.0" encoding="utf-8"?>\n'
-        '<testsuite name="prysk"\n'
-        '           tests="%(total)d"\n'
-        '           failures="%(failed)d"\n'
-        '           skipped="%(skipped)d"\n'
-        "           timestamp=%(timestamp)s\n"
-        "           hostname=%(hostname)s\n"
-        '           time="%(time).6f">\n'
-    ) % {
-        "total": total[0],
-        "failed": failed[0],
-        "skipped": skipped[0],
-        "timestamp": _quoteattr(timestamp),
-        "hostname": _quoteattr(hostname),
-        "time": suitetime,
-    }
+    # fmt: off
+    header = cleandoc(f"""
+         <?xml version="1.0" encoding="utf-8"?>
+         <testsuite name="prysk"
+                    tests="{total[0]}"
+                    failures="{failed[0]}"
+                    skipped="{skipped[0]}"
+                    timestamp={_quoteattr(timestamp)}
+                    hostname={_quoteattr(hostname)}
+                    time="{suitetime:6f}">
+    """) + "\n"
+    # fmt: on
     footer = "</testsuite>\n"
 
-    xmlfile = open(xmlpath, "wb")
-    try:
-        xmlfile.write(header.encode("utf-8"))
-        for testcase in testcases:
-            xmlfile.write(testcase.encode("utf-8"))
-        xmlfile.write(footer.encode("utf-8"))
-    finally:
-        xmlfile.close()
+    with open(xmlpath, "wb") as xmlfile:
+        encoding = "utf-8"
+        xmlfile.write(header.encode(encoding))
+        [xmlfile.write(testcase.encode(encoding)) for testcase in testcases]
+        xmlfile.write(footer.encode(encoding))

@@ -1,0 +1,16 @@
+default_stages: [push]
+repos:
+- repo: local
+  hooks:
+
+    - id: isort
+      name: imports
+      types: [python]
+      language: system
+      entry: isort
+
+    - id: format
+      name: code-format
+      types: [python]
+      language: system
+      entry: black

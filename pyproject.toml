@@ -70,6 +70,7 @@ pylint = "^2.13.9"
 Sphinx = "^4.4.0"
 furo = "^2022.3.4"
 nox = "^2022.1.7"
+pre-commit = "^2.19.0"
 
 [tool.coverage.run]
 source = [
@@ -88,7 +89,7 @@ disable = "C0330, C0326"
 
 [tool.black]
 line-length = 88
-verbose = true
+verbose = false
 include = "\\.pyi?$"
 
 [tool.isort]

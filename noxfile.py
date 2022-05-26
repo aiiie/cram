@@ -51,33 +51,6 @@ def pylint(session):
 
 @nox.session(python=False)
 def unit(session):
-    session.run(
-        "poetry",
-        "run",
-        "python",
-        "-m",
-        "pytest",
-        "--doctest-modules",
-        f"{BASEPATH}",
-    )
-
-
-@nox.session(python=False)
-@nox.parametrize("shell", ["dash", "bash", "zsh"])
-def integration(session, shell):
-    session.env["TESTOPTS"] = f"--shell={shell}"
-    session.run(
-        "poetry",
-        "run",
-        "prysk",
-        f"--shell={shell}",
-        f'{BASEPATH / "test" / "integration" }',
-        external=True,
-    )
-
-
-@nox.session(python=False)
-def coverage(session):
     session.env["COVERAGE"] = "coverage"
     session.env["COVERAGE_FILE"] = f'{BASEPATH / ".coverage"}'
     session.run(
@@ -92,7 +65,15 @@ def coverage(session):
         "--doctest-modules",
         f"{BASEPATH}",
     )
-    command = [
+
+
+@nox.session(python=False)
+@nox.parametrize("shell", ["dash", "bash", "zsh"])
+def integration(session, shell):
+    session.env["TESTOPTS"] = f"--shell={shell}"
+    session.env["COVERAGE"] = "coverage"
+    session.env["COVERAGE_FILE"] = f'{BASEPATH / ".coverage"}'
+    session.run(
         "poetry",
         "run",
         "coverage",
@@ -101,10 +82,16 @@ def coverage(session):
         f'--rcfile={BASEPATH / "pyproject.toml"}',
         "-m",
         "prysk",
-    ]
-    session.run(*(command + ["--shell=bash", f'{BASEPATH / "test" / "integration" }']))
-    session.run(*(command + ["--shell=dash", f'{BASEPATH / "test" / "integration" }']))
-    session.run(*(command + ["--shell=zsh", f'{BASEPATH / "test" / "integration" }']))
+        f"--shell={shell}",
+        f'{BASEPATH / "test" / "integration" }',
+        external=True,
+    )
+
+
+@nox.session(python=False)
+def coverage(session):
+    session.env["COVERAGE"] = "coverage"
+    session.env["COVERAGE_FILE"] = f'{BASEPATH / ".coverage"}'
     session.run("coverage", "report", "--fail-under=97")
     session.run("coverage", "lcov")
 

@@ -5,6 +5,7 @@ import nox
 BASEPATH = Path(__file__).parent.resolve()
 
 nox.options.sessions = [
+    "clean",
     "isort",
     "code_format",
     "pylint",
@@ -13,6 +14,12 @@ nox.options.sessions = [
     "coverage",
     "docs",
 ]
+
+
+@nox.session(python=False)
+def clean(session):
+    coverage_file = BASEPATH / ".coverage"
+    coverage_file.unlink(missing_ok=True)
 
 
 @nox.session(python=False)
@@ -83,7 +90,7 @@ def integration(session, shell):
         "-m",
         "prysk",
         f"--shell={shell}",
-        f'{BASEPATH / "test" / "integration" }',
+        f'{BASEPATH / "test" / "integration"}',
         external=True,
     )
 
@@ -99,4 +106,4 @@ def coverage(session):
 @nox.session(python=False)
 def docs(session):
     docs_folder = BASEPATH / "docs"
-    session.run("sphinx-build", f"{docs_folder}", f'{docs_folder /  "_build" / "html"}')
+    session.run("sphinx-build", f"{docs_folder}", f'{docs_folder / "_build" / "html"}')

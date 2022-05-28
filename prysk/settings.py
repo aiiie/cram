@@ -16,6 +16,7 @@ class Settings:
     shell: str = None
     shell_opts: list = field(default_factory=list)
     indent: int = None
+    color: str = "auto"
     xunit_file: str = None
 
 

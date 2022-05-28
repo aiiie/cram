@@ -3,7 +3,7 @@ from inspect import cleandoc
 
 import pytest
 
-from prysk.cli import ArgumentParser, _env_args, load
+from prysk.cli import _ArgumentParser, _env_args, load
 
 Configuration = namedtuple("Configuration", ("expected", "filename", "content"))
 
@@ -39,7 +39,7 @@ def config_file(tmp_path, request):
 
 
 def test_argument_parser_collects_options():
-    parser = ArgumentParser()
+    parser = _ArgumentParser()
     parser.add_argument("-o", "--option", action="store_true")
     parser.add_argument("-i", "--iflag", action="store_true")
     parser.add_argument(

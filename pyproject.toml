@@ -56,6 +56,7 @@ prysk = "prysk:main"
 
 [tool.poetry.dependencies]
 python = "^3.7"
+rich = "^12.4.4"
 
 [tool.poetry.dev-dependencies]
 tomli = "^2.0.1"

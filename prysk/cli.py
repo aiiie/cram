@@ -88,6 +88,7 @@ def _conflicts(settings):
     for option1, value1, option2, value2 in conflicts:
         if value1 and value2:
             return option1, option2
+    return None
 
 
 def _env_args(var, env=None):
@@ -197,7 +198,7 @@ class _ArgumentParser:
         """See argparser.Argumentparser:add_argument"""
 
         def is_boolean_option(a):
-            return action.nargs is not None and isinstance(action.const, bool)
+            return a.nargs is not None and isinstance(a.const, bool)
 
         action = self._parser.add_argument(*args, **kwargs)
         if not action.type:
@@ -470,16 +471,16 @@ class _Cli:
             answer = None
 
         tmpdir = os.environ["PRYSK_TEMP"] = tempfile.mkdtemp("", "prysk-tests-")
-        tmpdirb = Path(tmpdir)
-        proctmp = Path(tmpdir, "tmp")
-        for s in ("TMPDIR", "TEMP", "TMP"):
-            os.environ[s] = f"{proctmp}"
+        tmpdir = Path(tmpdir)
+        proc_tmp = tmpdir / "tmp"
+        for name in ("TMPDIR", "TEMP", "TMP"):
+            os.environ[name] = f"{proc_tmp}"
 
-        os.mkdir(proctmp)
+        os.mkdir(proc_tmp)
         try:
             tests = runtests(
                 settings.tests,
-                tmpdirb,
+                tmpdir,
                 shell,
                 indent=settings.indent,
                 cleanenv=not settings.preserve_env,

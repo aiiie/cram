@@ -4,12 +4,13 @@ import itertools
 import os
 import re
 import time
+from contextlib import contextmanager
 from pathlib import Path
 
 from prysk.diff import esc, glob, regex, unified_diff
 from prysk.process import PIPE, STDOUT, execute
 
-__all__ = ["test", "testfile"]
+__all__ = ["test", "testfile", "runtests"]
 
 _needescape = re.compile(rb"[\x00-\x09\x0b-\x1f\x7f-\xff]").search
 _escapesub = re.compile(rb"[\x00-\x09\x0b-\x1f\\\x7f-\xff]").sub
@@ -20,6 +21,49 @@ _escapemap.update({b"\\": b"\\\\", b"\r": rb"\r", b"\t": rb"\t"})
 def _escape(s):
     """Like the string-escape codec, but doesn't escape quotes"""
     return _escapesub(lambda m: _escapemap[m.group(0)], s[:-1]) + b" (esc)\n"
+
+
+def _findtests(paths):
+    """Yield tests in paths in sorted order"""
+
+    paths = list(map(Path, paths))
+
+    def is_hidden(path):
+        """Check if a path (file/dir) is hidden or not."""
+        return any(map(lambda part: part.startswith("."), path.parts))
+
+    def is_testfile(path):
+        """Check if path is a valid prysk test file"""
+        return path.is_file() and path.suffix == ".t" and not is_hidden(path)
+
+    def is_test_dir(path):
+        """Check if the path is a valid prysk test dir"""
+        return path.is_dir() and not is_hidden(path)
+
+    def remove_duplicates(path):
+        """Stable duplication removal"""
+        return list(dict.fromkeys(path))
+
+    def collect(paths):
+        """Collect all test files compliant with cram collection order"""
+        for path in paths:
+            if is_testfile(path):
+                yield path
+            if is_test_dir(path):
+                yield from sorted((f for f in path.rglob("*.t") if is_testfile(f)))
+
+    yield from remove_duplicates(collect(paths))
+
+
+@contextmanager
+def cwd(path):
+    """Change the current working directory and restore it afterwards."""
+    _cwd = os.getcwd()
+    os.chdir(path)
+    try:
+        yield path
+    finally:
+        os.chdir(_cwd)
 
 
 def test(
@@ -233,3 +277,50 @@ def testfile(
             cleanenv=cleanenv,
             debug=debug,
         )
+
+
+def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False):
+    """Run tests and yield results.
+
+    This yields a sequence of 2-tuples containing the following:
+
+        (test path, test function)
+
+    The test function, when called, runs the test in a temporary directory
+    and returns a 3-tuple:
+
+        (list of lines in the test, same list with actual output, diff)
+    """
+    basenames, seen = set(), set()
+    tests = _findtests(paths)
+    for i, path in enumerate(tests):
+        abspath = path.resolve()
+        if abspath in seen:
+            continue
+        seen.add(abspath)
+
+        if not path.stat().st_size:
+            yield path, lambda: (None, None, None)
+            continue
+
+        basename = path.name
+        if basename in basenames:
+            basename = f"{basename}-{i}"
+        else:
+            basenames.add(basename)
+
+        def test():
+            """Run test file"""
+            testdir = tmpdir / basename
+            os.mkdir(testdir)
+            with cwd(testdir):
+                return testfile(
+                    abspath,
+                    shell,
+                    indent=indent,
+                    cleanenv=cleanenv,
+                    debug=debug,
+                    testname=path,
+                )
+
+        yield path, test

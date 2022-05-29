@@ -14,8 +14,8 @@ from shutil import which
 from rich.console import Console
 
 from prysk.process import execute
-from prysk.run import runtests
 from prysk.settings import merge_settings, settings_from
+from prysk.test import runtests
 from prysk.xunit import runxunit
 
 VERSION = "0.12.1"

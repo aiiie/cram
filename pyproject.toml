@@ -6,7 +6,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "prysk"
-version = "0.12.0"
+version = "0.12.1"
 description = "Functional tests for command line applications"
 readme = "README.rst"
 license = "GNU GPLv2 or any later version"

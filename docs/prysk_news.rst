@@ -1,3 +1,8 @@
+Version 0.12.1 (May. 29, 2022)
+-----------------------------------------------------
+* Fix version output of cli
+* Simplify prysk_news/changelog
+
 Version 0.12.0 (May. 29, 2022)
 -----------------------------------------------------
 * Add color support to cli interface

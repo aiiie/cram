@@ -9,32 +9,34 @@ from inspect import cleandoc
 
 __all__ = ["runxunit"]
 
-_widecdataregex = (
+_WIDE_CDATA_REGEX = (
     r"(?:[^\x09\x0a\x0d\x20-\ud7ff\ue000-\ufffd" r"\U00010000-\U0010ffff]|]]>)"
 )
-_narrowcdataregex = r"(?:[^\x09\x0a\x0d\x20-\ud7ff\ue000-\ufffd]" r"|]]>)"
-_widequoteattrregex = (
+_NARROW_CDATA_REGEX = r"(?:[^\x09\x0a\x0d\x20-\ud7ff\ue000-\ufffd]" r"|]]>)"
+_WIDE_QUOTE_ATTR_REGEX = (
     r"[^\x20\x21\x23-\x25\x27-\x3b\x3d"
     r"\x3f-\ud7ff\ue000-\ufffd"
     r"\U00010000-\U0010ffff]"
 )
-_narrowquoteattrregex = r"[^\x20\x21\x23-\x25\x27-\x3b\x3d" r"\x3f-\ud7ff\ue000-\ufffd]"
-_replacementchar = "\N{REPLACEMENT CHARACTER}"
+_NARROW_QUOTE_ATTR_REGEX = (
+    r"[^\x20\x21\x23-\x25\x27-\x3b\x3d" r"\x3f-\ud7ff\ue000-\ufffd]"
+)
+_REPLACEMENT_CHAR = "\N{REPLACEMENT CHARACTER}"
 
 if sys.maxunicode >= 0x10FFFF:
-    _cdatasub = re.compile(_widecdataregex).sub
-    _quoteattrsub = re.compile(_widequoteattrregex).sub
+    _CDATASUB = re.compile(_WIDE_CDATA_REGEX).sub
+    _QUOTEATTRSUB = re.compile(_WIDE_QUOTE_ATTR_REGEX).sub
 else:
-    _cdatasub = re.compile(_narrowcdataregex).sub
-    _quoteattrsub = re.compile(_narrowquoteattrregex).sub
+    _CDATASUB = re.compile(_NARROW_CDATA_REGEX).sub
+    _QUOTEATTRSUB = re.compile(_NARROW_QUOTE_ATTR_REGEX).sub
 
 
 def _cdatareplace(m):
-    """Replace _cdatasub() regex match"""
+    """Replace _CDATASUB() regex match"""
     if m.group(0) == "]]>":
         return "]]>]]&gt;<![CDATA["
     else:
-        return _replacementchar
+        return _REPLACEMENT_CHAR
 
 
 def _cdata(s):
@@ -44,11 +46,11 @@ def _cdata(s):
     ...  '<![CDATA[1<\'2\'>&\"3\ufffd]]>]]&gt;<![CDATA[\t\r\n]]>')
     True
     """
-    return f"<![CDATA[{_cdatasub(_cdatareplace, s)}]]>"
+    return f"<![CDATA[{_CDATASUB(_cdatareplace, s)}]]>"
 
 
 def _quoteattrreplace(m):
-    """Replace _quoteattrsub() regex match"""
+    """Replace _QUOTEATTRSUB() regex match"""
     return {
         "\t": "&#9;",
         "\n": "&#10;",
@@ -57,7 +59,7 @@ def _quoteattrreplace(m):
         "&": "&amp;",
         "<": "&lt;",
         ">": "&gt;",
-    }.get(m.group(0), _replacementchar)
+    }.get(m.group(0), _REPLACEMENT_CHAR)
 
 
 def _quoteattr(s):
@@ -67,7 +69,7 @@ def _quoteattr(s):
     ...  '"1&lt;\'2\'&gt;&amp;&quot;3\ufffd]]&gt;&#9;&#13;&#10;"')
     True
     """
-    return f'"{_quoteattrsub(_quoteattrreplace, s)}"'
+    return f'"{_QUOTEATTRSUB(_quoteattrreplace, s)}"'
 
 
 def _timestamp():

@@ -14,25 +14,25 @@ def _findtests(paths):
 
     paths = list(map(Path, paths))
 
-    def is_hidden(p):
+    def is_hidden(path):
         """Check if a path (file/dir) is hidden or not."""
-        return any(map(lambda part: part.startswith("."), p.parts))
+        return any(map(lambda part: part.startswith("."), path.parts))
 
-    def is_testfile(p):
+    def is_testfile(path):
         """Check if path is a valid prysk test file"""
-        return p.is_file() and p.suffix == ".t" and not is_hidden(p)
+        return path.is_file() and path.suffix == ".t" and not is_hidden(path)
 
-    def is_test_dir(p):
+    def is_test_dir(path):
         """Check if the path is a valid prysk test dir"""
-        return p.is_dir() and not is_hidden(p)
+        return path.is_dir() and not is_hidden(path)
 
-    def remove_duplicates(p):
+    def remove_duplicates(path):
         """Stable duplication removal"""
-        return list(dict.fromkeys(p))
+        return list(dict.fromkeys(path))
 
-    def collect(p):
+    def collect(paths):
         """Collect all test files compliant with cram collection order"""
-        for path in p:
+        for path in paths:
             if is_testfile(path):
                 yield path
             if is_test_dir(path):

@@ -12,15 +12,16 @@ from prysk.process import PIPE, STDOUT, execute
 
 __all__ = ["test", "testfile", "runtests"]
 
-_needescape = re.compile(rb"[\x00-\x09\x0b-\x1f\x7f-\xff]").search
-_escapesub = re.compile(rb"[\x00-\x09\x0b-\x1f\\\x7f-\xff]").sub
-_escapemap = dict((bytes([i]), rb"\x%02x" % i) for i in range(256))
-_escapemap.update({b"\\": b"\\\\", b"\r": rb"\r", b"\t": rb"\t"})
+_SKIP = 80
+_IS_ESCAPING_NEEDED = re.compile(rb"[\x00-\x09\x0b-\x1f\x7f-\xff]").search
 
 
 def _escape(s):
     """Like the string-escape codec, but doesn't escape quotes"""
-    return _escapesub(lambda m: _escapemap[m.group(0)], s[:-1]) + b" (esc)\n"
+    escape_sub = re.compile(rb"[\x00-\x09\x0b-\x1f\\\x7f-\xff]").sub
+    escape_map = dict((bytes([i]), rb"\x%02x" % i) for i in range(256))
+    escape_map.update({b"\\": b"\\\\", b"\r": rb"\r", b"\t": rb"\t"})
+    return escape_sub(lambda m: escape_map[m.group(0)], s[:-1]) + b" (esc)\n"
 
 
 def _findtests(paths):
@@ -135,7 +136,7 @@ def test(
     indent = b" " * indent
     cmdline = indent + b"$ "
     conline = indent + b"> "
-    salt = b"CRAM%.5f" % time.time()
+    salt = b"PRYSK%.5f" % time.time()
 
     def create_environment(environment, shell, clean=False):
         _env = os.environ.copy() if environment is None else environment
@@ -153,17 +154,7 @@ def test(
     env = create_environment(env, shell[0], clean=cleanenv)
 
     if debug:
-        stdin = []
-        for line in lines:
-            if not line.endswith(b"\n"):
-                line += b"\n"
-            if line.startswith(cmdline):
-                stdin.append(line[len(cmdline) :])
-            elif line.startswith(conline):
-                stdin.append(line[len(conline) :])
-
-        execute(shell + ["-"], stdin=b"".join(stdin), env=env)
-        return ([], [], [])
+        return _debug(cmdline, conline, env, lines, shell)
 
     after = {}
     refout, postout = [], []
@@ -189,11 +180,10 @@ def test(
     output, retcode = execute(
         shell + ["-"], stdin=b"".join(stdin), stdout=PIPE, stderr=STDOUT, env=env
     )
-    if retcode == 80:
-        return (refout, None, [])
+    if retcode == _SKIP:
+        return refout, None, []
 
     pos = -1
-    ret = 0
     for i, line in enumerate(output[:-1].splitlines(True)):
         out, cmd = line, None
         if salt in line:
@@ -203,7 +193,7 @@ def test(
             if not out.endswith(b"\n"):
                 out += b" (no-eol)\n"
 
-            if _needescape(out):
+            if _IS_ESCAPING_NEEDED(out):
                 out = _escape(out)
             postout.append(indent + out)
 
@@ -217,14 +207,30 @@ def test(
     postout += after.pop(pos, [])
 
     if testname:
-        diffpath = bytes(testname)
-        errpath = bytes(Path(testname.parent, f"{testname.name}.err"))
+        diff_path = bytes(testname)
+        error_path = bytes(Path(testname.parent, f"{testname.name}.err"))
     else:
-        diffpath = errpath = b""
-    diff = unified_diff(refout, postout, diffpath, errpath, matchers=[esc, glob, regex])
-    for firstline in diff:
-        return refout, postout, itertools.chain([firstline], diff)
+        diff_path = error_path = b""
+
+    diff = unified_diff(
+        refout, postout, diff_path, error_path, matchers=[esc, glob, regex]
+    )
+    for line in diff:
+        return refout, postout, itertools.chain([line], diff)
     return refout, postout, []
+
+
+def _debug(cmdline, conline, env, lines, shell):
+    stdin = []
+    for line in lines:
+        if not line.endswith(b"\n"):
+            line += b"\n"
+        if line.startswith(cmdline):
+            stdin.append(line[len(cmdline) :])
+        elif line.startswith(conline):
+            stdin.append(line[len(conline) :])
+    execute(shell + ["-"], stdin=b"".join(stdin), env=env)
+    return [], [], []
 
 
 def testfile(

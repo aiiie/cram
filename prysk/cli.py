@@ -22,6 +22,8 @@ VERSION = "0.12.1"
 
 
 class ExitCode:
+    """Possible exit codes of prysk CLI"""
+
     SUCCESS = 0
     TEST_FAILED = 1
     ERROR = 2
@@ -41,11 +43,11 @@ def main(argv=None):
     return _Cli().main(argv)
 
 
-def load(config, supported_options, section="prysk"):
+def load(config, supported, section="prysk"):
     """
     Load configuration options from a init style format config file.
 
-    :param supported_options: iterable of options and their type which should be collected.
+    :param supported: iterable of supported options and their type which should be collected.
     :param section: which contains the options.
     """
     parser = configparser.ConfigParser()
@@ -61,7 +63,7 @@ def load(config, supported_options, section="prysk"):
         return {}
 
     config = {}
-    for _type, option in supported_options:
+    for _type, option in supported:
         if not parser.has_option(section, option):
             continue
         try:
@@ -83,9 +85,9 @@ def _conflicts(settings):
         ("--debug", settings.debug, "--verbose", settings.verbose),
         ("--debug", settings.debug, "--xunit-file", settings.xunit_file),
     ]
-    for s1, o1, s2, o2 in conflicts:
-        if o1 and o2:
-            return s1, s2
+    for option1, value1, option2, value2 in conflicts:
+        if value1 and value2:
+            return option1, option2
 
 
 def _env_args(var, env=None):
@@ -94,14 +96,10 @@ def _env_args(var, env=None):
     return shlex.split(args)
 
 
-def _patch(cmd, diff):
-    """Run echo [lines from diff] | cmd -p0"""
-    _, retcode = execute([cmd, "-p0"], stdin=b"".join(diff))
-    return retcode == 0
-
-
 class _ArgumentParser:
-    """argparse.Argumentparser compatible argument parser which allows inspection of options supported by the parser"""
+    """argparse.Argumentparser compatible argument parser.
+
+    Allows inspection of options supported by the parser"""
 
     @classmethod
     def create_parser(cls):
@@ -234,6 +232,17 @@ class _CliError(Exception):
 
 
 class _Cli:
+    @staticmethod
+    def _expandpath(path):
+        """Expands ~ and environment variables in path"""
+        return os.path.expanduser(os.path.expandvars(path))
+
+    @staticmethod
+    def _patch(cmd, diff):
+        """Run echo [lines from diff] | cmd -p0"""
+        _, retcode = execute([cmd, "-p0"], stdin=b"".join(diff))
+        return retcode == 0
+
     def __init__(self):
         self._stdout_console = Console(file=sys.stdout)
         self._stderr_console = Console(file=sys.stderr)
@@ -255,115 +264,6 @@ class _Cli:
         mode = dispatcher[mode]
         self._stdout_console = Console(file=sys.stdout, color_system=mode)
         self._stderr_console = Console(file=sys.stderr, color_system=mode)
-
-    def _load_setting(self):
-        pass
-
-    @staticmethod
-    def _expandpath(path):
-        """Expands ~ and environment variables in path"""
-        return os.path.expanduser(os.path.expandvars(path))
-
-    def main(self, argv=None):
-        argv = sys.argv[1:] if argv is None else argv
-        argv.extend(_env_args("PRYSK"))
-        args = self._argparser.parse_args(argv)
-        self._color_mode(args.color)
-        options = self._argparser.options
-
-        try:
-            configuration_settings = settings_from(
-                load(
-                    Path(self._expandpath(os.environ.get("PRYSKRC", ".pryskrc"))),
-                    options,
-                )
-            )
-        except ValueError as ex:
-            self.stderr(f"{self._argparser.format_usage()}")
-            self.stderr(f"prysk: error: {ex}")
-            return ExitCode.ERROR
-
-        argument_settings = settings_from(args)
-        settings = merge_settings(argument_settings, configuration_settings)
-
-        conflict = _conflicts(settings)
-        if conflict:
-            arg1, arg2 = conflict
-            self.stderr(f"options {arg1} and {arg2} are mutually exclusive")
-            return ExitCode.ERROR
-
-        shellcmd = which(settings.shell)
-        if not shellcmd:
-            self.stderr(f"shell not found: {settings.shell}")
-            return ExitCode.ERROR
-        shell = [shellcmd]
-        if settings.shell_opts:
-            shell += shlex.split(settings.shell_opts)
-
-        patchcmd = None
-        if settings.interactive:
-            patchcmd = which("patch")
-            if not patchcmd:
-                self.stderr("patch(1) required for -i")
-                return ExitCode.ERROR
-
-        badpaths = [path for path in settings.tests if not path.exists()]
-        if badpaths:
-            self.stderr(f"no such file: {badpaths[0]}")
-            return ExitCode.ERROR
-
-        if settings.yes:
-            answer = "y"
-        elif settings.no:
-            answer = "n"
-        else:
-            answer = None
-
-        tmpdir = os.environ["PRYSK_TEMP"] = tempfile.mkdtemp("", "prysk-tests-")
-        tmpdirb = Path(tmpdir)
-        proctmp = Path(tmpdir, "tmp")
-        for s in ("TMPDIR", "TEMP", "TMP"):
-            os.environ[s] = f"{proctmp}"
-
-        os.mkdir(proctmp)
-        try:
-            tests = runtests(
-                settings.tests,
-                tmpdirb,
-                shell,
-                indent=settings.indent,
-                cleanenv=not settings.preserve_env,
-                debug=settings.debug,
-            )
-            if not settings.debug:
-                tests = self._runcli(
-                    tests,
-                    quiet=settings.quiet,
-                    verbose=settings.verbose,
-                    patchcmd=patchcmd,
-                    answer=answer,
-                )
-                if settings.xunit_file is not None:
-                    tests = runxunit(tests, settings.xunit_file)
-
-            hastests = False
-            failed = False
-            for path, test in tests:
-                hastests = True
-                _, _, diff = test()
-                if diff:
-                    failed = True
-
-            if not hastests:
-                self.stderr("[red]no tests found[/red]")
-                return ExitCode.ERROR
-
-            return ExitCode.TEST_FAILED if failed else ExitCode.SUCCESS
-        finally:
-            if settings.keep_tmpdir:
-                self.stdout(f"# Kept temporary directory: [blue]{tmpdir}[/blue]")
-            else:
-                shutil.rmtree(tmpdir)
 
     def _log(self, msg=None, verbosemsg=None, verbose=False):
         """Write msg to standard out and flush.
@@ -456,7 +356,7 @@ class _Cli:
                             patchcmd
                             and self._prompt("Accept this change?", "yN", answer) == "y"
                         ):
-                            if _patch(patchcmd, diff):
+                            if self._patch(patchcmd, diff):
                                 self._log(None, f"{path}: merged output\n", verbose)
                                 os.remove(errpath)
                             else:
@@ -500,3 +400,117 @@ class _Cli:
                 return default[0]
             elif answer and answer in answers.lower():
                 return answer
+
+    def _load_settings(self, argv):
+        """Loads the settings from all layers and merges them.
+
+        Layers (Config file > ENV vars > CLI arguments)"""
+        argv = sys.argv[1:] if argv is None else argv
+        argv.extend(_env_args("PRYSK"))
+        args = self._argparser.parse_args(argv)
+        self._color_mode(args.color)
+        options = self._argparser.options
+
+        try:
+            configuration_settings = settings_from(
+                load(
+                    Path(self._expandpath(os.environ.get("PRYSKRC", ".pryskrc"))),
+                    options,
+                )
+            )
+        except ValueError as ex:
+            raise _CliError(
+                ExitCode.ERROR,
+                "\n".join([f"{self._argparser.format_usage()}", f"prysk: error: {ex}"]),
+            ) from ex
+
+        argument_settings = settings_from(args)
+        settings = merge_settings(argument_settings, configuration_settings)
+        return settings
+
+    def main(self, argv=None):
+        try:
+            settings = self._load_settings(argv)
+        except _CliError as ex:
+            self.stderr(f"{ex}")
+            return ex.exit_code
+
+        conflict = _conflicts(settings)
+
+        if conflict:
+            arg1, arg2 = conflict
+            self.stderr(f"options {arg1} and {arg2} are mutually exclusive")
+            return ExitCode.ERROR
+
+        shellcmd = which(settings.shell)
+        if not shellcmd:
+            self.stderr(f"shell not found: {settings.shell}")
+            return ExitCode.ERROR
+        shell = [shellcmd]
+        if settings.shell_opts:
+            shell += shlex.split(settings.shell_opts)
+
+        patchcmd = None
+        if settings.interactive:
+            patchcmd = which("patch")
+            if not patchcmd:
+                self.stderr("patch(1) required for -i")
+                return ExitCode.ERROR
+
+        badpaths = [path for path in settings.tests if not path.exists()]
+        if badpaths:
+            self.stderr(f"no such file: {badpaths[0]}")
+            return ExitCode.ERROR
+
+        if settings.yes:
+            answer = "y"
+        elif settings.no:
+            answer = "n"
+        else:
+            answer = None
+
+        tmpdir = os.environ["PRYSK_TEMP"] = tempfile.mkdtemp("", "prysk-tests-")
+        tmpdirb = Path(tmpdir)
+        proctmp = Path(tmpdir, "tmp")
+        for s in ("TMPDIR", "TEMP", "TMP"):
+            os.environ[s] = f"{proctmp}"
+
+        os.mkdir(proctmp)
+        try:
+            tests = runtests(
+                settings.tests,
+                tmpdirb,
+                shell,
+                indent=settings.indent,
+                cleanenv=not settings.preserve_env,
+                debug=settings.debug,
+            )
+            if not settings.debug:
+                tests = self._runcli(
+                    tests,
+                    quiet=settings.quiet,
+                    verbose=settings.verbose,
+                    patchcmd=patchcmd,
+                    answer=answer,
+                )
+                if settings.xunit_file is not None:
+                    tests = runxunit(tests, settings.xunit_file)
+
+            hastests = False
+            failed = False
+            for path, test in tests:
+                hastests = True
+                _, _, diff = test()
+                if diff:
+                    failed = True
+
+            if not hastests:
+                self.stderr("[red]no tests found[/red]")
+                return ExitCode.ERROR
+
+            return ExitCode.TEST_FAILED if failed else ExitCode.SUCCESS
+        finally:
+            if settings.keep_tmpdir:
+                self.stdout(f"# Kept temporary directory: [blue]{tmpdir}[/blue]")
+            else:
+                shutil.rmtree(tmpdir)

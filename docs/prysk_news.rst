@@ -32,4 +32,3 @@ Version 0.8 (Jan. 25, 2022)
     .. warning::
         Also semantically relevant names have been renamed,
         e.g. env var CRAMTMP is now PRYSK_TEMP
-

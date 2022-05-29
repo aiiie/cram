@@ -45,7 +45,7 @@ def execute(args, stdin=None, stdout=None, stderr=None, cwd=None, env=None):
     if sys.platform == "win32":
         args = [os.fsdecode(arg) for arg in args]
 
-    p = subprocess.Popen(
+    process = subprocess.Popen(
         args,
         stdin=PIPE,
         stdout=stdout,
@@ -56,5 +56,5 @@ def execute(args, stdin=None, stdout=None, stderr=None, cwd=None, env=None):
         preexec_fn=_makeresetsigpipe(),
         close_fds=os.name == "posix",
     )
-    out, err = p.communicate(stdin)
-    return out, p.returncode
+    out, _err = process.communicate(stdin)
+    return out, process.returncode

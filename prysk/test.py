@@ -31,7 +31,16 @@ def _findtests(paths):
 
     def is_hidden(path):
         """Check if a path (file/dir) is hidden or not."""
-        return any(map(lambda part: part.startswith("."), path.parts))
+
+        def _is_hidden(part):
+            return (
+                part.startswith(".")
+                and not part == "."
+                and not part.startswith("..")
+                and not part.startswith("./")
+            )
+
+        return any(map(_is_hidden, path.parts))
 
     def is_testfile(path):
         """Check if path is a valid prysk test file"""

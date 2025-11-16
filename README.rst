@@ -67,7 +67,7 @@ The format in a nutshell:
 
 * Anything else is a comment.
 
-.. _Cram's own test suite: https://github.com/brodie/cram/blob/master/tests/usage.t
+.. _Cram's own test suite: https://github.com/aiiie/cram/blob/master/tests/usage.t
 .. _Perl-compatible regular expressions: https://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions
 
 
@@ -187,7 +187,7 @@ a test, try adding the ``-n`` option to prevent it from closing
 waiting for the test shell's ``stdout`` to be fully closed.
 
 .. _unified context diff: https://en.wikipedia.org/wiki/Diff#Unified_format
-.. _its own example tests: https://github.com/brodie/cram/tree/master/examples
+.. _its own example tests: https://github.com/aiiie/cram/tree/master/examples
 
 
 Development
@@ -195,7 +195,7 @@ Development
 
 Download the official development repository using Git_::
 
-    git clone https://github.com/brodie/cram.git
+    git clone https://github.com/aiiie/cram.git
 
 Test Cram using Cram::
 
@@ -206,4 +206,4 @@ Visit GitHub_ if you'd like to fork the project, watch for new changes, or
 report issues.
 
 .. _Git: http://git-scm.com/
-.. _GitHub: https://github.com/brodie/cram
+.. _GitHub: https://github.com/aiiie/cram

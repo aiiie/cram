@@ -4,7 +4,11 @@ import sys
 
 import cram
 
-try:
-    sys.exit(cram.main(sys.argv[1:]))
-except (BrokenPipeError, KeyboardInterrupt):
-    pass
+def main():
+    try:
+        return cram.main(sys.argv[1:])
+    except (BrokenPipeError, KeyboardInterrupt):
+        pass
+
+if __name__ == '__main__':
+    sys.exit(main())

@@ -1,4 +1,4 @@
-check-manifest
 coverage
+flit
 pycodestyle
 pyflakes

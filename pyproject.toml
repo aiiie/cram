@@ -1,0 +1,46 @@
+[build-system]
+requires = ["flit_core >=3.11,<5"]
+build-backend = "flit_core.buildapi"
+
+[project]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Unix Shell",
+    "Topic :: Software Development :: Testing",
+]
+dynamic = ["version", "description"]
+keywords = ["automatic", "functional", "test", "framework"]
+license = "GPL-2.0-or-later"
+license-files = ["COPYING.txt"]
+name = "cram"
+readme = "README.rst"
+requires-python = ">=3.3"
+
+[project.scripts]
+cram = "cram.__main__:main"
+
+[project.urls]
+download = "https://bitheap.org/cram/cram-0.8.tar.gz"
+homepage = "https://bitheap.org/cram/"
+
+[tool.flit.sdist]
+include = [
+    ".coveragerc",
+    ".pylintrc",
+    ".travis.yml",
+    "Makefile",
+    "pyproject.toml",
+    "setup.cfg",
+    "*.md",
+    "*.rst",
+    "*.txt",
+    "contrib/",
+    "examples/",
+    "tests/",
+]
+exclude = ["*.err"]

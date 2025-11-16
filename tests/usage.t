@@ -25,7 +25,7 @@ Usage:
   $ cram -V
   Cram CLI testing framework (version 0.8)
   
-  Copyright (C) 2010-2021 Brodie Rao <brodie@bitheap.org> and others
+  Copyright (C) 2010-2025 aiiie and others
   This is free software; see the source for copying conditions. There is NO
   warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
   $ cram

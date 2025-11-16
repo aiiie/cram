@@ -20,8 +20,6 @@ def long_description():
     return open(os.path.join(sys.path[0], 'README.rst')).read()
 
 setup(
-    author='Brodie Rao',
-    author_email='brodie@bitheap.org',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',

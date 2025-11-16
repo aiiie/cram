@@ -88,7 +88,7 @@ Interactive mode (merge):
      
      \d (re)
   Accept this change? [yN] y
-  patching file examples/fail.t
+  patching file '?examples/fail\.t'? (re)
   
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]
@@ -220,7 +220,7 @@ Verbose interactive mode (answer manually and merge):
   +  foo
      
      \d (re)
-  Accept this change? [yN] Accept this change? [yN] patching file examples/fail.t
+  Accept this change\? \[yN\] Accept this change\? \[yN\] patching file '?examples/fail\.t'? (re)
   examples/fail.t: merged output
   # Ran 1 tests, 0 skipped, 1 failed.
   [1]

@@ -7,10 +7,7 @@ import shutil
 import sys
 import tempfile
 
-try:
-    import configparser
-except ImportError: # pragma: nocover
-    import ConfigParser as configparser
+import configparser
 
 from cram._cli import runcli
 from cram._run import runtests

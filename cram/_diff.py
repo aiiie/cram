@@ -81,7 +81,7 @@ class _SequenceMatcher(difflib.SequenceMatcher):
                 return True
         return False
 
-    def find_longest_match(self, alo, ahi, blo, bhi):
+    def find_longest_match(self, alo=0, ahi=None, blo=0, bhi=None):
         """Find longest matching block in a[alo:ahi] and b[blo:bhi]"""
         # SequenceMatcher uses find_longest_match() to slowly whittle down
         # the differences between a and b until it has each matching block.

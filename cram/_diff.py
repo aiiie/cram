@@ -68,7 +68,7 @@ def esc(el, l):
         l = codecs.escape_decode(l[:-len(ann)])[0] + b'\n'
     return el == l
 
-class _SequenceMatcher(difflib.SequenceMatcher, object):
+class _SequenceMatcher(difflib.SequenceMatcher):
     """Like difflib.SequenceMatcher, but supports custom match functions"""
     def __init__(self, *args, **kwargs):
         self._matchers = kwargs.pop('matchers', [])

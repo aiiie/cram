@@ -14,10 +14,10 @@ if [ -n "$COVERAGE" ]; then
     export COVERAGE_FILE
   fi
 
-  alias cram="`which "$COVERAGE"` run -a --rcfile=$TESTDIR/../.coveragerc \
+  alias cram="`which "$COVERAGE"` run -a --rcfile=$TESTDIR/../pyproject.toml \
 -m cram --shell=$TESTSHELL"
-  alias doctest="`which "$COVERAGE"` run -a --rcfile=$TESTDIR/../.coveragerc \
-$TESTDIR/run-doctests.py"
+  alias doctest="`which "$COVERAGE"` run -a \
+--rcfile=$TESTDIR/../pyproject.toml $TESTDIR/run-doctests.py"
 else
   PYTHON="`command -v "$PYTHON" || echo "$PYTHON"`"
   alias cram="$PYTHON -m cram --shell=$TESTSHELL"

@@ -1,4 +1,0 @@
-[run]
-omit =
-    */cram/__main__.py
-source = cram

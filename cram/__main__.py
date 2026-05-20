@@ -4,11 +4,14 @@ import sys
 
 import cram
 
-def main():
+__all__ = ['main']
+
+def main() -> int:
+    """Run cram"""
     try:
         return cram.main(sys.argv[1:])
-    except (BrokenPipeError, KeyboardInterrupt):
-        pass
+    except (BrokenPipeError, KeyboardInterrupt): # pragma: nocover
+        return 0
 
 if __name__ == '__main__':
     sys.exit(main())

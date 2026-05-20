@@ -8,14 +8,11 @@ all: build
 build:
 	flit build --no-use-vcs
 
-check: test
-
 clean:
 	find . -not -path '*/.git/*' \
-		\( -name '*.py[cdo]' -o -name '*.err' -o \
-		-name '*,cover' -o -name __pycache__ \) -prune \
+		\( -name '*.err' -o -name '*,cover' -o -name __pycache__ \) -prune \
 		-exec rm -rf '{}' ';'
-	rm -rf dist build htmlcov
+	rm -rf .mypy_cache .ruff_cache .dist build htmlcov
 	rm -f .coverage cram.xml
 
 dist:
@@ -23,6 +20,16 @@ dist:
 
 install:
 	flit install
+
+check: test
+
+lint:
+	ruff check
+	ty check
+	pyrefly check
+	zuban check
+	mypy .
+	basedpyright
 
 quicktest:
 	PYTHON=$(PYTHON) PYTHONPATH=`pwd` $(PYTHON) -m cram $(TESTOPTS) tests
@@ -33,4 +40,4 @@ test:
 		$(PYTHON) -m cram $(TESTOPTS) tests
 	$(COVERAGE) report --fail-under=100
 
-.PHONY: all build check clean install dist quicktest test
+.PHONY: all build clean dist install check lint quicktest test

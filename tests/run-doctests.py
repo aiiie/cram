@@ -1,12 +1,16 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+"""Runs doctests"""
 
+import contextlib
 import doctest
 import os
 import sys
+from collections.abc import Iterable
+from types import ModuleType
 
-def _getmodules(pkgdir):
+def _getmodules(pkgdir: str) -> Iterable[ModuleType]:
     """Import and yield modules in pkgdir"""
-    for root, dirs, files in os.walk(pkgdir):
+    for _root, dirs, files in os.walk(pkgdir):
         if '__pycache__' in dirs:
             dirs.remove('__pycache__')
         for fn in files:
@@ -14,17 +18,14 @@ def _getmodules(pkgdir):
                 continue
 
             modname = fn.replace(os.sep, '.')[:-len('.py')]
-            if modname.endswith('.__init__'):
-                modname = modname[:-len('.__init__')]
+            modname = modname.removesuffix('.__init__')
             modname = '.'.join(['cram', modname])
-            if '.' in modname:
-                fromlist = [modname.rsplit('.', 1)[1]]
-            else:
-                fromlist = []
+            fromlist: list[str] = ([modname.rsplit('.', 1)[1]]
+                                   if '.' in modname else [])
 
             yield __import__(modname, {}, {}, fromlist)
 
-def rundoctests(pkgdir):
+def rundoctests(pkgdir: str) -> bool:
     """Run doctests in the given package directory"""
     totalfailures = totaltests = 0
     for module in _getmodules(pkgdir):
@@ -34,7 +35,5 @@ def rundoctests(pkgdir):
     return totalfailures != 0
 
 if __name__ == '__main__':
-    try:
+    with contextlib.suppress(KeyboardInterrupt):
         sys.exit(rundoctests(sys.argv[1]))
-    except KeyboardInterrupt:
-        pass

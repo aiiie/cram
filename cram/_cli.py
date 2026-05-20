@@ -2,12 +2,14 @@
 
 import os
 import sys
+from collections.abc import Iterable
 
 from cram._process import execute
+from cram._test import Test, TestResult
 
 __all__ = ['runcli']
 
-def _prompt(question, answers, auto=None):
+def _prompt(question: str, answers: str, auto: str | None=None) -> str:
     """Write a prompt to stdout and ask for answer in stdin.
 
     answers should be a string, with each character a single
@@ -21,7 +23,7 @@ def _prompt(question, answers, auto=None):
     """
     default = [c for c in answers if c.isupper()]
     while True:
-        sys.stdout.write('%s [%s] ' % (question, answers))
+        sys.stdout.write(f'{question} [{answers}] ')
         sys.stdout.flush()
         if auto is not None:
             sys.stdout.write(auto + '\n')
@@ -34,7 +36,8 @@ def _prompt(question, answers, auto=None):
         elif answer and answer in answers.lower():
             return answer
 
-def _log(msg=None, verbosemsg=None, verbose=False):
+def _log(msg: str | None=None, verbosemsg: str | None=None,
+         verbose: bool=False) -> None:
     """Write msg to standard out and flush.
 
     If verbose is True, write verbosemsg instead.
@@ -42,23 +45,18 @@ def _log(msg=None, verbosemsg=None, verbose=False):
     if verbose:
         msg = verbosemsg
     if msg:
-        if isinstance(msg, bytes):
-            sys.stdout.buffer.write(msg)
-        else: # pragma: nocover
-            sys.stdout.write(msg)
+        sys.stdout.write(msg)
         sys.stdout.flush()
 
-def _patch(cmd, diff):
+def _patch(cmd: str, diff: list[bytes]) -> bool:
     """Run echo [lines from diff] | cmd -p0"""
-    out, retcode = execute([cmd, '-p0'], stdin=b''.join(diff))
+    _out, retcode = execute([cmd, '-p0'], stdin=b''.join(diff))
     return retcode == 0
 
-def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None):
+def runcli(tests: Iterable[Test], quiet: bool=False, verbose: bool=False,
+           patchcmd: str | None=None, answer: str | None=None
+           ) -> Iterable[Test]:
     """Run tests with command line interface input/output.
-
-    tests should be a sequence of 2-tuples containing the following:
-
-        (test path, test function)
 
     This function yields a new sequence where each test function is wrapped
     with a function that handles CLI input/output.
@@ -71,63 +69,59 @@ def runcli(tests, quiet=False, verbose=False, patchcmd=None, answer=None):
     answer is read from stdin. If 'y', the test is patched using patch
     based on the changed output.
     """
-    total, skipped, failed = [0], [0], [0]
+    total = skipped = failed = 0
 
-    for path, test in tests:
-        def testwrapper():
+    for path, run in tests:
+        def runwrapper() -> TestResult:
+            nonlocal total, skipped, failed
             """Test function that adds CLI output"""
-            total[0] += 1
-            _log(None, path + b': ', verbose)
+            total += 1
+            _log(None, f'{path}: ', verbose)
 
-            refout, postout, diff = test()
+            refout, postout, diff = run()
             if refout is None:
-                skipped[0] += 1
+                skipped += 1
                 _log('s', 'empty\n', verbose)
-                return refout, postout, diff
+                return TestResult(refout, postout, diff)
 
             abspath = os.path.abspath(path)
-            errpath = abspath + b'.err'
+            errpath = abspath + '.err'
 
             if postout is None:
-                skipped[0] += 1
+                skipped += 1
                 _log('s', 'skipped\n', verbose)
-            elif not diff:
+            elif not diff is not None:
                 _log('.', 'passed\n', verbose)
                 if os.path.exists(errpath):
                     os.remove(errpath)
             else:
-                failed[0] += 1
+                failed += 1
                 _log('!', 'failed\n', verbose)
                 if not quiet:
                     _log('\n', None, verbose)
 
-                errfile = open(errpath, 'wb')
-                try:
-                    for line in postout:
-                        errfile.write(line)
-                finally:
-                    errfile.close()
+                with open(errpath, 'wb') as errfile:
+                    errfile.writelines(postout)
 
                 if not quiet:
-                    origdiff = diff
-                    diff = []
-                    for line in origdiff:
+                    diffout: list[bytes] = []
+                    for line in diff:
                         sys.stdout.buffer.write(line)
-                        diff.append(line)
+                        diffout.append(line)
+                    diff = diffout
 
                     if (patchcmd and
                         _prompt('Accept this change?', 'yN', answer) == 'y'):
                         if _patch(patchcmd, diff):
-                            _log(None, path + b': merged output\n', verbose)
+                            _log(None, f'{path}: merged output\n', verbose)
                             os.remove(errpath)
                         else:
-                            _log(path + b': merge failed\n')
+                            _log(f'{path}: merge failed\n')
 
-            return refout, postout, diff
+            return TestResult(refout, postout, diff or None)
 
-        yield (path, testwrapper)
+        yield Test(path, runwrapper)
 
-    if total[0] > 0:
+    if total > 0:
         _log('\n', None, verbose)
-        _log('# Ran %s tests, %s skipped, %s failed.\n'
-             % (total[0], skipped[0], failed[0]))
+        _log(f'# Ran {total} tests, {skipped} skipped, {failed} failed.\n')

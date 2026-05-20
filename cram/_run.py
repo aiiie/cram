@@ -1,36 +1,28 @@
 """The test runner"""
 
 import os
-import sys
+from collections.abc import Iterable
 
-from cram._test import testfile
+from cram._test import testfile, Test, TestResult
 
 __all__ = ['runtests']
 
-if sys.platform == 'win32': # pragma: nocover
-    def _walk(top):
-        top = os.fsdecode(top)
-        for root, dirs, files in os.walk(top):
-            yield (os.fsencode(root),
-                   [os.fsencode(p) for p in dirs],
-                   [os.fsencode(p) for p in files])
-else:
-    _walk = os.walk
-
-def _findtests(paths):
+def _findtests(paths: list[str]) -> Iterable[str]:
     """Yield tests in paths in sorted order"""
     for p in paths:
         if os.path.isdir(p):
-            for root, dirs, files in _walk(p):
-                if os.path.basename(root).startswith(b'.'):
+            for root, _dirs, files in os.walk(p):
+                if os.path.basename(root).startswith('.'):
                     continue
                 for f in sorted(files):
-                    if not f.startswith(b'.') and f.endswith(b'.t'):
+                    if not f.startswith('.') and f.endswith('.t'):
                         yield os.path.normpath(os.path.join(root, f))
         else:
             yield os.path.normpath(p)
 
-def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False):
+def runtests(paths: list[str], tmpdir: str, shell: list[str],
+             indent: int=2, cleanenv: bool=True, debug: bool=False
+             ) -> Iterable[Test]:
     """Run tests and yield results.
 
     This yields a sequence of 2-tuples containing the following:
@@ -43,8 +35,8 @@ def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False):
         (list of lines in the test, same list with actual output, diff)
     """
     cwd = os.getcwd()
-    seen = set()
-    basenames = set()
+    seen: set[str] = set()
+    basenames: set[str] = set()
     for i, path in enumerate(_findtests(paths)):
         abspath = os.path.abspath(path)
         if abspath in seen:
@@ -52,16 +44,16 @@ def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False):
         seen.add(abspath)
 
         if not os.stat(path).st_size:
-            yield (path, lambda: (None, None, None))
+            yield Test(path, lambda: TestResult(None, None, None))
             continue
 
         basename = os.path.basename(path)
         if basename in basenames:
-            basename = basename + b'-%d' % i
+            basename = f'{basename}-{i}'
         else:
             basenames.add(basename)
 
-        def test():
+        def test() -> TestResult:
             """Run test file"""
             testdir = os.path.join(tmpdir, basename)
             os.mkdir(testdir)
@@ -73,4 +65,4 @@ def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False):
             finally:
                 os.chdir(cwd)
 
-        yield (path, test)
+        yield Test(path, test)

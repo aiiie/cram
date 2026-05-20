@@ -3,21 +3,23 @@
 import codecs
 import difflib
 import re
+from collections.abc import Callable, Iterator
+from typing import TypeAlias
 
 __all__ = ['esc', 'glob', 'regex', 'unified_diff']
 
-def _regex(pattern, s):
+def _regex(pattern: bytes, s: bytes) -> bool:
     """Match a regular expression or return False if invalid.
 
-    >>> [bool(_regex(r, b'foobar')) for r in (b'foo.*', b'***')]
+    >>> [_regex(r, b'foobar') for r in (b'foo.*', b'***')]
     [True, False]
     """
     try:
-        return re.match(pattern + br'\Z', s)
+        return bool(re.match(pattern + br'\Z', s))
     except re.error:
         return False
 
-def _glob(el, l):
+def _glob(pattern: bytes, s: bytes) -> bool:
     r"""Match a glob-like pattern.
 
     The only supported special characters are * and ?. Escaping is
@@ -26,13 +28,13 @@ def _glob(el, l):
     >>> bool(_glob(br'\* \\ \? fo?b*', b'* \\ ? foobar'))
     True
     """
-    i, n = 0, len(el)
+    i, n = 0, len(pattern)
     res = b''
     while i < n:
-        c = el[i:i + 1]
+        c = pattern[i:i + 1]
         i += 1
-        if c == b'\\' and el[i] in b'*?\\':
-            res += el[i - 1:i + 1]
+        if c == b'\\' and pattern[i] in b'*?\\':
+            res += pattern[i - 1:i + 1]
             i += 1
         elif c == b'*':
             res += b'.*'
@@ -40,53 +42,58 @@ def _glob(el, l):
             res += b'.'
         else:
             res += re.escape(c)
-    return _regex(res, l)
+    return _regex(res, s)
 
-def _matchannotation(keyword, matchfunc, el, l):
+_MatchFunc: TypeAlias = Callable[[bytes, bytes], bool]
+
+def _matchannotation(keyword: bytes, matchfunc: _MatchFunc, pattern: bytes,
+                     s: bytes) -> bool:
     """Apply match function based on annotation keyword"""
     ann = b' (%s)\n' % keyword
-    return el.endswith(ann) and matchfunc(el[:-len(ann)], l[:-1])
+    return pattern.endswith(ann) and matchfunc(pattern[:-len(ann)], s[:-1])
 
-def regex(el, l):
+def regex(pattern: bytes, s: bytes) -> bool:
     """Apply a regular expression match to a line annotated with '(re)'"""
-    return _matchannotation(b're', _regex, el, l)
+    return _matchannotation(b're', _regex, pattern, s)
 
-def glob(el, l):
+def glob(pattern: bytes, s: bytes) -> bool:
     """Apply a glob match to a line annotated with '(glob)'"""
-    return _matchannotation(b'glob', _glob, el, l)
+    return _matchannotation(b'glob', _glob, pattern, s)
 
-def esc(el, l):
+def esc(pattern: bytes, s: bytes) -> bool:
     """Apply an escape match to a line annotated with '(esc)'"""
     ann = b' (esc)\n'
 
-    if el.endswith(ann):
-        el = codecs.escape_decode(el[:-len(ann)])[0] + b'\n'
-    if el == l:
+    if pattern.endswith(ann):
+        pattern = codecs.escape_decode(pattern[:-len(ann)])[0] + b'\n'
+    if pattern == s:
         return True
 
-    if l.endswith(ann):
-        l = codecs.escape_decode(l[:-len(ann)])[0] + b'\n'
-    return el == l
+    if s.endswith(ann):
+        s = codecs.escape_decode(s[:-len(ann)])[0] + b'\n'
+    return pattern == s
 
-class _SequenceMatcher(difflib.SequenceMatcher):
+class _SequenceMatcher(difflib.SequenceMatcher[bytes]):
     """Like difflib.SequenceMatcher, but supports custom match functions"""
-    def __init__(self, *args, **kwargs):
-        self._matchers = kwargs.pop('matchers', [])
-        super(_SequenceMatcher, self).__init__(*args, **kwargs)
 
-    def _match(self, el, l):
-        """Tests for matching lines using custom matchers"""
-        for matcher in self._matchers:
-            if matcher(el, l):
-                return True
-        return False
+    def __init__(self, *, a: list[bytes], b: list[bytes],
+                 matchers: list[_MatchFunc] | None=None) -> None:
+        self.a: list[bytes]
+        self.b: list[bytes]
+        self._matchers: list[_MatchFunc] = matchers or []
+        super().__init__(a=a, b=b)
 
-    def find_longest_match(self, alo=0, ahi=None, blo=0, bhi=None):
+    def _match(self, pattern: bytes, s: bytes) -> bool:
+        """Test for matching lines using custom matchers"""
+        return any(m(pattern, s) for m in self._matchers)
+
+    def find_longest_match(self, alo: int=0, ahi: int | None=None,
+                           blo: int=0, bhi: int | None=None) -> difflib.Match:
         """Find longest matching block in a[alo:ahi] and b[blo:bhi]"""
         # SequenceMatcher uses find_longest_match() to slowly whittle down
         # the differences between a and b until it has each matching block.
         # Because of this, we can end up doing the same matches many times.
-        matches = []
+        matches: list[tuple[int, bytes]] = []
         for n, (el, line) in enumerate(zip(self.a[alo:ahi], self.b[blo:bhi])):
             if el != line and self._match(el, line):
                 # This fools the superclass's method into thinking that the
@@ -94,16 +101,17 @@ class _SequenceMatcher(difflib.SequenceMatcher):
                 # expected output) with b's line (the actual output).
                 self.a[alo + n] = line
                 matches.append((n, el))
-        ret = super(_SequenceMatcher, self).find_longest_match(alo, ahi,
-                                                               blo, bhi)
+        ret = super().find_longest_match(alo, ahi, blo, bhi)
         # Restore the lines replaced above. Otherwise, the diff output
         # would seem to imply that the tests never had any regexes/globs.
         for n, el in matches:
             self.a[alo + n] = el
         return ret
 
-def unified_diff(l1, l2, fromfile=b'', tofile=b'', fromfiledate=b'',
-                 tofiledate=b'', n=3, lineterm=b'\n', matchers=None):
+def unified_diff(l1: list[bytes], l2: list[bytes], fromfile: bytes=b'',
+                 tofile: bytes=b'', fromfiledate: bytes=b'',
+                 tofiledate: bytes=b'', n: int=3, lineterm: bytes=b'\n',
+                 matchers: list[_MatchFunc] | None=None) -> Iterator[bytes]:
     r"""Compare two sequences of lines; generate the delta as a unified diff.
 
     This is like difflib.unified_diff(), but allows custom matchers.
@@ -123,17 +131,11 @@ def unified_diff(l1, l2, fromfile=b'', tofile=b'', fromfiledate=b'',
     if matchers is None:
         matchers = []
     started = False
-    matcher = _SequenceMatcher(None, l1, l2, matchers=matchers)
+    matcher = _SequenceMatcher(a=l1, b=l2, matchers=matchers)
     for group in matcher.get_grouped_opcodes(n):
         if not started:
-            if fromfiledate:
-                fromdate = b'\t' + fromfiledate
-            else:
-                fromdate = b''
-            if tofiledate:
-                todate = b'\t' + tofiledate
-            else:
-                todate = b''
+            fromdate = b'\t' + fromfiledate if fromfiledate else b''
+            todate = b'\t' + tofiledate if tofiledate else b''
             yield b'--- ' + fromfile + fromdate + lineterm
             yield b'+++ ' + tofile + todate + lineterm
             started = True

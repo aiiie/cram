@@ -1,4 +1,5 @@
+basedpyright
 coverage
 flit
-pycodestyle
-pyflakes
+ruff
+ty

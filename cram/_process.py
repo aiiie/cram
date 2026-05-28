@@ -32,7 +32,6 @@ def execute(args, stdin=None, stdout=None, stderr=None, cwd=None, env=None):
         args = [os.fsdecode(arg) for arg in args]
 
     p = subprocess.Popen(args, stdin=PIPE, stdout=stdout, stderr=stderr,
-                         cwd=cwd, env=env, bufsize=-1,
-                         close_fds=os.name == 'posix')
+                         cwd=cwd, env=env, bufsize=-1)
     out, err = p.communicate(stdin)
     return out, p.returncode

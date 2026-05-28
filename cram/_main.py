@@ -22,10 +22,6 @@ def _which(cmd):
             return os.path.abspath(path)
     return None
 
-def _expandpath(path):
-    """Expands ~ and environment variables in path"""
-    return os.path.expanduser(os.path.expandvars(path))
-
 class _OptionParser(optparse.OptionParser):
     """Like optparse.OptionParser, but supports setting values through
     CRAM= and .cramrc."""
@@ -43,7 +39,7 @@ class _OptionParser(optparse.OptionParser):
 
     def parse_args(self, args=None, values=None):
         config = configparser.RawConfigParser()
-        config.read(_expandpath(os.environ.get('CRAMRC', '.cramrc')))
+        config.read(os.path.expanduser(os.environ.get('CRAMRC', '.cramrc')))
         defaults = {}
         for key, isbool in self._config_opts.items():
             try:

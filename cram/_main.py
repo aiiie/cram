@@ -13,15 +13,6 @@ from cram._cli import runcli
 from cram._run import runtests
 from cram._xunit import runxunit
 
-def _which(cmd):
-    """Return the path to cmd or None if not found"""
-    cmd = os.fsencode(cmd)
-    for p in os.environ['PATH'].split(os.pathsep):
-        path = os.path.join(os.fsencode(p), cmd)
-        if os.path.isfile(path) and os.access(path, os.X_OK):
-            return os.path.abspath(path)
-    return None
-
 class _OptionParser(optparse.OptionParser):
     """Like optparse.OptionParser, but supports setting values through
     CRAM= and .cramrc."""
@@ -135,7 +126,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
                              % (s1, s2))
             return 2
 
-    shellcmd = _which(opts.shell)
+    shellcmd = shutil.which(opts.shell)
     if not shellcmd:
         sys.stderr.buffer.write(b'shell not found: %s\n' %
                                 os.fsencode(opts.shell))
@@ -146,7 +137,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
     patchcmd = None
     if opts.interactive:
-        patchcmd = _which('patch')
+        patchcmd = shutil.which('patch')
         if not patchcmd:
             sys.stderr.write('patch(1) required for -i\n')
             return 2

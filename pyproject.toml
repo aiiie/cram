@@ -94,3 +94,6 @@ possibly-missing-attribute = "warn"
 possibly-missing-import = "warn"
 possibly-unresolved-reference = "warn"
 unsupported-dynamic-base = "warn"
+
+[tool.uv]
+managed = false

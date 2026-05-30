@@ -39,4 +39,12 @@ test:
 	COVERAGE=$(COVERAGE) PYTHON=$(PYTHON) $(PYTHON) -m cram $(TESTOPTS) tests
 	$(COVERAGE) report --fail-under=100
 
-.PHONY: all build clean dist install check lint quicktest test
+testall:
+	uv run --python=3.10 -m cram $(TESTOPTS) tests
+	uv run --python=3.11 -m cram $(TESTOPTS) tests
+	uv run --python=3.12 -m cram $(TESTOPTS) tests
+	uv run --python=3.13 -m cram $(TESTOPTS) tests
+	uv run --python=3.14 -m cram $(TESTOPTS) tests
+	uv run --python=3.15 -m cram $(TESTOPTS) tests
+
+.PHONY: all build clean dist install check lint quicktest test testall

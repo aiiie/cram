@@ -32,12 +32,11 @@ lint:
 	basedpyright
 
 quicktest:
-	PYTHON=$(PYTHON) PYTHONPATH=`pwd` $(PYTHON) -m cram $(TESTOPTS) tests
+	PYTHON=$(PYTHON) $(PYTHON) -m cram $(TESTOPTS) tests
 
 test:
 	$(COVERAGE) erase
-	COVERAGE=$(COVERAGE) PYTHON=$(PYTHON) PYTHONPATH=`pwd` \
-		$(PYTHON) -m cram $(TESTOPTS) tests
+	COVERAGE=$(COVERAGE) PYTHON=$(PYTHON) $(PYTHON) -m cram $(TESTOPTS) tests
 	$(COVERAGE) report --fail-under=100
 
 .PHONY: all build clean dist install check lint quicktest test

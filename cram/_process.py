@@ -4,6 +4,7 @@ import os
 import signal
 import subprocess
 import sys
+import tempfile
 
 __all__ = ['PIPE', 'STDOUT', 'execute']
 
@@ -22,8 +23,11 @@ def _makeresetsigpipe():
         return None
     return lambda: signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 
-def execute(args, stdin=None, stdout=None, stderr=None, cwd=None, env=None):
+def execute(args, script=None, stdin=None, stdout=None, stderr=None, cwd=None, env=None):
     """Run a process and return its output and return code.
+
+    script may either be None or a string with content of a script file that
+    will be passed as additional argument to the process.
 
     stdin may either be None or a string to send to the process.
 
@@ -41,12 +45,19 @@ def execute(args, stdin=None, stdout=None, stderr=None, cwd=None, env=None):
 
     This function returns a 2-tuple of (output, returncode).
     """
-    if sys.platform == 'win32': # pragma: nocover
-        args = [os.fsdecode(arg) for arg in args]
+    with tempfile.NamedTemporaryFile(mode='wb', delete=False) as tmp_file:
+        if script != None:
+            tmp_file.write(script)
+            tmp_file.close()
+            args = args + [tmp_file.name]
 
-    p = subprocess.Popen(args, stdin=PIPE, stdout=stdout, stderr=stderr,
-                         cwd=cwd, env=env, bufsize=-1,
-                         preexec_fn=_makeresetsigpipe(),
-                         close_fds=os.name == 'posix')
-    out, err = p.communicate(stdin)
-    return out, p.returncode
+        if sys.platform == 'win32': # pragma: nocover
+            args = [os.fsdecode(arg) for arg in args]
+
+        p = subprocess.Popen(args, stdin=PIPE, stdout=stdout, stderr=stderr,
+                             cwd=cwd, env=env, bufsize=-1,
+                             preexec_fn=_makeresetsigpipe(),
+                             close_fds=os.name == 'posix')
+        out, err = p.communicate(stdin)
+        os.unlink(tmp_file.name)
+        return out, p.returncode

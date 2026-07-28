@@ -1,4 +1,5 @@
-Set up cram alias and example tests:
+
+et up cram alias and example tests:
 
   $ . "$TESTDIR"/setup.sh
 
@@ -24,8 +25,10 @@ Debug mode:
 
 Debug mode with extra shell arguments:
 
-  $ cram --shell-opts='-s' -d debug.t
+  $ cram --shell-opts='-x' -d debug.t
+  + echo hi
   hi
+  + echo bye
   bye
 
 Test debug mode with set -x:

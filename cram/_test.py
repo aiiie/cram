@@ -112,7 +112,7 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
             elif line.startswith(conline):
                 stdin.append(line[len(conline):])
 
-        execute(shell + ['-'], stdin=b''.join(stdin), env=env)
+        execute(shell, script=b''.join(stdin), env=env)
         return ([], [], [])
 
     after = {}
@@ -136,7 +136,7 @@ def test(lines, shell='/bin/sh', indent=2, testname=None, env=None,
             after.setdefault(pos, []).append(line)
     stdin.append(b'echo %s %d $?\n' % (salt, i + 1))
 
-    output, retcode = execute(shell + ['-'], stdin=b''.join(stdin),
+    output, retcode = execute(shell, script=b''.join(stdin),
                               stdout=PIPE, stderr=STDOUT, env=env)
     if retcode == 80:
         return (refout, None, [])

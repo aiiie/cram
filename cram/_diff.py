@@ -25,13 +25,19 @@ def _glob(el, l):
 
     >>> bool(_glob(br'\* \\ \? fo?b*', b'* \\ ? foobar'))
     True
+
+    A trailing backslash is a literal backslash, not the start of an
+    escape sequence:
+
+    >>> bool(_glob(b'foo\\', b'foo\\'))
+    True
     """
     i, n = 0, len(el)
     res = b''
     while i < n:
         c = el[i:i + 1]
         i += 1
-        if c == b'\\' and el[i] in b'*?\\':
+        if c == b'\\' and i < n and el[i:i + 1] in b'*?\\':
             res += el[i - 1:i + 1]
             i += 1
         elif c == b'*':
